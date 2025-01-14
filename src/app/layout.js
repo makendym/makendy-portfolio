@@ -1,15 +1,9 @@
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
+import { Box } from "@mui/material";
+import { pageGradientBackground } from "./assets";
+import Navbar from "./components/navbar";
+import Footer from "./components/footer";
+import "./styles/globals.css";
 
 export const metadata = {
   title: "Create Next App",
@@ -19,10 +13,69 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <head>
+        <meta charSet="UTF-8" />
+        <style>
+          {`
+            /* For Chrome, Edge, Safari */
+            ::-webkit-scrollbar {
+              width: 8px; /* Adjust scrollbar width */
+            }
+
+            /* Scrollbar track (background) */
+            ::-webkit-scrollbar-track {
+              background: transparent; /* Transparent background for the track */
+            }
+
+            /* Scrollbar thumb (the draggable part) */
+            ::-webkit-scrollbar-thumb {
+              background: rgba(0, 0, 0, 0.3); /* Semi-transparent thumb */
+              border-radius: 4px; /* Rounded corners */
+            }
+
+            /* Scrollbar thumb hover effect */
+            ::-webkit-scrollbar-thumb:hover {
+              background: rgba(0, 0, 0, 0.6); /* Darker thumb on hover */
+            }
+
+            /* Firefox scrollbar (not supported by webkit) */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 0, 0, 0.3) transparent; /* Thumb color and track color */
+          `}
+        </style>
+      </head>
+      <body>
+        <AppRouterCacheProvider>
+          <Box
+            component="main"
+            sx={{
+              position: "relative", // Makes the background image absolute within this container
+              minHeight: "100vh",
+              backgroundColor: "rgba(36, 36, 36, 100%)", // Solid background color
+            }}
+          >
+            {/* Foreground background image with 20% opacity */}
+            <Box
+              sx={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                backgroundImage: `url(${pageGradientBackground.src})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundAttachment: "fixed",
+                opacity: 0.3, // Set opacity of image to 20%
+                zIndex: 0, // Places the image behind the content
+              }}
+            />
+            {/* Navbar and Children Inside the Box */}
+            <Navbar />
+            {children}
+            <Footer />
+          </Box>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
