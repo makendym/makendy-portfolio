@@ -18,6 +18,7 @@ const LandingPage = () => {
         textAlign: "center",
         position: "relative",
         overflow: "hidden", // Prevent scrollbars
+        zIndex: -1,
       }}
     >
       <Box
@@ -62,47 +63,48 @@ const LandingPage = () => {
       <Box
         sx={{
           position: "absolute",
-          left: {xs: "5%", sm: "25%"}, // Adjust left position for smaller screens
-          top: {xs: "30%", sm: "30%", md: "20%", lg: "25%"},
+          left: {xs: "6%", sm: "27%"}, // Adjust left position for smaller screens
+          top: {xs: "30%", sm: "30%", md: "30%", lg: "25%"},
           transform: "translateY(-50%)",
           textAlign: "left",
-          zIndex: 1,
-          width: "90%", // Prevent horizontal overflow
+          width: {xs: "90%", sm: "100%"}, // Adjust width for responsiveness
+          height: "auto", // Ensure no unnecessary height is added to the container
+          overflow: "hidden", // Prevent scrolling by hiding overflow
         }}
       >
         <Typography
           variant="h1"
           sx={{
-            fontSize: {xs: "3rem", sm: "5rem", md: "6rem", lg: "7rem"},
-            lineHeight: {xs: "1.2", sm: "1.3", md: "1.4", lg: "1.5"}, // Ensure sufficient line height
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
+            fontSize: {xs: "3rem", sm: "5rem", md: "6rem", lg: "7rem"}, // Smaller font size on small screens
+            lineHeight: {xs: "1.4", sm: "1.4", md: "1.4", lg: "1.5"}, // Ensure sufficient line height
+            whiteSpace: "normal", // Allow text to wrap if necessary
+            overflow: "visible", // Prevent text from overflowing
+            textOverflow: "unset", // Add ellipsis if text overflows
           }}
         >
           Hey,
         </Typography>
       </Box>
-
       <Box
         sx={{
           position: "absolute",
-          left: {xs: "75%", sm: "60%"}, // Adjust left position for smaller screens
-          top: {xs: "30%", sm: "30%", md: "20%", lg: "25%"},
-          transform: "translateY(-50%)",
+          left: {xs: "65%", sm: "55%"}, // Center it more on smaller screens
+          top: {xs: "30%", sm: "30%", md: "30%", lg: "25%"}, // Adjust top position
+          transform: " translateY(-50%)", // Center the text horizontally
           textAlign: "left",
-          zIndex: 1,
-          width: "90%", // Prevent horizontal overflow
+          zIndex: -3,
+          width: "100%", // Full width to prevent text clipping
+          paddingLeft: {xs: "2rem", sm: "3rem", md: "5rem"}, // Add padding for smaller screens
         }}
       >
         <Typography
           variant="h1"
           sx={{
             fontSize: {xs: "3rem", sm: "5rem", md: "6rem", lg: "7rem"},
-            lineHeight: "auto",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
+            lineHeight: {xs: "1.2", sm: "1.3", md: "1.4", lg: "1.5"},
+            whiteSpace: "normal", // Allow text to wrap
+            overflow: "visible", // Ensure no clipping
+            textOverflow: "unset", // Disable text overflow clipping
           }}
         >
           there
@@ -115,7 +117,6 @@ const LandingPage = () => {
           top: {xs: "85%", sm: "90%", md: "90%", lg: "79%"},
           transform: "translateY(-50%)",
           textAlign: "left",
-          zIndex: 1,
           width: "90%", // Prevent horizontal overflow
         }}
       >
@@ -153,7 +154,6 @@ const LandingPage = () => {
           top: {xs: "85%", sm: "90%", md: "90%", lg: "83%"},
           transform: "translateY(-50%)",
           textAlign: "left",
-          zIndex: 1,
           width: "90%", // Prevent horizontal overflow
         }}
       >
@@ -182,6 +182,32 @@ const LandingPage = () => {
           }}
         >
           ENGINEER
+        </Typography>
+      </Box>
+
+      <Box
+        sx={{
+          position: "absolute",
+          left: {xs: "42%", sm: "75%", md: "75%", lg: "75%"}, // Adjust left position for responsiveness
+          top: {xs: "85%", sm: "50%", md: "50%", lg: "50%"}, // Adjust top position for responsiveness
+          transform: "translateY(-50%)",
+          textAlign: "left",
+          width: {xs: "35%", sm: "35%", md: "25%", lg: "25%"}, // Adjust width for responsiveness
+        }}
+      >
+        <Typography
+          variant="body1" // Use a single Typography for the paragraph
+          sx={{
+            fontFamily: "'Changa', sans-serif",
+            fontSize: {xs: "14px", sm: "16px", md: "18px", lg: "20px"}, // Responsive font sizes
+            lineHeight: {xs: "1.4", sm: "1.6", md: "1.8", lg: "2"}, // Adjust line height for readability
+            whiteSpace: "normal", // Allow text wrapping
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            fontWeight: 100,
+          }}
+        >
+          Driven by vision, resilience, and a commitment to community.
         </Typography>
       </Box>
     </Box>

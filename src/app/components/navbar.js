@@ -81,8 +81,8 @@ const Navbar = () => {
           background: "none",
           boxShadow: "none",
           px: 2,
-          zIndex: 1, // Ensure it's above other content
           top: 0, // Stick the AppBar to the top
+          zIndex: 1100,
         }}
       >
         <Toolbar>
@@ -92,6 +92,8 @@ const Navbar = () => {
               display: "flex",
               alignItems: "center",
               marginTop: 5,
+              justifyContent: 'space-between',  // Space items across the toolbar
+              zIndex: 1100,
             }}
           >
             {/* Makendy on the left */}
@@ -121,6 +123,8 @@ const Navbar = () => {
                   borderRadius: 34, // Adds a border radius to the box
                   maxWidth: "80%", // Allow more space for the content (adjust as needed)
                   overflow: "hidden", // Prevent overflow of the container
+                  zIndex: 1100,
+
                 }}
               >
                 {NAV_LINKS.map((link) => (

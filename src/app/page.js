@@ -2,6 +2,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import RootLayout from "./layout";
 import LandingPage from "./sections/landingPage";
+import VideoSection from './sections/videoSection';
 import AboutSection from "./sections/aboutSection";
 import SkillsSection from "./sections/skillsSection";
 import EducationSection from "./sections/educationSection";
@@ -12,6 +13,7 @@ export default function Home() {
   return (
     <ThemeProvider theme={theme}>
         <LandingPage />
+        <VideoSection />
         <AboutSection />
         <SkillsSection />
         <EducationSection />
