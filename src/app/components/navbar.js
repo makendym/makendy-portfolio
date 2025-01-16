@@ -82,7 +82,7 @@ const Navbar = () => {
           boxShadow: "none",
           px: 2,
           top: 0, // Stick the AppBar to the top
-          zIndex: 1100,
+          zIndex: 20000,
         }}
       >
         <Toolbar>
@@ -93,7 +93,7 @@ const Navbar = () => {
               alignItems: "center",
               marginTop: 5,
               justifyContent: 'space-between',  // Space items across the toolbar
-              zIndex: 1100,
+              zIndex: 10001,
             }}
           >
             {/* Makendy on the left */}

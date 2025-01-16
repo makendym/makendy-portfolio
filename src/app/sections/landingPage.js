@@ -2,25 +2,43 @@ import React from "react";
 import {Box, Typography} from "@mui/material";
 import Image from "next/image";
 import {landingPageImage} from "../assets"; // Ensure you're importing the image path correctly
+import {pageGradientBackground} from "../assets";
 
 const LandingPage = () => {
   return (
     <Box
       id="landing-page"
       sx={{
-        marginTop: 5,
+        marginTop: 0,
         display: "flex",
         flexDirection: "column",
         height: "100vh",
-        width: "100vw", // Ensure the box occupies the full viewport width
+        width: "100%", // Ensure the box occupies the full viewport width
         color: "#FFFFFF",
         padding: 0,
         textAlign: "center",
         position: "relative",
         overflow: "hidden", // Prevent scrollbars
-        zIndex: -1,
+        backgroundColor: "rgba(36, 36, 36, 100%)",
+
+        zIndex: 1000,
       }}
     >
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100vh",
+          backgroundImage: `url(${pageGradientBackground.src})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          // backgroundAttachment: "fixed",
+          opacity: 0.2,
+          // zIndex: -1, // Ensure it's behind all content
+        }}
+      />
       <Box
         sx={{
           position: "absolute",
@@ -88,13 +106,13 @@ const LandingPage = () => {
       <Box
         sx={{
           position: "absolute",
-          left: {xs: "65%", sm: "55%"}, // Center it more on smaller screens
+          left: {xs: "75%", sm: "59%"}, // Adjust position for responsiveness
           top: {xs: "30%", sm: "30%", md: "30%", lg: "25%"}, // Adjust top position
-          transform: " translateY(-50%)", // Center the text horizontally
+          transform: "translateY(-50%)", // Center the text vertically
           textAlign: "left",
-          zIndex: -3,
-          width: "100%", // Full width to prevent text clipping
-          paddingLeft: {xs: "2rem", sm: "3rem", md: "5rem"}, // Add padding for smaller screens
+          width: {xs: "90%", sm: "100%"}, // Adjust width for responsiveness
+          height: "auto", // Ensure no unnecessary height is added to the container
+          overflow: "visible", // Ensure the text isn't clipped
         }}
       >
         <Typography
@@ -114,7 +132,7 @@ const LandingPage = () => {
         sx={{
           position: "absolute",
           left: {xs: "2%", sm: "3%"}, // Adjust left position for smaller screens
-          top: {xs: "85%", sm: "90%", md: "90%", lg: "79%"},
+          top: {xs: "95%", sm: "90%", md: "90%", lg: "79%"},
           transform: "translateY(-50%)",
           textAlign: "left",
           width: "90%", // Prevent horizontal overflow
@@ -151,7 +169,7 @@ const LandingPage = () => {
         sx={{
           position: "absolute",
           left: {xs: "75%", sm: "75%"}, // Adjust left position for smaller screens
-          top: {xs: "85%", sm: "90%", md: "90%", lg: "83%"},
+          top: {xs: "95%", sm: "90%", md: "90%", lg: "83%"},
           transform: "translateY(-50%)",
           textAlign: "left",
           width: "90%", // Prevent horizontal overflow
@@ -189,7 +207,7 @@ const LandingPage = () => {
         sx={{
           position: "absolute",
           left: {xs: "42%", sm: "75%", md: "75%", lg: "75%"}, // Adjust left position for responsiveness
-          top: {xs: "85%", sm: "50%", md: "50%", lg: "50%"}, // Adjust top position for responsiveness
+          top: {xs: "95%", sm: "50%", md: "50%", lg: "50%"}, // Adjust top position for responsiveness
           transform: "translateY(-50%)",
           textAlign: "left",
           width: {xs: "35%", sm: "35%", md: "25%", lg: "25%"}, // Adjust width for responsiveness

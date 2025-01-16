@@ -1,112 +1,145 @@
-'use client';
-import React, { useState, useEffect } from "react";
-import { Box, Typography } from "@mui/material";
+"use client";
+import React, { useEffect, useRef } from "react";
+import { Box } from "@mui/material";
 
 const VideoSection = () => {
-  const [opacity, setOpacity] = useState(0);  // Start with an invisible overlay
+  const sectionRef = useRef(null);
+  const videoRef = useRef(null);
 
-  const sentences = [
-    "Vision guides my drive to create.",
-    "Resilience fuels my journey.",
-    "Community builds bridges and inspires collective growth.",
-    "Curiosity amplifies my growth and opens doors.",
-  ];
-
-  // Change opacity as you scroll down (based on the section's scroll position)
   useEffect(() => {
-    const section = document.getElementById("video-section");
+    if (!videoRef.current || !sectionRef.current) return;
 
-    const updateOpacity = () => {
-      const rect = section.getBoundingClientRect();
-      const top = rect.top;
-      const sectionHeight = rect.height;
+    const vid = videoRef.current;
+    const section = sectionRef.current;
+    
+    // Ensure video is initially paused
+    vid.pause();
 
-      // Calculate opacity based on how much of the section is visible (0 to 1)
-      const newOpacity = Math.min(Math.max((top + sectionHeight - window.scrollY) / sectionHeight, 0), 1);
-      setOpacity(newOpacity); // Opacity increases as you scroll down
+    const handleScroll = () => {
+      // Calculate scroll progress
+      const sectionTop = section.offsetTop;
+      const scrollPosition = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      const sectionHeight = section.clientHeight;
+
+      const distance = scrollPosition - sectionTop;
+      const total = sectionHeight - viewportHeight;
+
+      // Ensure percentage is between 0 and 1
+      let percentage = Math.max(0, Math.min(distance / total, 1));
+
+      // Only update video time if duration is available
+      if (vid.duration) {
+        vid.currentTime = vid.duration * percentage;
+      }
     };
 
-    window.addEventListener("scroll", updateOpacity);
+    // Initial calculation
+    handleScroll();
 
-    return () => {
-      window.removeEventListener("scroll", updateOpacity);
-    };
+    // Add scroll listener
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <Box
-      id="video-section"
+      ref={sectionRef}
+      component="section"
       sx={{
+        height: "400vh",
         position: "relative",
-        width: "100vw",
-        height: "100vh",
-        overflow: "hidden",
+        overflow: "visible",
+        // marginTop: "0", // Ensure no gap with previous section
+        // marginBottom: "0", // Ensure no gap with next section
       }}
     >
-      {/* Video Background */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        style={{
-          position: "absolute",
+      <Box
+        sx={{
+          position: "sticky",
           top: 0,
-          left: 0,
           width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          zIndex: -1, // Ensure video is behind text
-          opacity: 1, // Keep video opacity at full
+          height: "100vh",
+          overflow: "hidden", // Contain the video
         }}
       >
-        <source
-          src="https://d3lh4iw97b9uun.cloudfront.net/xlab.mp4"
-          type="video/mp4"
-        />
-        Your browser does not support the video tag.
-      </video>
+        <Box
+          sx={{
+            position: "relative", // Container for video
+            width: "100%",
+            height: "100%",
+            "&::after": {
+              content: '""',
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              background: "rgba(0, 0, 0, 0.3)",
+              pointerEvents: "none",
+            }
+          }}
+        >
+          <video
+            ref={videoRef}
+            src="https://d3lh4iw97b9uun.cloudfront.net/xlab.mp4"
+            muted
+            playsInline
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              position: "absolute",
+              top: 0,
+              left: 0,
+            }}
+          />
+        </Box>
+      </Box>
 
-      {/* Dark Overlay with Dynamic Opacity */}
       <Box
         sx={{
           position: "absolute",
           top: 0,
           left: 0,
           width: "100%",
-          height: "100%",
-          backgroundColor: "rgba(36, 36, 36, 1)", // Dark overlay color
-          opacity: opacity, // Apply dynamic opacity to the dark overlay
-          transition: "opacity 0.6s ease-out", // Smooth opacity transition
-          zIndex: 0, // Ensure overlay is above the video but below the text
-        }}
-      />
-
-      {/* Text Overlay */}
-      <Box
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          textAlign: "center",
+          height: "100vh",
           color: "white",
-          zIndex: 1, // Ensure text is above the video and overlay
+          pointerEvents: "none",
         }}
       >
-        {sentences.map((sentence, index) => (
-          <Typography
+        {[
+          "Vision guides my drive to create.",
+          "Resilience fuels my journey.",
+          "Community builds bridges and inspires collective growth.",
+          "Curiosity amplifies my growth and opens doors.",
+        ].map((text, index) => (
+          <Box
             key={index}
-            variant="h4"
             sx={{
-              fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" },
-              opacity: opacity, // Apply dynamic opacity to text as well
-              transition: "opacity 0.3s ease-in", // Smooth opacity transition
-              marginBottom: 2,
+              height: "100vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+              width: "100%",
             }}
           >
-            {sentence}
-          </Typography>
+            <Box
+              component="h3"
+              sx={{
+                fontSize: "2.5rem",
+                fontWeight: 400,
+                lineHeight: 1.25,
+                fontFamily: "Changa One, sans-serif",
+                maxWidth: "16ch",
+                textWrap: "balance",
+              }}
+            >
+              {text}
+            </Box>
+          </Box>
         ))}
       </Box>
     </Box>
