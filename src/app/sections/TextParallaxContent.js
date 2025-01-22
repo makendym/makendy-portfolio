@@ -1,25 +1,78 @@
 "use client";
-import React, {useRef} from "react";
-import {motion, useScroll, useTransform} from "framer-motion";
-import {Typography} from "@mui/material";
+import React, { useRef, useEffect } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Typography, Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
+
+const Container = styled('div')({
+  position: 'relative',
+  height: '300vh',
+  overflow: 'hidden',
+});
+
+const VideoContainer = styled(motion.div)({
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  zIndex: 0,
+  height: '100vh',
+  width: '100%',
+  overflow: 'hidden',
+});
+
+const VideoOverlay = styled(motion.div)({
+  position: 'absolute',
+  inset: 0,
+  backgroundColor: 'rgba(23, 23, 23, 0.2)',
+});
+
+const TextContainer = styled('div')({
+  position: 'sticky',
+  top: 0,
+  left: 0,
+  height: '100vh',
+  width: '100%',
+  overflow: 'hidden',
+});
+
 export const TextParallaxContentExample = () => {
   const containerRef = useRef(null);
+  const videoRef = useRef(null);
 
   const headings = [
     "Vision guides my drive to create.",
     "Resilience fuels my journey.",
-    "Community builds bridges and inspires collective growth.",
-    "Curiosity amplifies my growth and opens doors.",
+    "Community fuels my passion to inspire.",
   ];
 
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+
+  const videoOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.8, 0.9, 1],
+    [1, 1, 0, 0]
+  );
+
+  useEffect(() => {
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.src = '';
+        videoRef.current.load();
+      }
+    };
+  }, []);
+
   return (
-    <div
-      ref={containerRef}
-      className="relative h-[300vh] overflow-hidden"
-    >
-      {/* Sticky video stays in the background */}
-      <StickyVideo videoUrl="https://d3lh4iw97b9uun.cloudfront.net/xlab.mp4" />
-      {/* Overlay text with precise offsets */}
+    <Container ref={containerRef}>
+      <StickyVideo 
+        videoUrl="https://d3lh4iw97b9uun.cloudfront.net/xlab.mp4" 
+        videoRef={videoRef}
+        opacity={videoOpacity}
+      />
       {headings.map((heading, index) => (
         <OverlayCopy
           key={index}
@@ -27,82 +80,98 @@ export const TextParallaxContentExample = () => {
           index={index}
         />
       ))}
-    </div>
+    </Container>
   );
 };
 
-const StickyVideo = ({videoUrl}) => {
+const StickyVideo = ({ videoUrl, videoRef, opacity }) => {
   const targetRef = useRef(null);
-  const {scrollYProgress} = useScroll({
+  const { scrollYProgress } = useScroll({
     target: targetRef,
-    offset: ["end start", "end end"], // Adjusted to start earlier
+    offset: ["start start", "end start"],
   });
 
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.85]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const borderRadius = useTransform(scrollYProgress, [0, 1], ["0rem", "6rem"]);
+  const scale = useTransform(scrollYProgress, [1, 0], [1, 0.85]);
+  const borderRadius = useTransform(scrollYProgress, [1, 0], [0, 96]);
 
   return (
-    <motion.div
+    <VideoContainer
       ref={targetRef}
-      className="fixed top-0 left-0 z-0 h-full w-full overflow-hidden"
       style={{
         scale,
         opacity,
-        height: "100vh",
-        borderRadius, // Apply dynamic border-radius
+        borderRadius,
       }}
     >
       <video
+        ref={videoRef}
         src={videoUrl}
         muted
         playsInline
         autoPlay
         loop
-        className="h-full w-full object-cover"
-      />
-      <motion.div
-        className="absolute inset-0 bg-neutral-950/20"
         style={{
-          opacity,
+          height: '100%',
+          width: '100%',
+          objectFit: 'cover',
         }}
       />
-    </motion.div>
+      <VideoOverlay style={{ opacity }} />
+    </VideoContainer>
   );
 };
 
-const OverlayCopy = ({heading, index}) => {
+const OverlayCopy = ({ heading, index }) => {
   const ref = useRef(null);
-  const {scrollYProgress} = useScroll({
-    target: ref, // Each OverlayCopy has its own scroll tracking
+  const { scrollYProgress } = useScroll({
+    target: ref,
     offset: ["start end", "end start"],
   });
 
-  // Animate position and opacity
   const y = useTransform(scrollYProgress, [0, 1], [250, -250]);
   const opacity = useTransform(scrollYProgress, [0.1, 0.5, 0.75], [0, 1, 0]);
 
   return (
-    <div
-      ref={ref}
-      className="sticky top-0 left-0 h-[70vh] w-full overflow-hidden"
-    >
-      <motion.div
-        style={{y, opacity}}
-        className="flex h-full items-center justify-center text-white z-10 overflow-hidden"
+    <TextContainer ref={ref}>
+      <Box
+        sx={{
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+          zIndex: 10
+        }}
       >
-        <Typography
-          variant="h2"
-          sx={{
-            fontFamily: "Changa One, sans-serif",
-            fontSize: {xs: "2rem", sm: "3rem", md: "4rem", lg: "6rem"},
-          }}
-          className="text-center w-[80%] md:w-[60%] text-5xl font-bold md:text-8xl flex items-center justify-center overflow-hidden"
+        <motion.div
+          style={{ y, opacity }}
         >
-          {heading}
-        </Typography>
-      </motion.div>
-    </div>
+          <Typography
+            variant="h2"
+            sx={{
+              fontFamily: "Changa One, sans-serif",
+              fontSize: {
+                xs: "2rem",
+                sm: "3rem",
+                md: "4rem",
+                lg: "6rem"
+              },
+              textAlign: 'center',
+              fontWeight: 'bold',
+              color: '#FFFFFF',
+              maxWidth: {
+                xs: '80%',
+                md: '60%'
+              },
+              margin: '0 auto'
+            }}
+          >
+            {heading}
+          </Typography>
+        </motion.div>
+      </Box>
+    </TextContainer>
   );
 };
 

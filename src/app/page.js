@@ -1,5 +1,5 @@
-import { ThemeProvider } from "@mui/material/styles";
-import { Box } from "@mui/material";
+import {ThemeProvider} from "@mui/material/styles";
+import {Box} from "@mui/material";
 import theme from "./theme";
 import LandingPage from "./sections/landingPage";
 import TextParallaxContentExample from "./sections/TextParallaxContent";
@@ -10,15 +10,15 @@ import WorkSection from "./sections/workSection";
 import ProjectSection from "./sections/projectSection";
 import ContactSection from "./sections/contactSection";
 import Footer from "./components/footer";
-import { pageGradientBackground } from "./assets";
+import {pageGradientBackground} from "./assets";
 
 export default function Home() {
   return (
     <ThemeProvider theme={theme}>
       <LandingPage />
       <TextParallaxContentExample />
-      
-      <Box
+
+      {/* <Box
         component="main"
         sx={{
           position: "relative",
@@ -26,9 +26,9 @@ export default function Home() {
           backgroundColor: "rgba(36, 36, 36, 100%)",
           zIndex: 10001,
         }}
-      >
+      > */}
         {/* Foreground background image with 20% opacity */}
-        <Box
+        {/* <Box
           sx={{
             position: "absolute",
             top: 0,
@@ -40,17 +40,16 @@ export default function Home() {
             backgroundPosition: "center",
             opacity: 0.2,
           }}
-        />
-        
+        /> */}
+
         <AboutSection />
-        <SkillsSection />
         <EducationSection />
         <WorkSection />
         <ProjectSection />
         <ContactSection />
-        
+
         <Footer />
-      </Box>
+      {/* </Box> */}
     </ThemeProvider>
   );
 }

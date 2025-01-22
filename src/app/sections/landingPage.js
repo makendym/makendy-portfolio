@@ -3,6 +3,8 @@ import {Box, Typography} from "@mui/material";
 import Image from "next/image";
 import {landingPageImage} from "../assets"; // Ensure you're importing the image path correctly
 import {pageGradientBackground} from "../assets";
+import Grid from "@mui/material/Grid2";
+
 
 const LandingPage = () => {
   return (
@@ -49,7 +51,7 @@ const LandingPage = () => {
           height: "100%",
           "@media (max-width: 600px)": {
             width: "100%", // Slightly smaller for small screens
-            height: "80%", // Maintain proportional scaling
+            height: "100vh", // Maintain proportional scaling
           },
           "@media (max-width: 400px)": {
             width: "100%", // Larger for very small screens
@@ -61,7 +63,9 @@ const LandingPage = () => {
           src={landingPageImage}
           alt="Landing Page Portrait"
           fill
-          style={{objectFit: "cover", borderRadius: "10px"}}
+          style={{
+            objectFit: "cover",
+          }}
           priority
         />
         {/* Gradient Overlay */}

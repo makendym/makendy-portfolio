@@ -1,22 +1,16 @@
+/* The @tailwind directive is provided by the Tailwind CSS library.
+   Make sure to install and import it correctly in your project. */
+
+/* If you're using npm: */
+/* npm install tailwindcss */
+/* Then, in your CSS file: */
+/* @import 'tailwindcss/base'; */
+/* @import 'tailwindcss/components'; */
+/* @import 'tailwindcss/utilities'; */
+
+/* If you're using a CDN: */
+/* <link href="https://unpkg.com/tailwindcss@^2/dist/base.min.css" rel="stylesheet"> */
+/* <link href="https://unpkg.com/tailwindcss@^2/dist/components.min.css" rel="stylesheet"> */
+/* <link href="https://unpkg.com/tailwindcss@^2/dist/utilities.min.css" rel="stylesheet"> */
+
 @tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --font-family: 'Arial', 'Helvetica', sans-serif; /* Default font */
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: var(--font-family), 'Changa One', sans-serif; /* Apply custom font */
-}

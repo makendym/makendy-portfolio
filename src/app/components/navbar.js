@@ -47,7 +47,7 @@ const Navbar = () => {
       role="presentation"
       onClick={() => setDrawerOpen(false)}
       onKeyDown={() => setDrawerOpen(false)}
-      sx={{width: 250}}
+      sx={{width: 250,zIndex: 20000,}}
     >
       <List>
         {NAV_LINKS.map((link) => (
@@ -168,7 +168,7 @@ const Navbar = () => {
                 color="inherit"
                 aria-label="menu"
                 onClick={handleDrawerToggle}
-                sx={{ml: "auto"}} // Align the hamburger to the right
+                sx={{ml: "auto", zIndex: 20000}} // Align the hamburger to the right
               >
                 <MenuIcon />
               </IconButton>
@@ -197,7 +197,6 @@ const Navbar = () => {
                     sx={{
                       color: "#000000", // Set the text color to black (or any color you prefer)
                       fontFamily: "Changa, sans-serif",
-                      //   fontWeight: 100,
                       fontSize: {xs: "14px", sm: "16px", md: "18px"}, // Responsive font sizes
                       textTransform: "none", // No text transformation
                       whiteSpace: "nowrap", // Prevents text from wrapping
@@ -205,7 +204,7 @@ const Navbar = () => {
                       textOverflow: "ellipsis", // If text overflows, it gets truncated with ellipsis
                     }}
                   >
-                    Let's Chat
+                    Let&apos;s Chat
                   </Typography>
                 </Button>
               </Box>
@@ -220,6 +219,7 @@ const Navbar = () => {
         open={drawerOpen}
         onClose={handleDrawerToggle}
         className="drawer"
+        sx={{zIndex: 20000,}}
       >
         {drawerContent}
       </Drawer>

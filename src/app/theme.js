@@ -32,18 +32,22 @@ const theme = createTheme({
     h1: {
       fontFamily: cedarvilleCursive.style.fontFamily, // Use Cedarville Cursive for h1
       fontSize: '3rem', // Default size for h1
+      color: "#FFFFFF"
     },
     h2: {
       fontFamily: changaOne.style.fontFamily, // Use Changa One for h2
       fontSize: '2.5rem',
+      color: "#FFFFFF"
     },
     h3: {
       fontFamily: changa.style.fontFamily, // Use Changa for h3
       fontSize: '2rem',
+      color: "#FFFFFF"
     },
     body1: {
       fontFamily: changa.style.fontFamily, // Use Changa for body text
       fontSize: '1rem',
+      color: "#FFFFFF"
     },
     button: {
       fontFamily: changaOne.style.fontFamily, // Use Changa One for buttons
