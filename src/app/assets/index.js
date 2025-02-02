@@ -7,5 +7,11 @@ import nyuBannerEducation from './nyu-banners-education.jpg';
 import nyuLogo from './nyu-logo.png';
 import stacTrackEducation from './stac-track-education.jpeg';
 import stacLogo from './spartan-head.png';
+import fatEar from './fatEar-project.png';
+import purpleGlow from './purple-glow-project.png';
+import apComptutor from './ap-comptutor-project.png';
+import stackOverflow from './stackoverflow-project.png';
+import xlabProject from './xlab-project.png';
+import nyuInterview from './nyu-interview-prep-project.png';
 
-export { aboutMeImage, landingPageImage, pageGradientBackground, nyuBannerEducation, nyuLogo, stacTrackEducation, stacLogo};
+export { aboutMeImage, landingPageImage, pageGradientBackground, nyuBannerEducation, nyuLogo, stacTrackEducation, stacLogo, fatEar, purpleGlow, apComptutor, stackOverflow, xlabProject, nyuInterview};

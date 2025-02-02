@@ -15,8 +15,13 @@ html {
   padding: 0;
   box-sizing: border-box;
   overflow-x: hidden;
+  /* background-color: rgba(36, 36, 36, 100%) */
 }
 
 body {
   font-family: var(--font-family), 'Changa', sans-serif; /* Using Changa font */
+  background-color: rgba(36, 36, 36, 100%);
+  background-image: url(../assets/page-gradient-background.png);
+  background-size: cover;
+  background-position: center;
 }

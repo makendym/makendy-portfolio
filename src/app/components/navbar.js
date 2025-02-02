@@ -1,6 +1,5 @@
-"use client";
-
-import React, {useState} from "react";
+'use client';
+import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -16,19 +15,21 @@ import {
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import {useTheme} from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import ContactModal from './contactModal';
 
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [contactModalOpen, setContactModalOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const NAV_LINKS = [
-    {title: "About", id: "about-section"},
-    {title: "Education", id: "education-section"},
-    {title: "Work", id: "work-section"},
-    {title: "Projects", id: "projects-section"},
+    { title: "About", id: "about-section" },
+    { title: "Education", id: "education-section" },
+    { title: "Work", id: "work-section" },
+    { title: "Projects", id: "projects-section" },
   ];
 
   const handleDrawerToggle = () => {
@@ -38,7 +39,19 @@ const Navbar = () => {
   const handleScrollToSection = (id) => {
     const section = document.getElementById(id);
     if (section) {
-      section.scrollIntoView({behavior: "smooth", block: "start"});
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const handleContactSubmit = (data) => {
+    console.log("Contact form submitted:", data);
+    // Handle form submission here
+  };
+
+  const handleOpenContactModal = () => {
+    setContactModalOpen(true);
+    if (drawerOpen) {
+      setDrawerOpen(false);
     }
   };
 
@@ -47,14 +60,11 @@ const Navbar = () => {
       role="presentation"
       onClick={() => setDrawerOpen(false)}
       onKeyDown={() => setDrawerOpen(false)}
-      sx={{width: 250,zIndex: 20000,}}
+      sx={{ width: 250, zIndex: 20000 }}
     >
       <List>
         {NAV_LINKS.map((link) => (
-          <ListItem
-            key={link.title}
-            disablePadding
-          >
+          <ListItem key={link.title} disablePadding>
             <ListItemButton onClick={() => handleScrollToSection(link.id)}>
               <ListItemText primary={link.title} />
             </ListItemButton>
@@ -64,7 +74,7 @@ const Navbar = () => {
       <Divider />
       <List>
         <ListItem disablePadding>
-          <ListItemButton onClick={() => console.log("Let's Chat clicked!")}>
+          <ListItemButton onClick={handleOpenContactModal}>
             <ListItemText primary="Let's Chat" />
           </ListItemButton>
         </ListItem>
@@ -81,10 +91,11 @@ const Navbar = () => {
           background: "none",
           boxShadow: "none",
           px: 2,
-          top: 0, // Stick the AppBar to the top
+          top: 0,
           zIndex: 20000,
         }}
       >
+        {/* Rest of the AppBar content remains the same */}
         <Toolbar>
           <Box
             sx={{
@@ -92,19 +103,19 @@ const Navbar = () => {
               display: "flex",
               alignItems: "center",
               marginTop: 5,
-              justifyContent: 'space-between',  // Space items across the toolbar
+              justifyContent: 'space-between',
               zIndex: 10001,
             }}
           >
             {/* Makendy on the left */}
-            <Box sx={{display: "flex", alignItems: "center"}}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
               <Typography
                 variant="h4"
                 sx={{
                   color: "inherit",
                   fontFamily: "Changa One, sans-serif",
-                  fontSize: {xs: "30px", sm: "35px", md: "40px"}, // Responsive font sizes
-                  fontStyle: "italic", // Italicized font
+                  fontSize: { xs: "30px", sm: "35px", md: "40px" },
+                  fontStyle: "italic",
                 }}
               >
                 Makendy.
@@ -118,13 +129,12 @@ const Navbar = () => {
                   display: "flex",
                   justifyContent: "center",
                   backgroundColor: "rgba(12, 11, 10, 0.2)",
-                  marginX: "auto", // Center the box horizontally
-                  padding: 1, // Adds some padding for spacing inside the box
-                  borderRadius: 34, // Adds a border radius to the box
-                  maxWidth: "80%", // Allow more space for the content (adjust as needed)
-                  overflow: "hidden", // Prevent overflow of the container
+                  marginX: "auto",
+                  padding: 1,
+                  borderRadius: 34,
+                  maxWidth: "80%",
+                  overflow: "hidden",
                   zIndex: 1100,
-
                 }}
               >
                 {NAV_LINKS.map((link) => (
@@ -135,11 +145,11 @@ const Navbar = () => {
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      paddingX: 2, // Adjust padding to make text fit well
-                      border: "none", // Removes the button border
-                      outline: "none", // Removes the outline on focus
-                      whiteSpace: "nowrap", // Prevents text from wrapping
-                      marginX: 1, // Space between buttons
+                      paddingX: 2,
+                      border: "none",
+                      outline: "none",
+                      whiteSpace: "nowrap",
+                      marginX: 1,
                     }}
                   >
                     <Typography
@@ -147,11 +157,11 @@ const Navbar = () => {
                         color: "inherit",
                         fontFamily: "Changa, sans-serif",
                         fontWeight: 100,
-                        fontSize: {xs: "14px", sm: "16px", md: "18px"}, // Responsive font sizes
-                        textTransform: "none", // No text transformation
-                        whiteSpace: "nowrap", // Prevents text from wrapping
-                        overflow: "hidden", // Prevents horizontal overflow
-                        textOverflow: "ellipsis", // If text overflows, it gets truncated with ellipsis
+                        fontSize: { xs: "14px", sm: "16px", md: "18px" },
+                        textTransform: "none",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
                       }}
                     >
                       {link.title}
@@ -168,7 +178,7 @@ const Navbar = () => {
                 color="inherit"
                 aria-label="menu"
                 onClick={handleDrawerToggle}
-                sx={{ml: "auto", zIndex: 20000}} // Align the hamburger to the right
+                sx={{ ml: "auto", zIndex: 20000 }}
               >
                 <MenuIcon />
               </IconButton>
@@ -181,27 +191,27 @@ const Navbar = () => {
                   display: "flex",
                   alignItems: "center",
                   backgroundColor: "rgba(255, 255, 255, 1.0)",
-                  padding: 1, // Adds some padding for spacing inside the box
-                  borderRadius: 34, // Adds a border radius to the box
-                  maxWidth: "80%", // Allow more space for the content (adjust as needed)
+                  padding: 1,
+                  borderRadius: 34,
+                  maxWidth: "80%",
                 }}
               >
                 <Button
                   color="inherit"
-                  onClick={() => console.log("Let's Chat clicked!")}
+                  onClick={handleOpenContactModal}
                   sx={{
                     textTransform: "none",
                   }}
                 >
                   <Typography
                     sx={{
-                      color: "#000000", // Set the text color to black (or any color you prefer)
+                      color: "#000000",
                       fontFamily: "Changa, sans-serif",
-                      fontSize: {xs: "14px", sm: "16px", md: "18px"}, // Responsive font sizes
-                      textTransform: "none", // No text transformation
-                      whiteSpace: "nowrap", // Prevents text from wrapping
-                      overflow: "hidden", // Prevents horizontal overflow
-                      textOverflow: "ellipsis", // If text overflows, it gets truncated with ellipsis
+                      fontSize: { xs: "14px", sm: "16px", md: "18px" },
+                      textTransform: "none",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
                     }}
                   >
                     Let&apos;s Chat
@@ -219,10 +229,17 @@ const Navbar = () => {
         open={drawerOpen}
         onClose={handleDrawerToggle}
         className="drawer"
-        sx={{zIndex: 20000,}}
+        sx={{ zIndex: 20000 }}
       >
         {drawerContent}
       </Drawer>
+
+      {/* Contact Modal */}
+      <ContactModal
+        open={contactModalOpen}
+        onClose={() => setContactModalOpen(false)}
+        onSubmit={handleContactSubmit}
+      />
     </>
   );
 };

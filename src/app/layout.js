@@ -47,11 +47,11 @@ export default function RootLayout({ children }) {
             component="main"
             sx={{
               position: "relative",
-              minHeight: "100vh",
-              backgroundColor: "rgba(36, 36, 36, 100%)",
+              minHeight: "100vh", // Ensures it covers at least the height of the viewport
+              height: "100%", // Ensures it stretches the full height if content is short
             }}
           >
-            {/* Foreground background image with opacity */}
+            {/* Foreground overlay */}
             <Box
               sx={{
                 position: "absolute",
@@ -59,13 +59,9 @@ export default function RootLayout({ children }) {
                 left: 0,
                 width: "100%",
                 height: "100%",
-                backgroundImage: `url(${pageGradientBackground.src})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                opacity: 0.2,
+                backgroundColor: "rgba(36, 36, 36, 0.8)", // Dark overlay to soften the gradient
               }}
             />
-            {/* Navbar, Children Content, and Footer */}
             <Navbar />
             {children}
           </Box>
