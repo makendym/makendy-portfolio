@@ -80,7 +80,6 @@ const LandingPage = () => {
           backgroundPosition: "center",
         }}
       />
-
       {/* Main image */}
       <Box
         component={motion.div}
@@ -125,80 +124,62 @@ const LandingPage = () => {
           }}
         />
       </Box>
-
-      {/* "Hey," text */}
-      <Box style={{width: "fit-content"}}>
-        <motion.div
-          initial="hidden"
-          animate={controls}
-          variants={slideVariant("left", 0.5)}
-        >
-          <Typography
-            variant="h1"
-            sx={{
-              position: "absolute",
-              left: {xs: "2%", sm: "27%", md: "15%", lg: "30%"},
-              top: {xs: "30%", sm: "30%", md: "30%", lg: "25%"},
-              transform: "translateY(-50%)",
-              minWidth: "max-content",
-              height: "auto",
-              overflow: "visible",
-              zIndex: 1,
-              padding: "1rem",
-              marginLeft: "1rem",
-              fontSize: {xs: "3rem", sm: "5rem", md: "6rem", lg: "7rem"},
-              lineHeight: {xs: "1.4", sm: "1.4", md: "1.4", lg: "1.5"},
-              whiteSpace: "nowrap",
-              display: "block",
-              width: "fit-content",
-              paddingLeft: "0.5rem",
-            }}
-          >
-            Hey,
-          </Typography>
-        </motion.div>
-      </Box>
-
-      {/* "there" text */}
+      {/* Hey, there text */}
       <Box
         sx={{
           position: "absolute",
-          left: {xs: "70%", sm: "59%", md: "65%", lg: "58%"},
-          top: {xs: "30%", sm: "30%", md: "30%", lg: "25%"},
-          transform: "translateY(-50%)",
-          textAlign: "left",
-          width: "auto",
-          minWidth: "max-content",
+          left: "50%",
+          top: "30%",
+          transform: "translate(-50%, -50%)",
+          width: {xs: "95%", sm: "60%", md: "55%",lg:"50%"},
+          maxWidth: "100vw",
           overflow: "visible",
+          display: "flex",
+          justifyContent: "space-between", // Pushes items to opposite ends
         }}
       >
         <motion.div
           initial="hidden"
           animate={controls}
-          variants={slideVariant("right", 0.5)}
+          variants={slideVariant("left", 0.5)}
+          style={{overflow: "visible"}}
         >
           <Typography
             variant="h1"
             sx={{
               fontSize: {xs: "3rem", sm: "5rem", md: "6rem", lg: "7rem"},
-              // lineHeight: { xs: "1.4", sm: "1.4", md: "1.4", lg: "1.5" },
-              lineHeight: {xs: "1.4", sm: "1.6", md: "1.8", lg: "2"},
               whiteSpace: "nowrap",
-              display: "block",
-              overflowY: "hidden",
+              overflow: "visible",
+            }}
+          >
+            Hey,
+          </Typography>
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          animate={controls}
+          variants={slideVariant("right", 0.5)}
+          style={{overflow: "visible"}}
+        >
+          <Typography
+            variant="h1"
+            sx={{
+              fontSize: {xs: "3rem", sm: "5rem", md: "6rem", lg: "7rem"},
+              whiteSpace: "nowrap",
+              overflow: "visible",
             }}
           >
             there
           </Typography>
         </motion.div>
       </Box>
-
       {/* Name section */}
       <Box
         sx={{
           position: "absolute",
           left: {xs: "2%", sm: "3%"},
-          top: {xs: "95%", sm: "90%", md: "90%", lg: "79%"},
+          bottom: 0,
           transform: "translateY(-50%)",
           textAlign: "left",
           width: "auto",
@@ -216,7 +197,6 @@ const LandingPage = () => {
             sx={{
               fontFamily: "Changa One, sans-serif",
               fontSize: {xs: "2rem", sm: "3rem", md: "4rem", lg: "6rem"},
-              lineHeight: 1.2,
               whiteSpace: "nowrap",
               display: "block",
             }}
@@ -228,7 +208,6 @@ const LandingPage = () => {
             sx={{
               fontFamily: "Changa One, sans-serif",
               fontSize: {xs: "2rem", sm: "3rem", md: "4rem", lg: "6rem"},
-              lineHeight: 1.2,
               whiteSpace: "nowrap",
               display: "block",
             }}
@@ -237,13 +216,12 @@ const LandingPage = () => {
           </Typography>
         </motion.div>
       </Box>
-
       {/* Title section */}
       <Box
         sx={{
           position: "absolute",
           left: {xs: "75%", sm: "75%"},
-          top: {xs: "95%", sm: "90%", md: "90%", lg: "83%"},
+          bottom: {xs: "3%", sm: "3%", md: "3%", lg: "3%"},
           transform: "translateY(-50%)",
           textAlign: "left",
           width: "auto",
@@ -261,7 +239,7 @@ const LandingPage = () => {
             sx={{
               fontFamily: "Changa One, sans-serif",
               fontSize: {xs: "1rem", sm: "2rem", md: "3rem", lg: "4rem"},
-              lineHeight: 1.2,
+              // lineHeight: 1.2,
               whiteSpace: "nowrap",
               display: "block",
             }}
@@ -273,7 +251,7 @@ const LandingPage = () => {
             sx={{
               fontFamily: "Changa One, sans-serif",
               fontSize: {xs: "1rem", sm: "2rem", md: "3rem", lg: "4rem"},
-              lineHeight: 1.2,
+              // lineHeight: 1.2,
               whiteSpace: "nowrap",
               display: "block",
             }}
@@ -282,16 +260,15 @@ const LandingPage = () => {
           </Typography>
         </motion.div>
       </Box>
-
       {/* Tagline */}
       <Box
         sx={{
           position: "absolute",
-          left: {xs: "38%", sm: "80%", md: "70%", lg: "75%"},
-          top: {xs: "95%", sm: "50%", md: "50%", lg: "50%"},
+          right: {xs: "25%", sm: "30%", md: "30%", lg: "0"},
+          bottom: {xs: "2%", sm: "3%", md: "3%", lg: "40%"},
           transform: "translateY(-50%)",
           textAlign: "left",
-          width: {xs: "38%", sm: "20%"},
+          width: {xs: "38%", sm: "30%"},
           overflow: "hidden",
         }}
       >
@@ -305,7 +282,7 @@ const LandingPage = () => {
             sx={{
               fontFamily: "'Changa', sans-serif",
               fontSize: {xs: "14px", sm: "16px", md: "18px", lg: "20px"},
-              lineHeight: {xs: "1.4", sm: "1.6", md: "1.8", lg: "2"},
+              // lineHeight: {xs: "1.4", sm: "1.6", md: "1.8", lg: "2"},
               fontWeight: 100,
               overflowY: "hidden",
             }}
