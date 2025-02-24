@@ -6,6 +6,15 @@ import {motion, useInView, useTransform, useScroll} from "framer-motion";
 import {useRef} from "react";
 import {pageGradientBackground} from "../assets";
 import SkillsSection from "./skillsSection";
+import {
+  stacLogo,
+  bam,
+  roadcall,
+  stac,
+  treehouse,
+  varsitytutors,
+  purpleGlowIcon
+} from "../assets";
 
 // Work experience data remains the same
 const workExperience = [
@@ -13,43 +22,50 @@ const workExperience = [
     role: "Computer Science Adjunct Faculty",
     company: "St. Thomas Aquinas College",
     date: "Sep 2024 - Present",
-    icon: "🎓",
+    icon: stac,
   },
   {
     role: "Freelance Software Engineer",
     company: "Independent Contractor",
     date: "Jun 2023 - Jan 2024",
-    icon: "💻",
+    icon: purpleGlowIcon,
   },
   {
     role: "Software Engineer Intern",
     company: "Roadcall.co",
     date: "Jun 2023 - Sep 2023",
-    icon: "🔄",
+    icon: roadcall,
   },
   {
     role: "Software Engineer Intern",
     company: "Treehouse Strategy and Communications",
     date: "May 2021 - Sep 2021",
-    icon: "🏢",
+    icon: treehouse,
   },
   {
     role: "Computer Science Tutor",
     company: "Varsity Tutor",
     date: "May 2020 - Sep 2023",
-    icon: "📚",
+    icon: varsitytutors,
   },
   {
     role: "XLAB Researcher",
     company: "St. Thomas Aquinas College",
     date: "Sep 2019 - May 2022",
-    icon: "🔬",
+    icon: stac,
   },
 ];
 
 const TimelineItem = ({role, company, date, icon, isInView, index, isLast}) => {
   return (
-    <Box sx={{position: "relative", width: "100%", overflow: "hidden", mb: {xs:4, sm:4}}}>
+    <Box
+      sx={{
+        position: "relative",
+        width: "100%",
+        overflow: "hidden",
+        mb: {xs: 4, sm: 4},
+      }}
+    >
       <motion.div
         initial={{x: -50, opacity: 0}}
         animate={isInView ? {x: 0, opacity: 1} : {x: -50, opacity: 0}}
@@ -81,7 +97,19 @@ const TimelineItem = ({role, company, date, icon, isInView, index, isLast}) => {
                 marginRight: "1rem",
               }}
             >
-              {icon}
+              {icon?.src && (
+                <Image
+                  src={icon.src}
+                  alt="Company Logo"
+                  width={40} // Match Box size
+                  height={40} // Match Box size
+                  style={{
+                    objectFit: "cover",
+                    borderRadius: "50%", // Ensures circular shape
+                  }}
+                  priority
+                />
+              )}
             </Box>
           </Box>
 

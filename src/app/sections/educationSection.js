@@ -24,8 +24,10 @@ const EducationCard = ({
   imageStyle = {},
   isInView,
 }) => {
+  const cardRef = useRef(null);
   return (
     <motion.div
+      ref={cardRef}
       initial={{y: 50, opacity: 0}}
       animate={isInView ? {y: 0, opacity: 1} : {y: 50, opacity: 0}}
       transition={{duration: 0.9, ease: "easeOut"}}
@@ -81,104 +83,121 @@ const EducationCard = ({
             justifyContent: "center",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 2,
-              mb: 2,
-              overflow: "hidden",
-            }}
+          <motion.div
+            initial={{x: reverse ? -100 : 100, opacity: 0}}
+            animate={
+              isInView
+                ? {x: 0, opacity: 1}
+                : {x: reverse ? -100 : 100, opacity: 0}
+            }
+            transition={{duration: 0.8, ease: "easeOut"}}
           >
             <Box
               sx={{
-                position: "relative",
-                width: "32px",
-                height: "32px",
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+                mb: 2,
                 overflow: "hidden",
-                borderRadius: "8px",
-                flexShrink: 0,
               }}
             >
-              <Image
-                src={logo}
-                alt={`${schoolName} Logo`}
-                fill
-                sizes="32px"
-                style={{
-                  objectFit: "cover",
-                }}
-              />
-            </Box>
-            <Box>
-              <Typography
-                variant="h6"
+              <Box
                 sx={{
-                  fontSize: "1.25rem",
-                  fontWeight: 500,
-                  width: "100%",
-                  height: "100%",
+                  position: "relative",
+                  width: "32px",
+                  height: "32px",
                   overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
+                  borderRadius: "8px",
+                  flexShrink: 0,
                 }}
               >
-                {schoolName}
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: "0.875rem",
-                  width: "100%",
-                  height: "100%",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {degree}
-              </Typography>
+                <Image
+                  src={logo}
+                  alt={`${schoolName} Logo`}
+                  fill
+                  sizes="32px"
+                  style={{
+                    objectFit: "cover",
+                  }}
+                />
+              </Box>
+              <Box>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontSize: "1.25rem",
+                    fontWeight: 500,
+                    width: "100%",
+                    height: "100%",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {schoolName}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "0.875rem",
+                    width: "100%",
+                    height: "100%",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {degree}
+                </Typography>
+              </Box>
             </Box>
-          </Box>
-
-          <Typography
-            variant="h3"
-            sx={{
-              color: "white",
-              mb: 3,
-              mt: 2,
-              fontSize: "2.5rem",
-              fontWeight: 600,
-              width: {xs: "80%", sm: "60%"},
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
+          </motion.div>
+          <motion.div
+            initial={{x: reverse ? -100 : 100, opacity: 0}}
+            animate={
+              isInView
+                ? {x: 0, opacity: 1}
+                : {x: reverse ? -100 : 100, opacity: 0}
+            }
+            transition={{duration: 0.8, ease: "easeOut"}}
           >
-            {title}
-          </Typography>
-
-          <Typography
-            sx={{
-              mb: 4,
-              lineHeight: 1.7,
-              fontSize: "1rem",
-              width: "100%",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {description}
-          </Typography>
-
-          <Typography
-            sx={{
-              fontSize: "0.875rem",
-              width: "100%",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            Graduation Date: {graduationDate}
-          </Typography>
+            <Typography
+              variant="h3"
+              sx={{
+                color: "white",
+                mb: 3,
+                mt: 2,
+                fontSize: "2.5rem",
+                fontWeight: 600,
+                width: {xs: "80%", sm: "60%"},
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {title}
+            </Typography>
+            <Typography
+              sx={{
+                mb: 4,
+                lineHeight: 1.7,
+                fontSize: "1rem",
+                width: "100%",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {description}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: "0.875rem",
+                width: "100%",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              Graduation Date: {graduationDate}
+            </Typography>
+          </motion.div>
         </Box>
       </Box>
     </motion.div>
@@ -209,7 +228,7 @@ const EducationSection = () => {
       degree: "M.S in Computer Science",
       title: "Community-Driven Growth",
       description:
-        "At NYU, I expanded my technical skills while embracing boldness and stepping out of my comfort zone. As a visionary, I cultivated meaningful relationships, fostered collaboration, and turned ideas into realities. This journey reinforced the power of community, taught me the importance of connections, and deepened my understanding that dreams thrive when supported by a united, inspiring network.",
+        "At NYU, I pushed beyond my comfort zone to expand both technical abilities and leadership skills. By building meaningful partnerships and turning ambitious ideas into reality, I learned that innovation flourishes best within strong communities. This experience showed me how collaborative networks transform individual potential into collective achievement.",
       graduationDate: "Dec 2024",
     },
     {
@@ -219,7 +238,7 @@ const EducationSection = () => {
       degree: "B.S in Computer Science",
       title: "Lessons Beyond the Field",
       description:
-        "My journey began at STAC, where athletics became an integral part of my story. Sports taught me far more than just skills on the field—they shaped my perspective on life and collaboration. As a soccer player and track & field athlete, I learned that success requires unwavering determination, and true victory lies in owning my journey and the steps I take to achieve it.",
+        "At STAC, athletics shaped both my abilities and outlook. Through soccer and track & field, I discovered that excellence demands more than physical talent—it requires relentless drive and ownership of one's path. These principles now fuel my approach to every goal I pursue.",
       graduationDate: "May 2022",
       imageStyle: {objectFit: "cover", objectPosition: "center"},
     },

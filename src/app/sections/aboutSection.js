@@ -182,14 +182,12 @@ const ResponsiveCardWithCutout = ({isInView, scrollYProgress}) => {
                 }}
               >
                 From surviving the 2010 Haiti earthquake to earning my
-                Master&apos;s degree from New York University, my journey has
-                been fueled by resilience, community, and a relentless drive to
-                turn ideas into impactful solutions. Whether I&apos;m building
-                web apps, creating immersive VR experiences, or mentoring future
-                tech leaders, I channel my passion for continuous learning and
-                collaboration into every project. My experiences have shaped me
-                into a problem solver who is eager to pay forward the support
-                I&apos;ve received along the way.
+                Master&apos;s at NYU, resilience and community have driven my
+                path. I channel these experiences into creating impactful
+                solutions—whether building web apps, developing VR experiences,
+                or mentoring future tech leaders. My journey has shaped me into
+                a problem solver committed to continuous learning and paying
+                forward the support that fueled my growth.
               </Typography>
             </motion.div>
           </Box>

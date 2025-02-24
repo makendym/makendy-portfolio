@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useRef } from "react";
-import { Box } from "@mui/material";
+import React, {useEffect, useRef} from "react";
+import {Box} from "@mui/material";
 
 const VideoSection = () => {
   const sectionRef = useRef(null);
@@ -11,7 +11,7 @@ const VideoSection = () => {
 
     const vid = videoRef.current;
     const section = sectionRef.current;
-    
+
     // Ensure video is initially paused
     vid.pause();
 
@@ -38,9 +38,9 @@ const VideoSection = () => {
     handleScroll();
 
     // Add scroll listener
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, {passive: true});
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -78,7 +78,7 @@ const VideoSection = () => {
               height: "100%",
               background: "rgba(0, 0, 0, 0.3)",
               pointerEvents: "none",
-            }
+            },
           }}
         >
           <video
@@ -110,10 +110,10 @@ const VideoSection = () => {
         }}
       >
         {[
-          "Vision guides my drive to create.",
-          "Resilience fuels my journey.",
-          "Community builds bridges and inspires collective growth.",
-          "Curiosity amplifies my growth and opens doors.",
+          "Transforming vision into reality.",
+          "Building strength through resilience.",
+          "Connecting communities for change.",
+          "Creating impact that matters.",
         ].map((text, index) => (
           <Box
             key={index}

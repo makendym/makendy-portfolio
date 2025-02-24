@@ -1,38 +1,38 @@
 "use client";
-import React, { useRef, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Typography, Box } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import React, {useRef, useEffect} from "react";
+import {motion, useScroll, useTransform} from "framer-motion";
+import {Typography, Box} from "@mui/material";
+import {styled} from "@mui/material/styles";
 
-const Container = styled('div')({
-  position: 'relative',
-  height: '300vh',
-  overflow: 'hidden',
+const Container = styled("div")({
+  position: "relative",
+  height: "400vh",
+  overflow: "hidden",
 });
 
 const VideoContainer = styled(motion.div)({
-  position: 'fixed',
+  position: "fixed",
   top: 0,
   left: 0,
   zIndex: 0,
-  height: '100vh',
-  width: '100%',
-  overflow: 'hidden',
+  height: "100vh",
+  width: "100%",
+  overflow: "hidden",
 });
 
 const VideoOverlay = styled(motion.div)({
-  position: 'absolute',
+  position: "absolute",
   inset: 0,
-  backgroundColor: 'rgba(23, 23, 23, 0.2)',
+  backgroundColor: "rgba(23, 23, 23, 0.2)",
 });
 
-const TextContainer = styled('div')({
-  position: 'sticky',
+const TextContainer = styled("div")({
+  position: "sticky",
   top: 0,
   left: 0,
-  height: '100vh',
-  width: '100%',
-  overflow: 'hidden',
+  height: "100vh",
+  width: "100%",
+  overflow: "hidden",
 });
 
 export const TextParallaxContentExample = () => {
@@ -40,12 +40,13 @@ export const TextParallaxContentExample = () => {
   const videoRef = useRef(null);
 
   const headings = [
-    "Vision guides my drive to create.",
-    "Resilience fuels my journey.",
-    "Community fuels my passion to inspire.",
+    "Transforming vision into reality.",
+    "Building strength through resilience.",
+    "Connecting communities for change.",
+    "Together, we build tomorrow.",
   ];
 
-  const { scrollYProgress } = useScroll({
+  const {scrollYProgress} = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   });
@@ -60,7 +61,7 @@ export const TextParallaxContentExample = () => {
     return () => {
       if (videoRef.current) {
         videoRef.current.pause();
-        videoRef.current.src = '';
+        videoRef.current.src = "";
         videoRef.current.load();
       }
     };
@@ -68,8 +69,8 @@ export const TextParallaxContentExample = () => {
 
   return (
     <Container ref={containerRef}>
-      <StickyVideo 
-        videoUrl="https://d3lh4iw97b9uun.cloudfront.net/xlab.mp4" 
+      <StickyVideo
+        videoUrl="https://d3lh4iw97b9uun.cloudfront.net/xlab.mp4"
         videoRef={videoRef}
         opacity={videoOpacity}
       />
@@ -84,9 +85,9 @@ export const TextParallaxContentExample = () => {
   );
 };
 
-const StickyVideo = ({ videoUrl, videoRef, opacity }) => {
+const StickyVideo = ({videoUrl, videoRef, opacity}) => {
   const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({
+  const {scrollYProgress} = useScroll({
     target: targetRef,
     offset: ["start start", "end start"],
   });
@@ -111,19 +112,19 @@ const StickyVideo = ({ videoUrl, videoRef, opacity }) => {
         autoPlay
         loop
         style={{
-          height: '100%',
-          width: '100%',
-          objectFit: 'cover',
+          height: "100%",
+          width: "100%",
+          objectFit: "cover",
         }}
       />
-      <VideoOverlay style={{ opacity }} />
+      <VideoOverlay style={{opacity}} />
     </VideoContainer>
   );
 };
 
-const OverlayCopy = ({ heading, index }) => {
+const OverlayCopy = ({heading, index}) => {
   const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
+  const {scrollYProgress} = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
@@ -135,18 +136,16 @@ const OverlayCopy = ({ heading, index }) => {
     <TextContainer ref={ref}>
       <Box
         sx={{
-          height: '100%',
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
-          zIndex: 10
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "relative",
+          zIndex: 10,
         }}
       >
-        <motion.div
-          style={{ y, opacity }}
-        >
+        <motion.div style={{y, opacity}}>
           <Typography
             variant="h2"
             sx={{
@@ -155,16 +154,16 @@ const OverlayCopy = ({ heading, index }) => {
                 xs: "2rem",
                 sm: "3rem",
                 md: "4rem",
-                lg: "6rem"
+                lg: "6rem",
               },
-              textAlign: 'center',
-              fontWeight: 'bold',
-              color: '#FFFFFF',
+              textAlign: "center",
+              fontWeight: "bold",
+              color: "#FFFFFF",
               maxWidth: {
-                xs: '80%',
-                md: '60%'
+                xs: "80%",
+                md: "60%",
               },
-              margin: '0 auto'
+              margin: "0 auto",
             }}
           >
             {heading}
