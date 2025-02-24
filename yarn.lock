@@ -538,6 +538,11 @@
     prop-types "^15.8.1"
     react-is "^19.0.0"
 
+"@netlify/plugin-nextjs@^5.9.4":
+  version "5.9.4"
+  resolved "https://registry.npmjs.org/@netlify/plugin-nextjs/-/plugin-nextjs-5.9.4.tgz"
+  integrity sha512-Q9qyhGUxFuM3kuWmoaj4yHPUfHhOsZmwdsQv4kIXkBWVu8FOe0RFHRP0A0EXciSVFGwq+XAo3H5jEtVSANAOWw==
+
 "@next/env@15.1.4":
   version "15.1.4"
   resolved "https://registry.npmjs.org/@next/env/-/env-15.1.4.tgz"
