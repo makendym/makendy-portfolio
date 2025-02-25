@@ -4,6 +4,7 @@ import { pageGradientBackground } from "./assets";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import "./styles/globals.css";
+import { Analytics } from "@vercel/analytics/react"
 
 export const metadata = {
   title: "Create Next App",
@@ -64,6 +65,7 @@ export default function RootLayout({ children }) {
             />
             <Navbar />
             {children}
+            <Analytics/>
           </Box>
         </AppRouterCacheProvider>
       </body>
