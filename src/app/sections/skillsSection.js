@@ -16,11 +16,8 @@ const SkillsSection = ({title, isCenter, skillsData = {}}) => {
     <section
       ref={sectionRef}
       id="skills-section"
-      style={{
-        padding: "20px",
-      }}
     >
-      <Box sx={{marginBottom: 2}}>
+      <Box sx={{marginBottom: 2, paddingTop:2}}>
         <Typography
           variant="h2"
           component="h2"
@@ -40,13 +37,9 @@ const SkillsSection = ({title, isCenter, skillsData = {}}) => {
           margin: "0 auto",
           minHeight: "30vh",
           backgroundColor: "rgba(36, 36, 36, 1)",
-          // boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
           display: "flex",
           flexDirection: "column",
           padding: "1.5rem",
-          "&:hover": {
-            boxShadow: "0 8px 12px rgba(0, 0, 0, 0.2)",
-          },
           borderRadius: "34px",
         }}
       >
@@ -64,7 +57,7 @@ const SkillsSection = ({title, isCenter, skillsData = {}}) => {
                 style={{
                   height: "100%",
                   width: "100%",
-                  paddingLeft: "3rem",
+                  paddingLeft: "1rem",
                 }}
               >
                 <Box>

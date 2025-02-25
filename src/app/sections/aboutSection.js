@@ -218,7 +218,13 @@ const ResponsiveCardWithCutout = ({isInView, scrollYProgress}) => {
     </Box>
   ) : (
     // Large Screen Layout
-    <Box sx={{overflowX: "clip", borderRadius: "34px"}}>
+    <Box
+      sx={{
+        overflowX: "clip",
+        borderRadius: "34px",
+
+      }}
+    >
       <motion.div>
         <Box
           sx={{
@@ -278,7 +284,7 @@ const ResponsiveCardWithCutout = ({isInView, scrollYProgress}) => {
         style={{
           position: "absolute",
           top: "-6rem",
-          left: "12%",
+          left: "10%",
           width: "100%",
           height: "auto",
           zIndex: 2,

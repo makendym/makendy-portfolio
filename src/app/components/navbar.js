@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -24,6 +24,13 @@ const Navbar = () => {
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  // Add this line to track if the component has mounted
+  const [isMounted, setIsMounted] = useState(false);
+  
+  // Add this useEffect to handle the mounting state
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const NAV_LINKS = [
     { title: "About", id: "about-section" },
@@ -93,9 +100,9 @@ const Navbar = () => {
           px: 2,
           top: 0,
           zIndex: 20000,
+          visibility: isMounted ? 'visible' : 'hidden'
         }}
       >
-        {/* Rest of the AppBar content remains the same */}
         <Toolbar>
           <Box
             sx={{
@@ -104,7 +111,7 @@ const Navbar = () => {
               alignItems: "center",
               marginTop: 5,
               justifyContent: 'space-between',
-              zIndex: 10001,
+              zIndex: 1,
             }}
           >
             {/* Makendy on the left */}
@@ -123,7 +130,7 @@ const Navbar = () => {
             </Box>
 
             {/* Navigation in the center, only visible on desktop */}
-            {!isMobile && (
+            {isMounted && !isMobile && (
               <Box
                 sx={{
                   display: "flex",
@@ -172,20 +179,20 @@ const Navbar = () => {
             )}
 
             {/* Hamburger Menu Icon for mobile */}
-            {isMobile && (
+            {isMounted && isMobile && (
               <IconButton
                 edge="end"
                 color="inherit"
                 aria-label="menu"
                 onClick={handleDrawerToggle}
-                sx={{ ml: "auto", zIndex: 20000 }}
+                sx={{ ml: "auto", zIndex: 1 }}
               >
                 <MenuIcon />
               </IconButton>
             )}
 
             {/* "Let's Chat" button on the right */}
-            {!isMobile && (
+            {isMounted && !isMobile && (
               <Box
                 sx={{
                   display: "flex",
