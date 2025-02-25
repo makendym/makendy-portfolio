@@ -79,6 +79,7 @@ const SkillsSection = ({title, isCenter, skillsData = {}}) => {
                         fontWeight: "bold",
                         width: "100%",
                         minHeight: "30px",
+                        paddingBottom: "1rem",
                       }}
                     >
                       {category}
