@@ -151,7 +151,7 @@ const OverlayCopy = ({heading, index}) => {
             sx={{
               fontFamily: "Changa One, sans-serif",
               fontSize: {
-                xs: "4rem",
+                xs: "3.5rem",
                 sm: "4rem",
                 md: "4rem",
                 lg: "6rem",

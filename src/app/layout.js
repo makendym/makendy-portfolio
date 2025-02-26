@@ -65,7 +65,8 @@ export default function RootLayout({ children }) {
             />
             <Navbar />
             {children}
-            <Analytics/>
+            <Analytics />
+            <Footer/>
           </Box>
         </AppRouterCacheProvider>
       </body>

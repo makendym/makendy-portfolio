@@ -59,6 +59,8 @@ const AboutSection = () => {
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
+            transform: "rotate(180deg)",
+            transformOrigin: "center",
             zIndex: 0,
           }}
         />

@@ -278,8 +278,8 @@ const EducationSection = () => {
             backgroundImage: `url(${pageGradientBackground.src})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            transform: "rotate(180deg)",
-            transformOrigin: "center",
+            // transform: "rotate(180deg)",
+            // transformOrigin: "center",
             zIndex: 0,
           }}
         />

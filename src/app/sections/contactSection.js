@@ -50,6 +50,8 @@ const ContactSection = () => {
             backgroundImage: `url(${pageGradientBackground.src})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
+            transform: "rotate(180deg)",
+            transformOrigin: "center",
             opacity: 0.2,
           }}
         />
@@ -58,7 +60,7 @@ const ContactSection = () => {
           initial={{x: 100, opacity: 0}} // Start off-screen to the right
           animate={isInView ? {x: 0, opacity: 1} : {x: 100, opacity: 0}} // Slide in
           transition={{duration: 0.9, ease: "easeOut"}}
-          style={{ width: "100%" }} // Ensures full width
+          style={{width: "100%"}} // Ensures full width
         >
           <Box
             component="section"

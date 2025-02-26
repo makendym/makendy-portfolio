@@ -22,7 +22,6 @@ export default function Home() {
         <WorkSection />
         <ProjectSection />
         <ContactSection />
-        <Footer />
     </ThemeProvider>
   );
 }

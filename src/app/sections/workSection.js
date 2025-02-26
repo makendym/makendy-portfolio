@@ -13,7 +13,7 @@ import {
   stac,
   treehouse,
   varsitytutors,
-  purpleGlowIcon
+  purpleGlowIcon,
 } from "../assets";
 
 // Work experience data remains the same
@@ -101,11 +101,11 @@ const TimelineItem = ({role, company, date, icon, isInView, index, isLast}) => {
                 <Image
                   src={icon.src}
                   alt="Company Logo"
-                  width={40} // Match Box size
-                  height={40} // Match Box size
+                  width={40}
+                  height={40}
                   style={{
                     objectFit: "cover",
-                    borderRadius: "50%", // Ensures circular shape
+                    borderRadius: "50%",
                   }}
                   priority
                 />
@@ -204,31 +204,42 @@ const WorkSection = () => {
   const borderRadius = useTransform(scrollYProgress, [0, 0.5], ["34px", "0px"]);
 
   return (
-    <motion.div
-      ref={sectionRef}
-      style={{
-        scale,
-        opacity,
-        borderRadius,
-      }}
+    <Box
       sx={{
         position: "relative",
         minHeight: "100vh",
-        zIndex: 1,
-        overflowX: "clip",
+        width: "100%",
+        overflow: "hidden",
       }}
     >
-      <Box
+      <motion.div
+        ref={sectionRef}
+        style={{
+          scale,
+          opacity,
+          borderRadius,
+        }}
         sx={{
           position: "relative",
           minHeight: "100vh",
-          width: "100%",
-          overflow: "hidden",
-          backgroundImage: `url(${pageGradientBackground.src})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          zIndex: 1,
+          overflowX: "clip",
         }}
       >
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundImage: `url(${pageGradientBackground.src})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            transform: "rotate(180deg)",
+            transformOrigin: "center",
+          }}
+        />
         <Box
           sx={{
             position: "absolute",
@@ -326,8 +337,8 @@ const WorkSection = () => {
             </Box>
           </Box>
         </Box>
-      </Box>
-    </motion.div>
+      </motion.div>
+    </Box>
   );
 };
 

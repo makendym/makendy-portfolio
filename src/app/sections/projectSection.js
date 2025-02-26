@@ -9,6 +9,7 @@ import {
   Button,
   Link,
 } from "@mui/material";
+import Grid from "@mui/material/Grid2"; //+
 import {motion, useInView, useScroll, useTransform} from "framer-motion";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import {
@@ -23,50 +24,58 @@ import {
 
 const projects = [
   {
-    title: "Stack Overflow",
-    description: "UR research bias through empathy",
-    image: stackOverflow.src,
-    size: "small",
-    link: "/projects/stack-overflow",
-  },
-  {
     title: "The Virtual Mirror",
-    description: "VR research bias through empathy",
+    description:
+      "Bias-revealing VR journey placing students in others' shoes across three immersive scenarios—exposing hidden prejudices about weight, race, and gender to spark personal transformation",
     image: xlabProject.src,
     size: "large",
-    link: "https://d3lh4iw97b9uun.cloudfront.net/xlab.mp4",
+    link: "https://github.com/makendym/-Finding-Discrimination-using-Virtual-Reality",
+    video: "https://d3lh4iw97b9uun.cloudfront.net/xlab.mp4",
   },
   {
     title: "AP CompTutor",
-    description: "AI-driven exam prep app",
+    description:
+      "Your AI study buddy that creates custom practice questions to sharpen your coding skills and ace the AP CSA exam",
     image: apComptutor.src,
     size: "medium",
-    link: "/projects/ap-comptutor",
+    link: "https://github.com/makendym/APCompTutor",
   },
   {
-    title: "Fat Ear",
-    description: "UR research bias through empathy",
-    image: fatEar.src,
+    title: "Stack Overflow",
+    description:
+      "StackOverflow ecosystem explorer that transforms vast forum data into interactive visual narratives, answering key questions about the developer community's digital conversations",
+    image: stackOverflow.src,
     size: "small",
-    link: "/projects/fat-ear",
+    link: "https://github.com/makendym/StackOverflow-BigData",
   },
+
   {
     title: "NYU Interview Prep",
-    description: "Streamlined cleaning service bookings",
+    description:
+      "NYU's career matchmaker connecting students with shared professional paths",
     image: nyuInterview.src,
     size: "medium",
-    link: "/projects/nyu-interview",
+    link: "https://github.com/makendym/NYU-Interview-Prep",
   },
   {
     title: "Purple Glow",
-    description: "Streamlined cleaning service bookings",
+    description:
+      "One-tap booking system that turns scheduling chaos into payment simplicity",
     image: purpleGlow.src,
     size: "medium",
-    link: "/projects/purple-glow",
+    link: "https://github.com/makendym/Cleaning-Service-app",
+  },
+  {
+    title: "Fat Ear",
+    description:
+      "Your dynamic music streaming solution with seamless authentication, personalized playlists, and song search",
+    image: fatEar.src,
+    size: "small",
+    link: "https://github.com/makendym/FatEar",
   },
 ];
 
-const ProjectCard = ({title, description, image, size, link}) => {
+const ProjectCard = ({title, description, image, size, link, video}) => {
   const cardRef = useRef(null);
   const isInView = useInView(cardRef, {once: true, margin: "-20% 0px"});
 
@@ -103,7 +112,7 @@ const ProjectCard = ({title, description, image, size, link}) => {
             component={title === "The Virtual Mirror" ? "video" : "img"}
             src={
               title === "The Virtual Mirror"
-                ? link // Replace with the actual path
+                ? video // Replace with the actual path
                 : image
             }
             alt={title}
@@ -128,8 +137,8 @@ const ProjectCard = ({title, description, image, size, link}) => {
               color: "white",
               p: 3,
               overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
+              // textOverflow: "ellipsis",
+              // whiteSpace: "nowrap",
             }}
           >
             <Typography
@@ -148,8 +157,8 @@ const ProjectCard = ({title, description, image, size, link}) => {
               sx={{
                 opacity: 0.8,
                 overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
+                // textOverflow: "ellipsis",
+                // whiteSpace: "nowrap",
               }}
             >
               {description}
@@ -206,8 +215,8 @@ const ProjectsSection = () => {
             backgroundImage: `url(${pageGradientBackground.src})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            transform: "rotate(180deg)",
-            transformOrigin: "center",
+            // transform: "rotate(180deg)",
+            // transformOrigin: "center",
             opacity: 0.2,
           }}
         />
@@ -247,15 +256,20 @@ const ProjectsSection = () => {
             }}
           >
             {/* First 5 projects */}
-            {projects.slice(0, 5).map((project, index) => (
+            {projects.slice(0, 6).map((project, index) => (
               <Box
                 key={project.title}
                 sx={{
                   gridColumn: {
                     xs: "span 1",
                     sm: project.size === "large" ? "span 2" : "span 1",
+                    md: project.size === "large" ? "span 1" : "span 1"
                   },
-                  gridRow: project.size === "large" ? "span 2" : "span 1",
+                  gridRow: {
+                    xs: project.size === "large" ? "span 1" : "span 1",
+                    sm: project.size === "large" ? "span 2" : "span 1",
+                    md: project.size === "large" ? "span 3" : "span 1"
+                  },
                   overflow: "hidden",
                   borderRadius: "24px",
                   transition: "transform 0.3s ease-in-out",
