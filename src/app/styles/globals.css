@@ -20,5 +20,5 @@ html {
 
 body {
   font-family: var(--font-family), 'Changa', sans-serif; /* Using Changa font */
-  background-color: #4d5858; /* Fallback solid color */
+  background-color: #343c3c; /* Fallback solid color */
 }
