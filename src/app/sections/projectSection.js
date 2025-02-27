@@ -330,6 +330,7 @@ const ProjectsSection = () => {
                 <Button
                   variant="outlined"
                   endIcon={<ArrowForwardIcon />}
+                  href="https://github.com/makendym"
                   sx={{
                     color: "white",
                     borderColor: "white",
