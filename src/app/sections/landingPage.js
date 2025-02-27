@@ -179,7 +179,7 @@ const LandingPage = () => {
         sx={{
           position: "absolute",
           left: {xs: "2%", sm: "3%"},
-          bottom: 0,
+          bottom: {xs: 8, sm: 0 , md: 0},
           transform: "translateY(-50%)",
           textAlign: "left",
           width: "auto",
@@ -221,7 +221,7 @@ const LandingPage = () => {
         sx={{
           position: "absolute",
           left: {xs: "75%", sm: "75%"},
-          bottom: {xs: "3%", sm: "3%", md: "3%", lg: "3%"},
+          bottom: {xs: "4%", sm: "3%", md: "3%", lg: "3%"},
           transform: "translateY(-50%)",
           textAlign: "left",
           width: "auto",

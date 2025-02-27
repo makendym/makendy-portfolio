@@ -1,7 +1,7 @@
 "use client";
-import React, {useRef, useEffect} from "react";
+import React, {useRef, useEffect, useState} from "react";
 import {motion, useScroll, useTransform} from "framer-motion";
-import {Typography, Box} from "@mui/material";
+import {Typography, Box, IconButton} from "@mui/material";
 import {styled} from "@mui/material/styles";
 
 const Container = styled("div")({
@@ -35,9 +35,24 @@ const TextContainer = styled("div")({
   overflow: "hidden",
 });
 
+const ControlButton = styled(motion(IconButton))({
+  position: "fixed",
+  bottom: "20px",
+  right: "20px",
+  zIndex: 100,
+  backgroundColor: "rgba(0, 0, 0, 0.5)",
+  color: "white",
+  "&:hover": {
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+  },
+});
+
 export const TextParallaxContentExample = () => {
   const containerRef = useRef(null);
   const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isInView, setIsInView] = useState(true);
+  const [userPaused, setUserPaused] = useState(false);
 
   const headings = [
     "Transforming vision into reality.",
@@ -57,6 +72,84 @@ export const TextParallaxContentExample = () => {
     [1, 1, 0, 0]
   );
 
+  // Toggle play/pause with user intent tracking
+  const togglePlayPause = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+        setIsPlaying(false);
+        setUserPaused(true);
+      } else {
+        videoRef.current.play();
+        setIsPlaying(true);
+        setUserPaused(false);
+      }
+    }
+  };
+
+  // Monitor scroll position to determine if video is in view
+  useEffect(() => {
+    const unsubscribe = videoOpacity.onChange((value) => {
+      const newIsInView = value > 0.1;
+      setIsInView(newIsInView);
+      
+      // Auto-pause when scrolled out of view
+      if (!newIsInView && videoRef.current && videoRef.current.playing) {
+        videoRef.current.pause();
+        if (isPlaying) setIsPlaying(false);
+      } 
+      // Auto-resume only if user hasn't manually paused
+      else if (newIsInView && videoRef.current && !videoRef.current.playing && !userPaused) {
+        videoRef.current.play()
+          .then(() => {
+            if (!isPlaying) setIsPlaying(true);
+          })
+          .catch(e => console.error("Could not play video:", e));
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [videoOpacity, isPlaying, userPaused]);
+
+  // Play/pause video based on visibility and playing state
+  useEffect(() => {
+    if (videoRef.current) {
+      if (!isInView) {
+        // Always pause when not in view
+        videoRef.current.pause();
+      } else if (isInView && isPlaying && !userPaused) {
+        // Only play when in view AND not manually paused by user
+        videoRef.current.play()
+          .catch(e => console.error("Could not play video:", e));
+      }
+    }
+  }, [isInView, isPlaying, userPaused]);
+
+  // Handle visibility change (tab switching, window minimizing)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden && videoRef.current) {
+        videoRef.current.pause();
+        if (isPlaying) setIsPlaying(false);
+      } else if (!document.hidden && videoRef.current && isInView && !userPaused) {
+        videoRef.current.play()
+          .then(() => {
+            if (!isPlaying) setIsPlaying(true);
+          })
+          .catch(e => console.error("Could not play video:", e));
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [isInView, isPlaying, userPaused]);
+
+  // Cleanup
   useEffect(() => {
     return () => {
       if (videoRef.current) {
@@ -81,6 +174,24 @@ export const TextParallaxContentExample = () => {
           index={index}
         />
       ))}
+      <ControlButton 
+        onClick={togglePlayPause} 
+        aria-label={isPlaying ? "Pause" : "Play"}
+        style={{ opacity: videoOpacity }}
+        whileHover={isInView ? { scale: 1.1 } : {}}
+        disabled={!isInView}
+      >
+        {isPlaying ? (
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="6" y="4" width="4" height="16" />
+            <rect x="14" y="4" width="4" height="16" />
+          </svg>
+        ) : (
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        )}
+      </ControlButton>
     </Container>
   );
 };
