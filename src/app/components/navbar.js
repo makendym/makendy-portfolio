@@ -469,7 +469,7 @@ const Navbar = () => {
             borderTopLeftRadius: 36,
             borderTopRightRadius: 36,
             height: "70%", // Exactly 70% of viewport height
-            // backgroundColor: "#121212", // Dark theme
+            backgroundColor: "#121212", // Dark theme
             // overflow: "hidden", // Ensure content doesn't overflow rounded corners
           },
         }}
