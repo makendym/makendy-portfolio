@@ -246,6 +246,8 @@ const EducationSection = () => {
 
   return (
     <Box
+      component="section"
+      id="education-section"
       sx={{
         position: "relative",
         minHeight: "100vh",
@@ -298,8 +300,8 @@ const EducationSection = () => {
         />
 
         <Box
-          component="section"
-          id="education-section"
+          // component="section"
+          // id="education-section"
           sx={{
             color: "#FFFFFF",
             padding: {xs: "60px 20px", md: "100px 20px"},

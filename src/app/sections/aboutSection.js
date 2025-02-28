@@ -25,6 +25,7 @@ const AboutSection = () => {
 
   return (
     <Box
+      id="about-section"
       sx={{
         position: "relative",
         minHeight: "100vh",
@@ -80,7 +81,7 @@ const AboutSection = () => {
 
         {/* Content section */}
         <section
-          id="about-section"
+          // id="about-section"
           style={{
             color: "#FFFFFF",
             padding: "100px 20px",
