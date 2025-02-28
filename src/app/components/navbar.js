@@ -83,9 +83,10 @@ const Navbar = () => {
   };
 
 
-  // Inside your component
-const [startY, setStartY] = useState(null);
-const [currentY, setCurrentY] = useState(0);
+// Inside your component
+// Remove all drag-related state and handlers
+// const [startY, setStartY] = useState(null);
+// const [currentY, setCurrentY] = useState(0);
 const drawerRef = useRef(null);
 
 // Function to disable/enable body scrolling
@@ -130,57 +131,6 @@ useEffect(() => {
   }
 }, [contactModalOpen]);
 
-const handleTouchStart = (e) => {
-  setStartY(e.touches[0].clientY);
-};
-
-const handleMouseStart = (e) => {
-  setStartY(e.clientY);
-  document.addEventListener('mousemove', handleMouseMove);
-  document.addEventListener('mouseup', handleMouseEnd);
-};
-
-const handleTouchMove = (e) => {
-  if (startY === null) return;
-  const deltaY = e.touches[0].clientY - startY;
-  if (deltaY > 0) { // Only allow dragging down
-    setCurrentY(deltaY);
-  }
-};
-
-const handleMouseMove = (e) => {
-  if (startY === null) return;
-  const deltaY = e.clientY - startY;
-  if (deltaY > 0) { // Only allow dragging down
-    setCurrentY(deltaY);
-  }
-};
-
-const handleTouchEnd = () => {
-  if (currentY > 50) { // Threshold to close the drawer
-    setDrawerOpen(false);
-  }
-  setStartY(null);
-  setCurrentY(0);
-};
-
-const handleMouseEnd = () => {
-  if (currentY > 50) { // Threshold to close the drawer
-    setDrawerOpen(false);
-  }
-  setStartY(null);
-  setCurrentY(0);
-  document.removeEventListener('mousemove', handleMouseMove);
-  document.removeEventListener('mouseup', handleMouseEnd);
-};
-
-useEffect(() => {
-  return () => {
-    document.removeEventListener('mousemove', handleMouseMove);
-    document.removeEventListener('mouseup', handleMouseEnd);
-  };
-}, []);
-
 const drawerContent = (
   <Box
     ref={drawerRef}
@@ -194,35 +144,15 @@ const drawerContent = (
       backgroundColor: "#121212",
       color: "white",
       padding: 2,
-      paddingTop: 4,
-      transform: currentY > 0 ? `translateY(${currentY}px)` : 'none',
-      transition: currentY > 0 ? 'none' : 'transform 0.3s ease',
+      paddingTop: 2, // Reduced top padding since notch is removed
+      transition: 'transform 0.3s ease',
     }}
   >
-    {/* Draggable notch at the top of the drawer */}
-    <Box
-      sx={{
-        position: "absolute",
-        top: 8,
-        left: "50%",
-        transform: "translateX(-50%)",
-        width: 40,
-        height: 5,
-        backgroundColor: "rgba(255, 255, 255, 0.5)",
-        borderRadius: 5,
-        cursor: "grab",
-      }}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      onMouseDown={handleMouseStart}
-    />
-
+    {/* Navigation section */}
     <Box 
       sx={{
         flex: 1, // Take available space
         overflow: "auto", // Allow scrolling within the drawer if content is long
-        marginTop: 2 // Add margin to push content below the notch
       }}
       onClick={(e) => e.stopPropagation()} // Prevent clicks on content from closing the drawer
     >
@@ -245,7 +175,7 @@ const drawerContent = (
                 py: 1.5,
               }}
             >
-              <ListItemIcon sx={{color: "white", width: "10px"}}>
+              <ListItemIcon sx={{color: "#7c9e9e", width: "10px"}}>
                 {link.icon}
               </ListItemIcon>
               <ListItemText
@@ -292,10 +222,8 @@ const drawerContent = (
             alignItems: "center",
             paddingX: 2,
             whiteSpace: "nowrap",
-            backgroundColor: "#1976d2",
-            "&:hover": {
-              backgroundColor: "#1565c0",
-            },
+            backgroundColor: "#7c9e9e",
+            borderRadius: "36px",
           }}
         >
           <Typography
