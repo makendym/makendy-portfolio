@@ -1,6 +1,5 @@
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { Box } from "@mui/material";
-import { pageGradientBackground } from "./assets";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import "./styles/globals.css";

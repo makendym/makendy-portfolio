@@ -84,152 +84,198 @@ const Navbar = () => {
 
 
   // Inside your component
-  const [startY, setStartY] = useState(null);
-  const [currentY, setCurrentY] = useState(0);
-  const drawerRef = useRef(null);
-  
-  const handleTouchStart = (e) => {
-    setStartY(e.touches[0].clientY);
+const [startY, setStartY] = useState(null);
+const [currentY, setCurrentY] = useState(0);
+const drawerRef = useRef(null);
+
+// Function to disable/enable body scrolling
+const toggleBodyScroll = (disable) => {
+  if (disable) {
+    // Save current scroll position
+    const scrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = '100%';
+    document.body.style.overflowY = 'hidden';
+  } else {
+    // Restore scroll position
+    const scrollY = document.body.style.top;
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    document.body.style.overflowY = '';
+    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+  }
+};
+
+// Disable scrolling when drawer opens
+useEffect(() => {
+  if (drawerOpen) {
+    toggleBodyScroll(true);
+  } else {
+    toggleBodyScroll(false);
+  }
+  return () => {
+    toggleBodyScroll(false); // Ensure scrolling is re-enabled when component unmounts
   };
-  
-  const handleMouseStart = (e) => {
-    setStartY(e.clientY);
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseEnd);
-  };
-  
-  const handleTouchMove = (e) => {
-    if (startY === null) return;
-    const deltaY = e.touches[0].clientY - startY;
-    if (deltaY > 0) { // Only allow dragging down
-      setCurrentY(deltaY);
-    }
-  };
-  
-  const handleMouseMove = (e) => {
-    if (startY === null) return;
-    const deltaY = e.clientY - startY;
-    if (deltaY > 0) { // Only allow dragging down
-      setCurrentY(deltaY);
-    }
-  };
-  
-  const handleTouchEnd = () => {
-    if (currentY > 50) { // Threshold to close the drawer
-      setDrawerOpen(false);
-    }
-    setStartY(null);
-    setCurrentY(0);
-  };
-  
-  const handleMouseEnd = () => {
-    if (currentY > 50) { // Threshold to close the drawer
-      setDrawerOpen(false);
-    }
-    setStartY(null);
-    setCurrentY(0);
+}, [drawerOpen]);
+
+// Also disable scrolling when contact modal is open
+useEffect(() => {
+  // Assuming you have a state like contactModalOpen
+  if (contactModalOpen) {
+    toggleBodyScroll(true);
+  } else {
+    toggleBodyScroll(false);
+  }
+}, [contactModalOpen]);
+
+const handleTouchStart = (e) => {
+  setStartY(e.touches[0].clientY);
+};
+
+const handleMouseStart = (e) => {
+  setStartY(e.clientY);
+  document.addEventListener('mousemove', handleMouseMove);
+  document.addEventListener('mouseup', handleMouseEnd);
+};
+
+const handleTouchMove = (e) => {
+  if (startY === null) return;
+  const deltaY = e.touches[0].clientY - startY;
+  if (deltaY > 0) { // Only allow dragging down
+    setCurrentY(deltaY);
+  }
+};
+
+const handleMouseMove = (e) => {
+  if (startY === null) return;
+  const deltaY = e.clientY - startY;
+  if (deltaY > 0) { // Only allow dragging down
+    setCurrentY(deltaY);
+  }
+};
+
+const handleTouchEnd = () => {
+  if (currentY > 50) { // Threshold to close the drawer
+    setDrawerOpen(false);
+  }
+  setStartY(null);
+  setCurrentY(0);
+};
+
+const handleMouseEnd = () => {
+  if (currentY > 50) { // Threshold to close the drawer
+    setDrawerOpen(false);
+  }
+  setStartY(null);
+  setCurrentY(0);
+  document.removeEventListener('mousemove', handleMouseMove);
+  document.removeEventListener('mouseup', handleMouseEnd);
+};
+
+useEffect(() => {
+  return () => {
     document.removeEventListener('mousemove', handleMouseMove);
     document.removeEventListener('mouseup', handleMouseEnd);
   };
-  
-  useEffect(() => {
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseEnd);
-    };
-  }, []);
-  
-  const drawerContent = (
-    
+}, []);
+
+const drawerContent = (
+  <Box
+    ref={drawerRef}
+    role="presentation"
+    sx={{
+      width: "100%",
+      height: "100%", // Make it full height to push content to bottom
+      display: "flex",
+      flexDirection: "column", // Use flex column to organize content
+      zIndex: 20000,
+      backgroundColor: "#121212",
+      color: "white",
+      padding: 2,
+      paddingTop: 4,
+      transform: currentY > 0 ? `translateY(${currentY}px)` : 'none',
+      transition: currentY > 0 ? 'none' : 'transform 0.3s ease',
+    }}
+  >
+    {/* Draggable notch at the top of the drawer */}
     <Box
-      ref={drawerRef}
-      role="presentation"
       sx={{
-        width: "100%",
-        zIndex: 20000,
-        backgroundColor: "#121212",
-        color: "white",
-        padding: 2,
-        paddingTop: 4,
-        transform: currentY > 0 ? `translateY(${currentY}px)` : 'none',
-        transition: currentY > 0 ? 'none' : 'transform 0.3s ease',
+        position: "absolute",
+        top: 8,
+        left: "50%",
+        transform: "translateX(-50%)",
+        width: 40,
+        height: 5,
+        backgroundColor: "rgba(255, 255, 255, 0.5)",
+        borderRadius: 5,
+        cursor: "grab",
       }}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onMouseDown={handleMouseStart}
+    />
+
+    <Box 
+      sx={{
+        flex: 1, // Take available space
+        overflow: "auto", // Allow scrolling within the drawer if content is long
+        marginTop: 2 // Add margin to push content below the notch
+      }}
+      onClick={(e) => e.stopPropagation()} // Prevent clicks on content from closing the drawer
     >
-      {/* Draggable notch at the top of the drawer */}
-      <Box
-        sx={{
-          position: "absolute",
-          top: 8,
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: 40,
-          height: 5,
-          backgroundColor: "rgba(255, 255, 255, 0.5)",
-          borderRadius: 5,
-          cursor: "grab",
-        }}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        onMouseDown={handleMouseStart}
-      />
-  
-      <Box 
-        sx={{
-          maxHeight: "100vh", 
-          overflow: "hidden",
-          marginTop: 2 // Add margin to push content below the notch
-        }}
-        onClick={(e) => e.stopPropagation()} // Prevent clicks on content from closing the drawer
-      >
-        <List disablePadding>
-          {NAV_LINKS.map((link) => (
-            <ListItem
-              key={link.title}
-              disablePadding
+      <List disablePadding>
+        {NAV_LINKS.map((link) => (
+          <ListItem
+            key={link.title}
+            disablePadding
+          >
+            <ListItemButton
+              onClick={() => {
+                handleScrollToSection(link.id);
+                setDrawerOpen(false);
+              }}
+              sx={{
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                },
+                py: 1.5,
+              }}
             >
-              <ListItemButton
-                onClick={() => {
-                  handleScrollToSection(link.id);
-                  setDrawerOpen(false);
-                }}
-                sx={{
-                  color: "white",
-                  "&:hover": {
-                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+              <ListItemIcon sx={{color: "white", width: "10px"}}>
+                {link.icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={link.title}
+                primaryTypographyProps={{
+                  sx: {
+                    fontFamily: "Changa, sans-serif",
+                    fontSize: "1.5rem",
+                    overflow: "hidden",
                   },
-                  py: 1.5,
                 }}
-              >
-                <ListItemIcon sx={{color: "white", width: "10px"}}>
-                  {link.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={link.title}
-                  primaryTypographyProps={{
-                    sx: {
-                      fontFamily: "Changa, sans-serif",
-                      fontSize: "1.5rem",
-                      overflow: "hidden",
-                    },
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Box>
-  
+              />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+
+    {/* Footer section - pushed to the bottom */}
+    <Box sx={{ mt: 'auto' }}>
       <Divider sx={{backgroundColor: "rgba(255, 255, 255, 0.2)", my: 2}} />
-  
+
       {/* Chat button and social icons row */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          mt: 4,
           px: 1,
+          pb: 2, // Add padding at the bottom
         }}
         onClick={(e) => e.stopPropagation()} // Prevent clicks from closing the drawer
       >
@@ -266,7 +312,7 @@ const Navbar = () => {
             Let&apos;s Chat
           </Typography>
         </Button>
-  
+
         {/* Social icons on the right */}
         <Box
           sx={{
@@ -295,7 +341,8 @@ const Navbar = () => {
         </Box>
       </Box>
     </Box>
-  );
+  </Box>
+);
 
   return (
     <>
