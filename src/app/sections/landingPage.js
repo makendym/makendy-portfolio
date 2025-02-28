@@ -47,7 +47,7 @@ const LandingPage = () => {
 
   return (
     <Box
-      id="landing-page"
+      id="home"
       sx={{
         marginTop: 0,
         display: "flex",
@@ -118,9 +118,9 @@ const LandingPage = () => {
             bottom: 0,
             left: 0,
             width: "100%",
-            height: "20%",
+            height: "60%",
             background:
-              "linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 80%)",
+              "linear-gradient(to bottom, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.7) 80%, rgba(0, 0, 0, 1) 100%);",
           }}
         />
       </Box>
@@ -179,7 +179,7 @@ const LandingPage = () => {
         sx={{
           position: "absolute",
           left: {xs: "2%", sm: "3%"},
-          bottom: {xs: 8, sm: 0 , md: 0},
+          bottom: {xs: "10%", sm: 0 , md: 0},
           transform: "translateY(-50%)",
           textAlign: "left",
           width: "auto",
@@ -196,7 +196,7 @@ const LandingPage = () => {
             variant="h1"
             sx={{
               fontFamily: "Changa One, sans-serif",
-              fontSize: {xs: "2rem", sm: "3rem", md: "4rem", lg: "6rem"},
+              fontSize: {xs: "1.5rem", sm: "3rem", md: "4rem", lg: "6rem"},
               whiteSpace: "nowrap",
               display: "block",
             }}
@@ -207,7 +207,7 @@ const LandingPage = () => {
             variant="h1"
             sx={{
               fontFamily: "Changa One, sans-serif",
-              fontSize: {xs: "2rem", sm: "3rem", md: "4rem", lg: "6rem"},
+              fontSize: {xs: "1.5rem", sm: "3rem", md: "4rem", lg: "6rem"},
               whiteSpace: "nowrap",
               display: "block",
             }}
@@ -220,8 +220,8 @@ const LandingPage = () => {
       <Box
         sx={{
           position: "absolute",
-          left: {xs: "75%", sm: "75%"},
-          bottom: {xs: "4%", sm: "3%", md: "3%", lg: "3%"},
+          right: {xs: "5%", sm: "5%"},
+          bottom: {xs: "11%", sm: "3%", md: "3%", lg: "3%"},
           transform: "translateY(-50%)",
           textAlign: "left",
           width: "auto",
@@ -264,10 +264,10 @@ const LandingPage = () => {
       <Box
         sx={{
           position: "absolute",
-          right: {xs: "25%", sm: "30%", md: "30%", lg: "0"},
-          bottom: {xs: "2%", sm: "3%", md: "3%", lg: "40%"},
+          right: {xs: "28%", sm: "30%", md: "30%", lg: "0"},
+          bottom: {xs: "10%", sm: "6%", md: "7%", lg: "40%"},
           transform: "translateY(-50%)",
-          textAlign: "left",
+          textAlign: "center",
           width: {xs: "38%", sm: "30%"},
           overflow: "hidden",
         }}
@@ -281,8 +281,7 @@ const LandingPage = () => {
             variant="body1"
             sx={{
               fontFamily: "'Changa', sans-serif",
-              fontSize: {xs: "14px", sm: "16px", md: "18px", lg: "20px"},
-              // lineHeight: {xs: "1.4", sm: "1.6", md: "1.8", lg: "2"},
+              fontSize: {xs: "12px", sm: "14px", md: "16px", lg: "20px"},
               fontWeight: 100,
               overflowY: "hidden",
             }}

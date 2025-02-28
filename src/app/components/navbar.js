@@ -311,16 +311,16 @@ const Navbar = () => {
               flexGrow: 1,
               display: "flex",
               alignItems: "center",
-              marginTop: 5,
+              marginTop: 0,
               justifyContent: "space-between",
-              zIndex: 1,
+              zIndex: 40001,
             }}
           >
             {/* Makendy on the left */}
             <Box sx={{display: "flex", alignItems: "center"}}>
               <Button
                 color="inherit"
-                onClick={() => handleScrollToSection("landing-page")}
+                onClick={() => handleScrollToSection("home")}
                 sx={{
                   display: "flex",
                   alignItems: "center",
@@ -343,7 +343,7 @@ const Navbar = () => {
                     fontSize: {xs: "30px", sm: "35px", md: "40px"},
                     fontStyle: "italic",
                     position: "relative", // Ensure title stays above drawer
-                    zIndex: 20001, // Higher than drawer to prevent being cut off
+                    zIndex: 40001, // Higher than drawer to prevent being cut off
                   }}
                 >
                   Makendy.
