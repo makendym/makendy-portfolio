@@ -1,5 +1,5 @@
 "use client";
-import React, {useState,useRef, useEffect} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import {
   AppBar,
   Toolbar,
@@ -61,15 +61,6 @@ const Navbar = () => {
     setDrawerOpen(!drawerOpen);
   };
 
-  const handleScrollToSection = (id) => {
-    const section = document.getElementById(id);
-    if (section) {
-      // Update URL with the section hash
-      window.history.pushState({}, "", `#${id}`);
-      section.scrollIntoView({behavior: "smooth", block: "start"});
-    }
-  };
-
   const handleContactSubmit = (data) => {
     console.log("Contact form submitted:", data);
     // Handle form submission here
@@ -82,195 +73,223 @@ const Navbar = () => {
     }
   };
 
+  // Inside your component
 
-// Inside your component
-// Remove all drag-related state and handlers
-// const [startY, setStartY] = useState(null);
-// const [currentY, setCurrentY] = useState(0);
-const drawerRef = useRef(null);
+  const drawerRef = useRef(null);
+  // Modified body scroll toggle function
 
-// Function to disable/enable body scrolling
-const toggleBodyScroll = (disable) => {
-  if (disable) {
-    // Save current scroll position
-    const scrollY = window.scrollY;
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.width = '100%';
-    document.body.style.overflowY = 'hidden';
-  } else {
-    // Restore scroll position
-    const scrollY = document.body.style.top;
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.width = '';
-    document.body.style.overflowY = '';
-    window.scrollTo(0, parseInt(scrollY || '0') * -1);
-  }
-};
+  // First, add this state to track which section to scroll to
+  const [pendingSectionId, setPendingSectionId] = useState(null);
 
-// Disable scrolling when drawer opens
-useEffect(() => {
-  if (drawerOpen) {
-    toggleBodyScroll(true);
-  } else {
-    toggleBodyScroll(false);
-  }
-  return () => {
-    toggleBodyScroll(false); // Ensure scrolling is re-enabled when component unmounts
+  // Simplified body scroll toggle function
+  const toggleBodyScroll = (disable) => {
+    if (disable) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
   };
-}, [drawerOpen]);
 
-// Also disable scrolling when contact modal is open
-useEffect(() => {
-  // Assuming you have a state like contactModalOpen
-  if (contactModalOpen) {
-    toggleBodyScroll(true);
-  } else {
-    toggleBodyScroll(false);
-  }
-}, [contactModalOpen]);
+  // Simplified drawer useEffect - just handle scroll locking
+  useEffect(() => {
+    if (drawerOpen || contactModalOpen) {
+      toggleBodyScroll(true);
+    } else {
+      toggleBodyScroll(false);
+    }
 
-const drawerContent = (
-  <Box
-    ref={drawerRef}
-    role="presentation"
-    sx={{
-      width: "100%",
-      height: "100%", // Make it full height to push content to bottom
-      display: "flex",
-      flexDirection: "column", // Use flex column to organize content
-      zIndex: 20000,
-      backgroundColor: "#121212",
-      color: "white",
-      padding: 2,
-      paddingTop: 2, // Reduced top padding since notch is removed
-      transition: 'transform 0.3s ease',
-    }}
-  >
-    {/* Navigation section */}
-    <Box 
+    return () => {
+      toggleBodyScroll(false);
+    };
+  }, [drawerOpen, contactModalOpen]);
+
+  // New useEffect to handle section scrolling after the drawer is closed
+  useEffect(() => {
+    // Only proceed if drawer is closed and we have a pending section
+    if (!drawerOpen && pendingSectionId) {
+      const timeoutId = setTimeout(() => {
+        const section = document.getElementById(pendingSectionId);
+        if (section) {
+          // Update URL
+          window.history.pushState({}, "", `#${pendingSectionId}`);
+
+          // Get the section position, accounting for any header offset
+          const headerOffset = 80; // Adjust based on your header height
+          const sectionPosition =
+            section.getBoundingClientRect().top + window.scrollY - headerOffset;
+
+          // Scroll directly to position
+          window.scrollTo({
+            top: sectionPosition,
+            behavior: "smooth",
+          });
+        }
+
+        // Clear the pending section
+        setPendingSectionId(null);
+      }, 400); // Wait for drawer to fully close
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [drawerOpen, pendingSectionId]);
+
+  // Simplified handleScrollToSection function
+  const handleScrollToSection = (id) => {
+    if (drawerOpen) {
+      // Set the pending section and close the drawer
+      setPendingSectionId(id);
+      setDrawerOpen(false);
+    } else {
+      // Direct scroll for non-drawer navigation
+      const section = document.getElementById(id);
+      if (section) {
+        window.history.pushState({}, "", `#${id}`);
+        section.scrollIntoView({behavior: "smooth", block: "start"});
+      }
+    }
+  };
+
+  const drawerContent = (
+    <Box
+      ref={drawerRef}
+      role="presentation"
       sx={{
-        flex: 1, // Take available space
-        overflow: "auto", // Allow scrolling within the drawer if content is long
+        width: "100%",
+        height: "100%", // Make it full height to push content to bottom
+        display: "flex",
+        flexDirection: "column", // Use flex column to organize content
+        zIndex: 20000,
+        backgroundColor: "#121212",
+        color: "white",
+        padding: 2,
+        paddingTop: 2, // Reduced top padding since notch is removed
+        transition: "transform 0.3s ease",
       }}
-      onClick={(e) => e.stopPropagation()} // Prevent clicks on content from closing the drawer
     >
-      <List disablePadding>
-        {NAV_LINKS.map((link) => (
-          <ListItem
-            key={link.title}
-            disablePadding
-          >
-            <ListItemButton
-              onClick={() => {
-                handleScrollToSection(link.id);
-                setDrawerOpen(false);
-              }}
-              sx={{
-                color: "white",
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.1)",
-                },
-                py: 1.5,
-              }}
-            >
-              <ListItemIcon sx={{color: "#7c9e9e", width: "10px"}}>
-                {link.icon}
-              </ListItemIcon>
-              <ListItemText
-                primary={link.title}
-                primaryTypographyProps={{
-                  sx: {
-                    fontFamily: "Changa, sans-serif",
-                    fontSize: "1.5rem",
-                    overflow: "hidden",
-                  },
-                }}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-
-    {/* Footer section - pushed to the bottom */}
-    <Box sx={{ mt: 'auto' }}>
-      <Divider sx={{backgroundColor: "rgba(255, 255, 255, 0.2)", my: 2}} />
-
-      {/* Chat button and social icons row */}
+      {/* Navigation section */}
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          px: 1,
-          pb: 2, // Add padding at the bottom
+          flex: 1, // Take available space
+          overflow: "auto", // Allow scrolling within the drawer if content is long
+          paddingTop: 3,
+          // paddingTop: 0, // Reset top padding to avoid overlapping with header
         }}
-        onClick={(e) => e.stopPropagation()} // Prevent clicks from closing the drawer
+        onClick={(e) => e.stopPropagation()} // Prevent clicks on content from closing the drawer
       >
-        {/* Let's Chat button on the left */}
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={(e) => {
-            e.stopPropagation(); // Prevent drawer from closing
-            handleOpenContactModal();
-          }}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            paddingX: 2,
-            whiteSpace: "nowrap",
-            backgroundColor: "#7c9e9e",
-            borderRadius: "36px",
-          }}
-        >
-          <Typography
-            sx={{
-              color: "#FFFFFF",
-              fontFamily: "Changa, sans-serif",
-              fontSize: {xs: "1rem", sm: "16px", md: "18px"},
-              textTransform: "none",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            Let&apos;s Chat
-          </Typography>
-        </Button>
+        <List disablePadding>
+          {NAV_LINKS.map((link) => (
+            <ListItem
+              key={link.title}
+              disablePadding
+            >
+              <ListItemButton
+                onClick={() => {
+                  handleScrollToSection(link.id);
+                }}
+                sx={{
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  },
+                  py: 1.5,
+                }}
+              >
+                <ListItemIcon sx={{color: "#7c9e9e", width: "10px"}}>
+                  {link.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={link.title}
+                  primaryTypographyProps={{
+                    sx: {
+                      fontFamily: "Changa, sans-serif",
+                      fontSize: "1.5rem",
+                      overflow: "hidden",
+                    },
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
 
-        {/* Social icons on the right */}
+      {/* Footer section - pushed to the bottom */}
+      <Box sx={{mt: "auto"}}>
+        <Divider sx={{backgroundColor: "rgba(255, 255, 255, 0.2)", my: 2}} />
+
+        {/* Chat button and social icons row */}
         <Box
           sx={{
             display: "flex",
-            gap: 1,
+            justifyContent: "space-between",
+            alignItems: "center",
+            px: 1,
+            pb: 2, // Add padding at the bottom
           }}
+          onClick={(e) => e.stopPropagation()} // Prevent clicks from closing the drawer
         >
-          <IconButton
-            sx={{color: "white"}}
+          {/* Let's Chat button on the left */}
+          <Button
+            color="primary"
+            variant="contained"
             onClick={(e) => {
               e.stopPropagation(); // Prevent drawer from closing
-              window.open("YOUR_LINKEDIN_URL", "_blank");
+              handleOpenContactModal();
+            }}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              paddingX: 2,
+              whiteSpace: "nowrap",
+              backgroundColor: "#7c9e9e",
+              borderRadius: "36px",
             }}
           >
-            <LinkedInIcon />
-          </IconButton>
-          <IconButton
-            sx={{color: "white"}}
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent drawer from closing
-              window.open("YOUR_GITHUB_URL", "_blank");
+            <Typography
+              sx={{
+                color: "#FFFFFF",
+                fontFamily: "Changa, sans-serif",
+                fontSize: {xs: "1rem", sm: "16px", md: "18px"},
+                textTransform: "none",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              Let&apos;s Chat
+            </Typography>
+          </Button>
+
+          {/* Social icons on the right */}
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
             }}
           >
-            <GitHubIcon />
-          </IconButton>
+            <IconButton
+              sx={{color: "white"}}
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent drawer from closing
+                window.open("YOUR_LINKEDIN_URL", "_blank");
+              }}
+            >
+              <LinkedInIcon />
+            </IconButton>
+            <IconButton
+              sx={{color: "white"}}
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent drawer from closing
+                window.open("YOUR_GITHUB_URL", "_blank");
+              }}
+            >
+              <GitHubIcon />
+            </IconButton>
+          </Box>
         </Box>
       </Box>
     </Box>
-  </Box>
-);
+  );
 
   return (
     <>
