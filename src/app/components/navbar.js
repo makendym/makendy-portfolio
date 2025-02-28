@@ -629,11 +629,12 @@ const Navbar = () => {
             zIndex: 9999, // Higher z-index to stay above search bar
             display: drawerOpen ? "none" : "block",
             transform: showBottomNav ? "translateY(0)" : "translateY(100%)",
-            transition: "transform 0.3s ease-in-out",
+            transition: "transform 0.6s ease-in-out",
             borderTopLeftRadius: 16,
             borderTopRightRadius: 16,
             overflow: "hidden",
             boxShadow: "0px -2px 10px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#121212",
             // Use CSS variables for safe area insets (iOS)
             paddingBottom: `env(safe-area-inset-bottom, ${safeAreaBottom}px)`,
           }}
@@ -655,14 +656,17 @@ const Navbar = () => {
               // Make the navigation container take up less width for better spacing
               maxWidth: "100%",
               margin: "0 auto",
+              // Change the color of the active item
+              "& .Mui-selected": {
+                color: "#5a7474 !important", // Darker version of #7c9e9e
+              },
             }}
           >
             <BottomNavigationAction
               label="Home"
               icon={<HomeIcon />}
               sx={{
-                color:
-                  activeNavItem === 0 ? "#7c9e9e" : "rgba(255, 255, 255, 0.7)",
+                color: "#7c9e9e",
                 "& .MuiBottomNavigationAction-label": {
                   fontFamily: "Changa, sans-serif",
                   fontSize: "0.75rem",
@@ -678,6 +682,7 @@ const Navbar = () => {
                 alignItems: "center",
                 justifyContent: "center",
               }}
+              disableRipple
             />
             {NAV_LINKS.map((link, index) => (
               <BottomNavigationAction
@@ -685,10 +690,7 @@ const Navbar = () => {
                 label={link.title}
                 icon={React.cloneElement(link.icon, {fontSize: "medium"})}
                 sx={{
-                  color:
-                    activeNavItem === index + 1
-                      ? "#7c9e9e"
-                      : "rgba(255, 255, 255, 0.7)",
+                  color: "#7c9e9e",
                   "& .MuiBottomNavigationAction-label": {
                     fontFamily: "Changa, sans-serif",
                     fontSize: "0.75rem",
@@ -704,6 +706,7 @@ const Navbar = () => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
+                disableRipple
               />
             ))}
           </BottomNavigation>
