@@ -20,6 +20,7 @@
     "@vercel/analytics": "^1.5.0",
     "autoprefixer": "^10.4.20",
     "bootstrap": "^5.3.3",
+    "dompurify": "^3.2.4",
     "framer-motion": "^11.18.0",
     "next": "15.1.4",
     "react": "^19.0.0",

@@ -2,7 +2,8 @@
 import React, {useState, useCallback} from "react";
 import {Box, Typography, TextField, Button} from "@mui/material";
 import {motion} from "framer-motion";
-import emailjs from '@emailjs/browser';
+import emailjs from "@emailjs/browser";
+import DOMPurify from "dompurify";
 
 // Common TextField styles extracted as a constant
 const TEXT_FIELD_STYLES = {
@@ -45,60 +46,110 @@ const ContactForm = ({
   backgroundColor = "rgba(36, 36, 36, 1)",
 }) => {
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
     name: initialName,
     email: initialEmail,
-    message: initialMessage
+    message: initialMessage,
   });
-  
-  // Using useCallback to ensure the handlers don't change on re-renders
-  const handleChange = useCallback((e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    });
+
+  // Form validation
+  const validateForm = useCallback(() => {
+    const newErrors = {};
+
+    if (!form.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!form.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(form.email)) {
+      newErrors.email = "Invalid email address";
+    }
+
+    if (!form.message.trim()) {
+      newErrors.message = "Message is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   }, [form]);
 
-  const handleSubmit = useCallback((e) => {
-    e.preventDefault();
-    setLoading(true);
+  // Using useCallback to ensure the handlers don't change on re-renders
+  const handleChange = useCallback(
+    (e) => {
+      const {name, value} = e.target;
 
-    emailjs
-      .send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-        {
-          from_name: form.name,
-          to_name: "Makendy Midouin",
-          from_email: form.email,
-          to_email: "makendymidouin99@gmail.com",
-          message: form.message,
-        },
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
-      )
-      .then(
-        () => {
-          setLoading(false);
-          alert("Thank you. I will get back to you as soon as possible.");
+      setForm((prevForm) => ({
+        ...prevForm,
+        [name]: value,
+      }));
 
-          setForm({
-            name: "",
-            email: "",
-            message: "",
-          });
-          
-          // Call external onSubmit handler if provided
-          if (onSubmit) {
-            onSubmit(form);
+      // Clear error when user starts typing
+      if (errors[name]) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: undefined,
+        }));
+      }
+    },
+    [errors]
+  );
+
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+
+      // Validate form before submission
+      if (!validateForm()) {
+        return;
+      }
+
+      setLoading(true);
+
+      // Sanitize form data
+      const sanitizedForm = {
+        from_name: DOMPurify.sanitize(form.name),
+        to_name: "Makendy Midouin",
+        from_email: DOMPurify.sanitize(form.email),
+        to_email: "makendymidouin99@gmail.com",
+        message: DOMPurify.sanitize(form.message),
+      };
+
+      emailjs
+        .send(
+          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+          sanitizedForm,
+          process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+        )
+        .then(
+          () => {
+            setLoading(false);
+            // Use a safer alert method if available in your project
+            alert("Thank you. I will get back to you as soon as possible.");
+
+            setForm({
+              name: "",
+              email: "",
+              message: "",
+            });
+
+            // Call external onSubmit handler if provided
+            if (onSubmit) {
+              onSubmit(sanitizedForm);
+            }
+          },
+          (error) => {
+            setLoading(false);
+            console.error("EmailJS error:", error);
+            // Safer alert that doesn't include user input or error details
+            alert("Something went wrong. Please try again later.");
           }
-        },
-        (error) => {
-          setLoading(false);
-          console.error(error);
-          alert("Ahh, something went wrong. Please try again.");
-        }
-      );
-  }, [form, onSubmit]);
+        );
+    },
+    [form, onSubmit, validateForm]
+  );
 
   // Create form content only once
   const formContent = (
@@ -147,13 +198,19 @@ const ContactForm = ({
           onChange={handleChange}
           placeholder="Enter your name"
           variant="outlined"
+          error={!!errors.name}
+          helperText={errors.name}
+          FormHelperTextProps={{
+            sx: {color: "rgba(255, 100, 100, 0.9)"},
+          }}
           sx={TEXT_FIELD_STYLES}
           inputProps={{
             style: {
               height: "20px",
             },
+            maxLength: 100, // Add reasonable limits
           }}
-          autoComplete="off"
+          autoComplete="name"
         />
       </Box>
 
@@ -171,17 +228,24 @@ const ContactForm = ({
         <TextField
           fullWidth
           name="email"
+          type="email"
           value={form.email}
           onChange={handleChange}
           placeholder="Enter your email"
           variant="outlined"
+          error={!!errors.email}
+          helperText={errors.email}
+          FormHelperTextProps={{
+            sx: {color: "rgba(255, 100, 100, 0.9)"},
+          }}
           sx={TEXT_FIELD_STYLES}
           inputProps={{
             style: {
               height: "20px",
             },
+            maxLength: 254, // Email standard max length
           }}
-          autoComplete="off"
+          autoComplete="email"
         />
       </Box>
 
@@ -205,6 +269,11 @@ const ContactForm = ({
           onChange={handleChange}
           placeholder="Enter your message"
           variant="outlined"
+          error={!!errors.message}
+          helperText={errors.message}
+          FormHelperTextProps={{
+            sx: {color: "rgba(255, 100, 100, 0.9)"},
+          }}
           sx={{
             ...TEXT_FIELD_STYLES,
             "& .MuiInputBase-inputMultiline": {
@@ -212,7 +281,9 @@ const ContactForm = ({
               paddingTop: "3px",
             },
           }}
-          autoComplete="off"
+          inputProps={{
+            maxLength: 5000, // Reasonable message limit
+          }}
         />
       </Box>
 
@@ -258,7 +329,7 @@ const ContactForm = ({
       </motion.div>
     );
   }
-  
+
   return <Box sx={containerStyle}>{formContent}</Box>;
 };
 

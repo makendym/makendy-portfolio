@@ -425,7 +425,7 @@ useEffect(() => {
               sx={{color: "white"}}
               onClick={(e) => {
                 e.stopPropagation(); // Prevent drawer from closing
-                window.open("YOUR_LINKEDIN_URL", "_blank");
+                window.open("https://www.linkedin.com/in/makendy-midouin/", "_blank");
               }}
             >
               <LinkedInIcon />
@@ -434,7 +434,7 @@ useEffect(() => {
               sx={{color: "white"}}
               onClick={(e) => {
                 e.stopPropagation(); // Prevent drawer from closing
-                window.open("YOUR_GITHUB_URL", "_blank");
+                window.open("https://github.com/makendym", "_blank");
               }}
             >
               <GitHubIcon />
