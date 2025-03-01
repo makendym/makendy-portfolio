@@ -2,6 +2,7 @@
 import React, {useState, useCallback} from "react";
 import {Box, Typography, TextField, Button} from "@mui/material";
 import {motion} from "framer-motion";
+import emailjs from '@emailjs/browser';
 
 // Common TextField styles extracted as a constant
 const TEXT_FIELD_STYLES = {
@@ -36,30 +37,68 @@ const ContactForm = ({
   onSubmit,
   initialEmail = "",
   initialMessage = "",
+  initialName = "",
   className,
   style,
   animate = true,
   maxWidth = "600px",
   backgroundColor = "rgba(36, 36, 36, 1)",
 }) => {
-  const [email, setEmail] = useState(initialEmail);
-  const [message, setMessage] = useState(initialMessage);
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({
+    name: initialName,
+    email: initialEmail,
+    message: initialMessage
+  });
   
   // Using useCallback to ensure the handlers don't change on re-renders
-  const handleEmailChange = useCallback((e) => {
-    setEmail(e.target.value);
-  }, []);
-  
-  const handleMessageChange = useCallback((e) => {
-    setMessage(e.target.value);
-  }, []);
+  const handleChange = useCallback((e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    });
+  }, [form]);
 
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
-    if (onSubmit) {
-      onSubmit({ email, message });
-    }
-  }, [email, message, onSubmit]);
+    setLoading(true);
+
+    emailjs
+      .send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: form.name,
+          to_name: "Makendy Midouin",
+          from_email: form.email,
+          to_email: "makendymidouin99@gmail.com",
+          message: form.message,
+        },
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+      )
+      .then(
+        () => {
+          setLoading(false);
+          alert("Thank you. I will get back to you as soon as possible.");
+
+          setForm({
+            name: "",
+            email: "",
+            message: "",
+          });
+          
+          // Call external onSubmit handler if provided
+          if (onSubmit) {
+            onSubmit(form);
+          }
+        },
+        (error) => {
+          setLoading(false);
+          console.error(error);
+          alert("Ahh, something went wrong. Please try again.");
+        }
+      );
+  }, [form, onSubmit]);
 
   // Create form content only once
   const formContent = (
@@ -99,13 +138,41 @@ const ContactForm = ({
             color: "rgba(255, 255, 255, 0.9)",
           }}
         >
+          Name
+        </Typography>
+        <TextField
+          fullWidth
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="Enter your name"
+          variant="outlined"
+          sx={TEXT_FIELD_STYLES}
+          inputProps={{
+            style: {
+              height: "20px",
+            },
+          }}
+          autoComplete="off"
+        />
+      </Box>
+
+      <Box sx={{mb: 3}}>
+        <Typography
+          sx={{
+            mb: 1,
+            fontSize: "0.9rem",
+            overflow: "hidden",
+            color: "rgba(255, 255, 255, 0.9)",
+          }}
+        >
           Email Address
         </Typography>
         <TextField
           fullWidth
           name="email"
-          value={email}
-          onChange={handleEmailChange}
+          value={form.email}
+          onChange={handleChange}
           placeholder="Enter your email"
           variant="outlined"
           sx={TEXT_FIELD_STYLES}
@@ -134,8 +201,8 @@ const ContactForm = ({
           multiline
           rows={4}
           name="message"
-          value={message}
-          onChange={handleMessageChange}
+          value={form.message}
+          onChange={handleChange}
           placeholder="Enter your message"
           variant="outlined"
           sx={{
@@ -153,6 +220,7 @@ const ContactForm = ({
         type="submit"
         fullWidth
         variant="contained"
+        disabled={loading}
         sx={{
           backgroundColor: "rgba(255, 255, 255, 0.1)",
           color: "white",
@@ -165,7 +233,7 @@ const ContactForm = ({
           },
         }}
       >
-        Submit
+        {loading ? "Sending..." : "Submit"}
       </Button>
     </Box>
   );
