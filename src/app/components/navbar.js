@@ -45,6 +45,9 @@ const Navbar = () => {
 
   // Add state for safe area bottom padding
   const [safeAreaBottom, setSafeAreaBottom] = useState(0);
+  
+  // Store original scroll position
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   // Add this useEffect to handle the mounting state
   useEffect(() => {
@@ -134,51 +137,111 @@ const Navbar = () => {
   const drawerRef = useRef(null);
   const [pendingSectionId, setPendingSectionId] = useState(null);
 
-  // Simplified body scroll toggle function
+  // Improved body scroll handling that won't interfere with input fields
   const toggleBodyScroll = (disable) => {
     if (disable) {
-      document.body.style.overflow = "hidden";
+      // Save current scroll position
+      setScrollPosition(window.scrollY);
+      
+      // Add a class to body instead of inline styles
+      document.body.classList.add('no-scroll');
+      
+      // Apply styles through CSS instead of direct manipulation
+      const style = document.createElement('style');
+      style.id = 'body-scroll-lock';
+      style.innerHTML = `
+        body.no-scroll {
+          overflow: hidden;
+          height: 100%;
+          position: relative;
+        }
+      `;
+      
+      // Only append if it doesn't exist already
+      if (!document.getElementById('body-scroll-lock')) {
+        document.head.appendChild(style);
+      }
     } else {
-      document.body.style.overflow = "";
+      // Remove the class
+      document.body.classList.remove('no-scroll');
+      
+      // Remove the style tag if it exists
+      const styleTag = document.getElementById('body-scroll-lock');
+      if (styleTag) {
+        document.head.removeChild(styleTag);
+      }
+      
+      // Restore scroll position
+      window.scrollTo(0, scrollPosition);
     }
   };
 
-  // Simplified drawer useEffect - just handle scroll locking
+  // Handle scroll locking separately for drawer and modal
   useEffect(() => {
-    if (drawerOpen || contactModalOpen) {
+    if (drawerOpen) {
       toggleBodyScroll(true);
-    } else {
+    } else if (!contactModalOpen) {
+      // Only unlock if the contact modal is also closed
       toggleBodyScroll(false);
     }
 
     return () => {
-      toggleBodyScroll(false);
-    };
-  }, [drawerOpen, contactModalOpen]);
-
-  // Add scroll listener for bottom navigation
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // Show bottom nav when scrolling down, hide when scrolling up
-      if (currentScrollY > lastScrollY) {
-        // Scrolling down
-        setShowBottomNav(true);
-      } else {
-        // Scrolling up
-        setShowBottomNav(false);
+      // Ensure body scroll is restored on unmount
+      if (drawerOpen) {
+        toggleBodyScroll(false);
       }
-
-      setLastScrollY(currentScrollY);
     };
+  }, [drawerOpen]);
 
-    window.addEventListener("scroll", handleScroll, {passive: true});
+  // Handle modal scroll locking separately
+  useEffect(() => {
+    if (contactModalOpen) {
+      toggleBodyScroll(true);
+    } else if (!drawerOpen) {
+      // Only unlock if the drawer is also closed
+      toggleBodyScroll(false);
+    }
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      // Ensure body scroll is restored on unmount
+      if (contactModalOpen) {
+        toggleBodyScroll(false);
+      }
     };
-  }, [lastScrollY]);
+  }, [contactModalOpen]);
+
+  // Add scroll listener for bottom navigation
+// Modified scroll listener for bottom navigation that keeps it visible at the bottom of the page
+useEffect(() => {
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    
+    // Calculate how close to the bottom we are
+    const bottomThreshold = 100; // px from the bottom to consider "at the bottom"
+    const isAtBottom = documentHeight - (currentScrollY + windowHeight) < bottomThreshold;
+    
+    // Always show the bottom navigation when at the bottom of the page
+    if (isAtBottom) {
+      setShowBottomNav(true);
+    } else if (currentScrollY > lastScrollY) {
+      // Scrolling down - show the nav
+      setShowBottomNav(true);
+    } else {
+      // Scrolling up - hide the nav
+      setShowBottomNav(false);
+    }
+
+    setLastScrollY(currentScrollY);
+  };
+
+  window.addEventListener("scroll", handleScroll, {passive: true});
+
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+  };
+}, [lastScrollY]);
 
   // Add this useEffect to handle page refresh
   useEffect(() => {
@@ -611,13 +674,6 @@ const Navbar = () => {
         {drawerContent}
       </Drawer>
 
-      {/* Contact Modal */}
-      <ContactModal
-        open={contactModalOpen}
-        onClose={() => setContactModalOpen(false)}
-        onSubmit={handleContactSubmit}
-      />
-
       {/* Bottom Navigation for mobile with safe area support */}
       {isMounted && isMobile && (
         <Paper
@@ -712,6 +768,30 @@ const Navbar = () => {
           </BottomNavigation>
         </Paper>
       )}
+
+      {/* Contact Modal - Rendered at the end to avoid z-index conflicts */}
+      <ContactModal
+        open={contactModalOpen}
+        onClose={() => {
+          setContactModalOpen(false);
+          // Small delay to ensure iOS keyboard dismisses properly
+          setTimeout(() => {
+            if (!drawerOpen) {
+              toggleBodyScroll(false);
+            }
+          }, 100);
+        }}
+        onSubmit={(data) => {
+          handleContactSubmit(data);
+          setContactModalOpen(false);
+          // Small delay to ensure iOS keyboard dismisses properly
+          setTimeout(() => {
+            if (!drawerOpen) {
+              toggleBodyScroll(false);
+            }
+          }, 100);
+        }}
+      />
     </>
   );
 };

@@ -1,5 +1,5 @@
 "use client";
-import React, {useState} from "react";
+import React, {useState, useCallback} from "react";
 import {Box, Typography, TextField, Button} from "@mui/material";
 import {motion} from "framer-motion";
 
@@ -42,27 +42,27 @@ const ContactForm = ({
   maxWidth = "600px",
   backgroundColor = "rgba(36, 36, 36, 1)",
 }) => {
-  const [formData, setFormData] = useState({
-    email: initialEmail,
-    message: initialMessage,
-  });
+  const [email, setEmail] = useState(initialEmail);
+  const [message, setMessage] = useState(initialMessage);
+  
+  // Using useCallback to ensure the handlers don't change on re-renders
+  const handleEmailChange = useCallback((e) => {
+    setEmail(e.target.value);
+  }, []);
+  
+  const handleMessageChange = useCallback((e) => {
+    setMessage(e.target.value);
+  }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
     if (onSubmit) {
-      onSubmit(formData);
+      onSubmit({ email, message });
     }
-  };
+  }, [email, message, onSubmit]);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  // Base form content
-  const FormContent = () => (
+  // Create form content only once
+  const formContent = (
     <Box
       component="form"
       onSubmit={handleSubmit}
@@ -104,8 +104,8 @@ const ContactForm = ({
         <TextField
           fullWidth
           name="email"
-          value={formData.email}
-          onChange={handleChange}
+          value={email}
+          onChange={handleEmailChange}
           placeholder="Enter your email"
           variant="outlined"
           sx={TEXT_FIELD_STYLES}
@@ -114,6 +114,7 @@ const ContactForm = ({
               height: "20px",
             },
           }}
+          autoComplete="off"
         />
       </Box>
 
@@ -133,8 +134,8 @@ const ContactForm = ({
           multiline
           rows={4}
           name="message"
-          value={formData.message}
-          onChange={handleChange}
+          value={message}
+          onChange={handleMessageChange}
           placeholder="Enter your message"
           variant="outlined"
           sx={{
@@ -144,6 +145,7 @@ const ContactForm = ({
               paddingTop: "3px",
             },
           }}
+          autoComplete="off"
         />
       </Box>
 
@@ -168,33 +170,28 @@ const ContactForm = ({
     </Box>
   );
 
-  // Return animated or static version based on prop
-  return animate ? (
-    <motion.div
-      initial={{opacity: 0}}
-      animate={{opacity: 1}}
-      transition={{duration: 0.5}}
-      style={{
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <FormContent />
-    </motion.div>
-  ) : (
-    <Box
-      sx={{
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <FormContent />
-    </Box>
-  );
+  // Simplified rendering
+  const containerStyle = {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  };
+
+  if (animate) {
+    return (
+      <motion.div
+        initial={{opacity: 0}}
+        animate={{opacity: 1}}
+        transition={{duration: 0.5}}
+        style={containerStyle}
+      >
+        {formContent}
+      </motion.div>
+    );
+  }
+  
+  return <Box sx={containerStyle}>{formContent}</Box>;
 };
 
 export default ContactForm;
