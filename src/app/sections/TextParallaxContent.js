@@ -6,7 +6,7 @@ import {styled} from "@mui/material/styles";
 
 const Container = styled("div")({
   position: "relative",
-  height: "400vh",
+  height: "300vh",
   overflow: "hidden",
 });
 
@@ -30,7 +30,7 @@ const TextContainer = styled("div")({
   position: "sticky",
   top: 0,
   left: 0,
-  height: "100vh",
+  height: "70vh",
   width: "100%",
   overflow: "hidden",
 });

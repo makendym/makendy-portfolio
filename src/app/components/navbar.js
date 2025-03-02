@@ -42,12 +42,38 @@ const Navbar = () => {
   const [showBottomNav, setShowBottomNav] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [activeNavItem, setActiveNavItem] = useState(0);
+  
+  // Add state for active section
+  const [activeSection, setActiveSection] = useState("home");
 
   // Add state for safe area bottom padding
   const [safeAreaBottom, setSafeAreaBottom] = useState(0);
 
   // Store original scroll position
   const [scrollPosition, setScrollPosition] = useState(0);
+
+  // Define nav links outside to use in multiple places
+  const NAV_LINKS = [
+    {
+      id: "about-section",
+      title: "About",
+      icon: <PersonIcon fontSize="large" />,
+    },
+    {
+      id: "education-section",
+      title: "Education",
+      icon: <SchoolIcon fontSize="large" />,
+    },
+    {id: "work-section", title: "Work", icon: <WorkIcon fontSize="large" />},
+    {
+      id: "projects-section",
+      title: "Projects",
+      icon: <CodeIcon fontSize="large" />,
+    },
+  ];
+  
+  // Add this to include home in our sections to track
+  const ALL_SECTIONS = ["home", ...NAV_LINKS.map(link => link.id)];
 
   // Add this useEffect to handle the mounting state
   useEffect(() => {
@@ -99,24 +125,63 @@ const Navbar = () => {
     }
   }, []);
 
-  const NAV_LINKS = [
-    {
-      id: "about-section",
-      title: "About",
-      icon: <PersonIcon fontSize="large" />,
-    },
-    {
-      id: "education-section",
-      title: "Education",
-      icon: <SchoolIcon fontSize="large" />,
-    },
-    {id: "work-section", title: "Work", icon: <WorkIcon fontSize="large" />},
-    {
-      id: "projects-section",
-      title: "Projects",
-      icon: <CodeIcon fontSize="large" />,
-    },
-  ];
+  // Add the scroll spy functionality to detect active section
+  useEffect(() => {
+    const handleScroll = () => {
+      // Debounce scroll events for better performance
+      if (!window.requestAnimationFrame) {
+        // Fallback for browsers without requestAnimationFrame
+        setTimeout(detectActiveSection, 300);
+      } else {
+        window.requestAnimationFrame(detectActiveSection);
+      }
+    };
+
+    const detectActiveSection = () => {
+      // Get all sections
+      const sections = ALL_SECTIONS.map(id => document.getElementById(id)).filter(Boolean);
+      
+      if (sections.length === 0) return;
+      
+      // Calculate which section is currently in view
+      const scrollPosition = window.scrollY + 100; // Add offset to account for header height
+      
+      // Find the section that is currently in view
+      let currentSection = sections[0].id;
+      
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        // Get the top position of the section
+        const sectionTop = section.offsetTop;
+        
+        if (scrollPosition >= sectionTop) {
+          currentSection = section.id;
+          break;
+        }
+      }
+      
+      // Only update if the active section has changed
+      if (currentSection !== activeSection) {
+        setActiveSection(currentSection);
+        
+        // Update the active nav item for bottom navigation
+        const navIndex = ALL_SECTIONS.indexOf(currentSection);
+        if (navIndex !== -1) {
+          setActiveNavItem(navIndex);
+        }
+      }
+    };
+    
+    // Initial check for active section
+    detectActiveSection();
+    
+    // Add scroll event listener
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [activeSection]);
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
@@ -304,6 +369,7 @@ const Navbar = () => {
       }
     }
   };
+  
   const drawerContent = (
     <Box
       ref={drawerRef}
@@ -342,14 +408,18 @@ const Navbar = () => {
                   handleScrollToSection(link.id);
                 }}
                 sx={{
-                  color: "white",
+                  color: activeSection === link.id ? "#7c9e9e" : "white",
+                  backgroundColor: activeSection === link.id ? "rgba(124, 158, 158, 0.1)" : "transparent",
                   "&:hover": {
                     backgroundColor: "rgba(255, 255, 255, 0.1)",
                   },
                   py: 1.5,
                 }}
               >
-                <ListItemIcon sx={{color: "#7c9e9e", width: "10px"}}>
+                <ListItemIcon sx={{
+                  color: activeSection === link.id ? "#7c9e9e" : "#7c9e9e",
+                  width: "10px"
+                }}>
                   {link.icon}
                 </ListItemIcon>
                 <ListItemText
@@ -359,6 +429,7 @@ const Navbar = () => {
                       fontFamily: "Changa, sans-serif",
                       fontSize: "1.5rem",
                       overflow: "hidden",
+                      color: activeSection === link.id ? "#7c9e9e" : "white",
                     },
                   }}
                 />
@@ -567,14 +638,17 @@ const Navbar = () => {
                       outline: "none",
                       whiteSpace: "nowrap",
                       marginX: 1,
+                      // Highlight active section in desktop menu
+                      backgroundColor: activeSection === link.id ? "rgba(124, 158, 158, 0.2)" : "transparent",
+                      borderRadius: 2,
                     }}
                     disableRipple
                   >
                     <Typography
                       sx={{
-                        color: "inherit",
+                        color: activeSection === link.id ? "#7c9e9e" : "inherit",
                         fontFamily: "Changa, sans-serif",
-                        fontWeight: 100,
+                        fontWeight: activeSection === link.id ? 400 : 100,
                         fontSize: {xs: "14px", sm: "16px", md: "18px"},
                         textTransform: "none",
                         whiteSpace: "nowrap",
@@ -726,11 +800,12 @@ const Navbar = () => {
               label="Home"
               icon={<HomeIcon />}
               sx={{
-                color: "#FFFFFF",
+                color: activeSection === "home" ? "#7c9e9e" : "#FFFFFF",
                 "& .MuiBottomNavigationAction-label": {
                   fontFamily: "Changa, sans-serif",
                   fontSize: "0.75rem",
                   overflow: "hidden",
+                  color: activeSection === "home" ? "#7c9e9e" : "#FFFFFF",
                 },
                 // Reduce spacing between items - adjust the padding
                 px: 1,
@@ -748,13 +823,17 @@ const Navbar = () => {
               <BottomNavigationAction
                 key={link.id}
                 label={link.title}
-                icon={React.cloneElement(link.icon, {fontSize: "medium"})}
+                icon={React.cloneElement(link.icon, {
+                  fontSize: "medium",
+                  style: { color: activeSection === link.id ? "#7c9e9e" : "#FFFFFF" }
+                })}
                 sx={{
-                  color: "#FFFFFF",
+                  color: activeSection === link.id ? "#7c9e9e" : "#FFFFFF",
                   "& .MuiBottomNavigationAction-label": {
                     fontFamily: "Changa, sans-serif",
                     fontSize: "0.75rem",
                     overflow: "hidden",
+                    color: activeSection === link.id ? "#7c9e9e" : "#FFFFFF",
                   },
                   // Reduce spacing between items - adjust the padding
                   px: 1,
