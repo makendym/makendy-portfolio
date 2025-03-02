@@ -39,13 +39,13 @@ const Navbar = () => {
   const [isMounted, setIsMounted] = useState(false);
 
   // Add state for bottom navigation visibility
-  const [showBottomNav, setShowBottomNav] = useState(true);
+  const [showBottomNav, setShowBottomNav] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [activeNavItem, setActiveNavItem] = useState(0);
 
   // Add state for safe area bottom padding
   const [safeAreaBottom, setSafeAreaBottom] = useState(0);
-  
+
   // Store original scroll position
   const [scrollPosition, setScrollPosition] = useState(0);
 
@@ -142,13 +142,13 @@ const Navbar = () => {
     if (disable) {
       // Save current scroll position
       setScrollPosition(window.scrollY);
-      
+
       // Add a class to body instead of inline styles
-      document.body.classList.add('no-scroll');
-      
+      document.body.classList.add("no-scroll");
+
       // Apply styles through CSS instead of direct manipulation
-      const style = document.createElement('style');
-      style.id = 'body-scroll-lock';
+      const style = document.createElement("style");
+      style.id = "body-scroll-lock";
       style.innerHTML = `
         body.no-scroll {
           overflow: hidden;
@@ -156,21 +156,21 @@ const Navbar = () => {
           position: relative;
         }
       `;
-      
+
       // Only append if it doesn't exist already
-      if (!document.getElementById('body-scroll-lock')) {
+      if (!document.getElementById("body-scroll-lock")) {
         document.head.appendChild(style);
       }
     } else {
       // Remove the class
-      document.body.classList.remove('no-scroll');
-      
+      document.body.classList.remove("no-scroll");
+
       // Remove the style tag if it exists
-      const styleTag = document.getElementById('body-scroll-lock');
+      const styleTag = document.getElementById("body-scroll-lock");
       if (styleTag) {
         document.head.removeChild(styleTag);
       }
-      
+
       // Restore scroll position
       window.scrollTo(0, scrollPosition);
     }
@@ -211,37 +211,38 @@ const Navbar = () => {
   }, [contactModalOpen]);
 
   // Add scroll listener for bottom navigation
-// Modified scroll listener for bottom navigation that keeps it visible at the bottom of the page
-useEffect(() => {
-  const handleScroll = () => {
-    const currentScrollY = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const documentHeight = document.documentElement.scrollHeight;
-    
-    // Calculate how close to the bottom we are
-    const bottomThreshold = 100; // px from the bottom to consider "at the bottom"
-    const isAtBottom = documentHeight - (currentScrollY + windowHeight) < bottomThreshold;
-    
-    // Always show the bottom navigation when at the bottom of the page
-    if (isAtBottom) {
-      setShowBottomNav(true);
-    } else if (currentScrollY > lastScrollY) {
-      // Scrolling down - show the nav
-      setShowBottomNav(true);
-    } else {
-      // Scrolling up - hide the nav
-      setShowBottomNav(false);
-    }
+  // Modified scroll listener for bottom navigation that keeps it visible at the bottom of the page
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
 
-    setLastScrollY(currentScrollY);
-  };
+      // Calculate how close to the bottom we are
+      const bottomThreshold = 100; // px from the bottom to consider "at the bottom"
+      const isAtBottom =
+        documentHeight - (currentScrollY + windowHeight) < bottomThreshold;
 
-  window.addEventListener("scroll", handleScroll, {passive: true});
+      // Always show the bottom navigation when at the bottom of the page
+      if (isAtBottom) {
+        setShowBottomNav(true);
+      } else if (currentScrollY > lastScrollY) {
+        // Scrolling down - show the nav
+        setShowBottomNav(true);
+      } else {
+        // Scrolling up - hide the nav
+        setShowBottomNav(false);
+      }
 
-  return () => {
-    window.removeEventListener("scroll", handleScroll);
-  };
-}, [lastScrollY]);
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, {passive: true});
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [lastScrollY]);
 
   // Add this useEffect to handle page refresh
   useEffect(() => {
@@ -425,7 +426,10 @@ useEffect(() => {
               sx={{color: "white"}}
               onClick={(e) => {
                 e.stopPropagation(); // Prevent drawer from closing
-                window.open("https://www.linkedin.com/in/makendy-midouin/", "_blank");
+                window.open(
+                  "https://www.linkedin.com/in/makendy-midouin/",
+                  "_blank"
+                );
               }}
             >
               <LinkedInIcon />
@@ -714,7 +718,7 @@ useEffect(() => {
               margin: "0 auto",
               // Change the color of the active item
               "& .Mui-selected": {
-                color: "#5a7474 !important", // Darker version of #7c9e9e
+                color: "#7c9e9e !important", // Darker version of #7c9e9e
               },
             }}
           >
@@ -722,7 +726,7 @@ useEffect(() => {
               label="Home"
               icon={<HomeIcon />}
               sx={{
-                color: "#7c9e9e",
+                color: "#FFFFFF",
                 "& .MuiBottomNavigationAction-label": {
                   fontFamily: "Changa, sans-serif",
                   fontSize: "0.75rem",
@@ -746,7 +750,7 @@ useEffect(() => {
                 label={link.title}
                 icon={React.cloneElement(link.icon, {fontSize: "medium"})}
                 sx={{
-                  color: "#7c9e9e",
+                  color: "#FFFFFF",
                   "& .MuiBottomNavigationAction-label": {
                     fontFamily: "Changa, sans-serif",
                     fontSize: "0.75rem",
