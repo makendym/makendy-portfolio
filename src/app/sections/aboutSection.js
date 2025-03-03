@@ -157,7 +157,7 @@ const ResponsiveCardWithCutout = ({isInView, scrollYProgress}) => {
               maxWidth: "110vh",
               width: "100%",
               margin: "0 auto",
-              height: "80vh",
+              height: "90vh",
               backgroundColor: "rgba(36, 36, 36, 100%)",
               boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
               display: "flex",

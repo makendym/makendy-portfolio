@@ -141,7 +141,7 @@ const LandingPage = () => {
         <motion.div
           initial="hidden"
           animate={controls}
-          variants={slideVariant("left", 0.5)}
+          variants={slideVariant("left", 0.3)}
           style={{overflow: "visible"}}
         >
           <Typography
@@ -159,7 +159,7 @@ const LandingPage = () => {
         <motion.div
           initial="hidden"
           animate={controls}
-          variants={slideVariant("right", 0.5)}
+          variants={slideVariant("right", 0.3)}
           style={{overflow: "visible"}}
         >
           <Typography
@@ -190,7 +190,7 @@ const LandingPage = () => {
         <motion.div
           initial="hidden"
           animate={controls}
-          variants={fadeUpVariant(1.2)}
+          variants={fadeUpVariant(1.0)}
         >
           <Typography
             variant="h1"
@@ -232,7 +232,7 @@ const LandingPage = () => {
         <motion.div
           initial="hidden"
           animate={controls}
-          variants={fadeUpVariant(1.5)}
+          variants={fadeUpVariant(1.2)}
         >
           <Typography
             variant="h1"
@@ -275,7 +275,7 @@ const LandingPage = () => {
         <motion.div
           initial="hidden"
           animate={controls}
-          variants={fadeUpVariant(1.8)}
+          variants={fadeUpVariant(1.4)}
         >
           <Typography
             variant="body1"
