@@ -109,7 +109,7 @@ const AboutSection = () => {
                   component="h2"
                   sx={{fontSize: {xs: "62px", sm: "72px"}}}
                 >
-                  About me
+                  About
                 </Typography>
               </Box>
             </motion.div>
@@ -157,7 +157,7 @@ const ResponsiveCardWithCutout = ({isInView, scrollYProgress}) => {
               maxWidth: "110vh",
               width: "100%",
               margin: "0 auto",
-              height: "70vh",
+              height: "80vh",
               backgroundColor: "rgba(36, 36, 36, 100%)",
               boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
               display: "flex",
@@ -184,13 +184,18 @@ const ResponsiveCardWithCutout = ({isInView, scrollYProgress}) => {
                   overflow: "hidden",
                 }}
               >
-                From surviving the 2010 Haiti earthquake to earning my
-                Master&apos;s at NYU, resilience and community have driven my
-                path. I channel these experiences into creating impactful
-                solutions—whether building web apps, developing VR experiences,
-                or mentoring future tech leaders. My journey has shaped me into
-                a problem solver committed to continuous learning and paying
-                forward the support that fueled my growth.
+                Makendy Midouin is a first-generation college graduate whose
+                journey has been fueled by leadership, innovation, and a passion
+                for learning. Excelling in both athletics and academics, he
+                became a league MVP, conference champion, and honor society
+                inductee, demonstrating his drive for excellence across
+                disciplines. His research on bias in virtual reality and his
+                role in raising $125,000 in STEM scholarships reflect his
+                commitment to using technology for meaningful impact. Balancing
+                software engineering, research, and teaching, Makendy has
+                cultivated a career at the intersection of education, AI, and
+                entrepreneurship, developing tech-driven solutions that empower
+                learners worldwide.
               </Typography>
             </motion.div>
           </Box>
@@ -225,7 +230,6 @@ const ResponsiveCardWithCutout = ({isInView, scrollYProgress}) => {
       sx={{
         overflowX: "clip",
         borderRadius: "34px",
-
       }}
     >
       <motion.div>
@@ -266,15 +270,18 @@ const ResponsiveCardWithCutout = ({isInView, scrollYProgress}) => {
                 textAlign: "left",
               }}
             >
-              From surviving the 2010 Haiti earthquake to earning my
-              Master&apos;s degree from New York University, my journey has been
-              fueled by resilience, community, and a relentless drive to turn
-              ideas into impactful solutions. Whether I&apos;m building web
-              apps, creating immersive VR experiences, or mentoring future tech
-              leaders, I channel my passion for continuous learning and
-              collaboration into every project. My experiences have shaped me
-              into a problem solver who is eager to pay forward the support
-              I&apos;ve received along the way.
+               Makendy Midouin is a first-generation college graduate whose
+                journey has been fueled by leadership, innovation, and a passion
+                for learning. Excelling in both athletics and academics, he
+                became a league MVP, conference champion, and honor society
+                inductee, demonstrating his drive for excellence across
+                disciplines. His research on bias in virtual reality and his
+                role in raising $125,000 in STEM scholarships reflect his
+                commitment to using technology for meaningful impact. Balancing
+                software engineering, research, and teaching, Makendy has
+                cultivated a career at the intersection of education, AI, and
+                entrepreneurship, developing tech-driven solutions that empower
+                learners worldwide.
             </Typography>
           </motion.div>
         </Box>

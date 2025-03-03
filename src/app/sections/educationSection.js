@@ -34,7 +34,7 @@ const EducationCard = ({
     >
       <Box
         sx={{
-          maxWidth: "155vh",
+          maxWidth: "170vh",
           width: "100%",
           margin: "0 auto",
           borderRadius: "34px",
@@ -47,7 +47,7 @@ const EducationCard = ({
           transition: "box-shadow 0.3s ease",
           display: "flex",
           flexDirection: {xs: "column", md: reverse ? "row-reverse" : "row"},
-          height: {md: "500px"},
+          height: {md: "600px"},
         }}
       >
         {/* Rest of the EducationCard component remains the same */}
@@ -228,7 +228,7 @@ const EducationSection = () => {
       degree: "M.S in Computer Science",
       title: "Community-Driven Growth",
       description:
-        "At NYU, I pushed beyond my comfort zone to expand both technical abilities and leadership skills. By building meaningful partnerships and turning ambitious ideas into reality, I learned that innovation flourishes best within strong communities. This experience showed me how collaborative networks transform individual potential into collective achievement.",
+        "At NYU, Makendy deepened his technical expertise and entrepreneurial vision through the Master’s in Computer Science program. His studies were enriched by participation in the NYU Entrepreneurial Institute’s Startup Accelerator Program, where he refined his approach to innovation and business development. He applied his skills in an internship at a trucking logistics startup, co-designing platform features to solve real-world challenges. This period of academic and professional growth solidified his commitment to creating technology that enhances education.",
       graduationDate: "Dec 2024",
     },
     {
@@ -238,7 +238,7 @@ const EducationSection = () => {
       degree: "B.S in Computer Science",
       title: "Lessons Beyond the Field",
       description:
-        "At STAC, athletics shaped both my abilities and outlook. Through soccer and track & field, I discovered that excellence demands more than physical talent—it requires relentless drive and ownership of one's path. These principles now fuel my approach to every goal I pursue.",
+        "Makendy’s time at STAC was transformative, combining athletic excellence with academic rigor. As part of a championship-winning track team, he learned how discipline and teamwork drive success. His research at XLAB on bias in virtual reality sharpened his analytical thinking, while induction into Chi Alpha Sigma and Sigma Zeta recognized his commitment to excellence. Representing the School of STEM at fundraising events and securing his first software engineering internship at Treehouse Strategy laid the foundation for his career at the intersection of technology and education.",
       graduationDate: "May 2022",
       imageStyle: {objectFit: "cover", objectPosition: "center"},
     },

@@ -20,13 +20,14 @@ import {
   stackOverflow,
   xlabProject,
   nyuInterview,
+  portfolioProject,
 } from "../assets";
 
 const projects = [
   {
     title: "The Virtual Mirror",
     description:
-      "Bias-revealing VR journey placing students in others' shoes across three immersive scenarios—exposing hidden prejudices about weight, race, and gender to spark personal transformation",
+      "Bias-revealing VR journey that places students in immersive scenarios to expose hidden prejudices about weight, race, and gender. Designed to spark self-reflection and personal transformation.",
     image: xlabProject.src,
     size: "large",
     link: "https://github.com/makendym/-Finding-Discrimination-using-Virtual-Reality",
@@ -35,7 +36,7 @@ const projects = [
   {
     title: "AP CompTutor",
     description:
-      "Your AI study buddy that creates custom practice questions to sharpen your coding skills and ace the AP CSA exam",
+      "AI-powered study buddy that creates custom practice questions to help sharpen coding skills and ace the AP CSA exam.",
     image: apComptutor.src,
     size: "medium",
     link: "https://github.com/makendym/APCompTutor",
@@ -43,7 +44,7 @@ const projects = [
   {
     title: "Stack Overflow",
     description:
-      "StackOverflow ecosystem explorer that transforms vast forum data into interactive visual narratives, answering key questions about the developer community's digital conversations",
+      "StackOverflow ecosystem explorer that transforms vast forum data into interactive visual narratives, answering key questions about the developer community's digital conversations.",
     image: stackOverflow.src,
     size: "small",
     link: "https://github.com/makendym/StackOverflow-BigData",
@@ -52,7 +53,7 @@ const projects = [
   {
     title: "NYU Interview Prep",
     description:
-      "NYU's career matchmaker connecting students with shared professional paths",
+      "Career matchmaker for NYU students, connecting those with shared professional interests and career paths.",
     image: nyuInterview.src,
     size: "medium",
     link: "https://github.com/makendym/NYU-Interview-Prep",
@@ -60,7 +61,7 @@ const projects = [
   {
     title: "Purple Glow",
     description:
-      "One-tap booking system that turns scheduling chaos into payment simplicity",
+      "One-tap booking system that simplifies scheduling and payment for cleaning services, turning booking chaos into seamless user experience.",
     image: purpleGlow.src,
     size: "medium",
     link: "https://github.com/makendym/Cleaning-Service-app",
@@ -68,10 +69,18 @@ const projects = [
   {
     title: "Fat Ear",
     description:
-      "Your dynamic music streaming solution with seamless authentication, personalized playlists, and song search",
+      "Dynamic music streaming platform that uses advanced SQL queries, offering seamless login, personalized playlists, and fast song search.",
     image: fatEar.src,
     size: "small",
     link: "https://github.com/makendym/FatEar",
+  },
+  {
+    title: "Portfolio Design",
+    description:
+      "A clean, intuitive Figma design showcasing Makendy’s journey with easy navigation and key achievements.",
+    image: portfolioProject.src,
+    size: "small",
+    link: "https://www.figma.com/design/FeKGi60NgShEUTddoupNSt/Portfolio-Page?node-id=0-1&t=iTMwYYVWYHnklRYx-1",
   },
 ];
 
@@ -186,7 +195,7 @@ const ProjectsSection = () => {
   return (
     <Box
       component="section"
-       id="projects-section"
+      id="projects-section"
       sx={{
         position: "relative",
         minHeight: "100vh",
@@ -265,7 +274,7 @@ const ProjectsSection = () => {
               }}
             >
               {/* First 5 projects */}
-              {projects.slice(0, 6).map((project, index) => (
+              {projects.slice(0, 7).map((project, index) => (
                 <Box
                   key={project.title}
                   sx={{
@@ -332,9 +341,9 @@ const ProjectsSection = () => {
                       textOverflow: "ellipsis",
                     }}
                   >
-                    After working on a variety of projects, from VR experiences
-                    to websites and complex applications, these were some of my
-                    favorites.
+                    After working on a diverse range of projects, from VR
+                    experiences to websites and complex applications, these are
+                    some of Makendy’s favorites.
                   </Typography>
                   <Button
                     variant="outlined"

@@ -19,6 +19,7 @@ import stac from "./stac.jpeg";
 import treehouse from "./treehouse.jpeg";
 import varsitytutors from "./varsitytutors.jpeg";
 import purpleGlowIcon from "./purpleGlow.jpeg";
+import portfolioProject from "./portfolio-project.png";
 export {
   aboutMeImage,
   landingPageImage,
@@ -33,6 +34,7 @@ export {
   stackOverflow,
   xlabProject,
   nyuInterview,
+  portfolioProject,
   bam,
   roadcall,
   stac,

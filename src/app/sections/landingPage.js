@@ -201,7 +201,7 @@ const LandingPage = () => {
               display: "block",
             }}
           >
-            I AM
+            This is
           </Typography>
           <Typography
             variant="h1"
@@ -286,7 +286,7 @@ const LandingPage = () => {
               overflowY: "hidden",
             }}
           >
-            Coding with purpose, building with passion, creating for community.
+            Engineering Educational Excellence Through Technology.
           </Typography>
         </motion.div>
       </Box>

@@ -55,10 +55,10 @@ export const TextParallaxContentExample = () => {
   const [userPaused, setUserPaused] = useState(false);
 
   const headings = [
-    "Transforming vision into reality.",
-    "Building strength through resilience.",
-    "Connecting communities for change.",
-    "Together, we build tomorrow.",
+    "Innovating education with AI-driven solutions.",
+    "From the field to the future of EdTech.",
+    "Turning research into transformative learning tools.",
+    "Empowering the next generation through technology.",
   ];
 
   const {scrollYProgress} = useScroll({
