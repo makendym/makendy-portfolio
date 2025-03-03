@@ -1,6 +1,6 @@
 "use client";
 import React, {useEffect} from "react";
-import {Box, Typography} from "@mui/material";
+import {Box, Typography, Divider} from "@mui/material";
 import Image from "next/image";
 import {landingPageImage} from "../assets";
 import {pageGradientBackground} from "../assets";
@@ -24,7 +24,7 @@ const LandingPage = () => {
       x: 0,
       opacity: 1,
       transition: {
-        duration: 2,
+        duration: 1,
         delay: delay,
       },
     },
@@ -39,7 +39,7 @@ const LandingPage = () => {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 2.5,
+        duration: 1.5,
         delay: delay,
       },
     },
@@ -131,7 +131,7 @@ const LandingPage = () => {
           left: "50%",
           top: "30%",
           transform: "translate(-50%, -50%)",
-          width: {xs: "95%", sm: "60%", md: "55%",lg:"50%"},
+          width: {xs: "95%", sm: "60%", md: "55%", lg: "50%"},
           maxWidth: "100vw",
           overflow: "visible",
           display: "flex",
@@ -179,7 +179,7 @@ const LandingPage = () => {
         sx={{
           position: "absolute",
           left: {xs: "2%", sm: "3%"},
-          bottom: {xs: "10%", sm: 0 , md: 0},
+          bottom: {xs: "10%", sm: 0, md: 0},
           transform: "translateY(-50%)",
           textAlign: "left",
           width: "auto",
@@ -216,14 +216,14 @@ const LandingPage = () => {
           </Typography>
         </motion.div>
       </Box>
-      {/* Title section */}
+      {/* Title section - Updated with three titles */}
       <Box
         sx={{
           position: "absolute",
-          right: {xs: "5%", sm: "5%"},
+          right: {xs: "2%", sm: "5%"},
           bottom: {xs: "11%", sm: "3%", md: "3%", lg: "3%"},
           transform: "translateY(-50%)",
-          textAlign: "left",
+          textAlign: "right",
           width: "auto",
           minWidth: "max-content",
           overflow: "visible",
@@ -234,37 +234,60 @@ const LandingPage = () => {
           animate={controls}
           variants={fadeUpVariant(1.2)}
         >
-          <Typography
-            variant="h1"
+          <Box
             sx={{
-              fontFamily: "Changa One, sans-serif",
-              fontSize: {xs: "1rem", sm: "2rem", md: "3rem", lg: "4rem"},
-              // lineHeight: 1.2,
-              whiteSpace: "nowrap",
-              display: "block",
+              display: "flex",
+              flexDirection: {xs: "column", md: "column"},
+              alignItems: {xs: "flex-end", md: "flex-end"},
+              gap: {xs: 0, md: 1},
             }}
           >
-            SOFTWARE
-          </Typography>
-          <Typography
-            variant="h1"
-            sx={{
-              fontFamily: "Changa One, sans-serif",
-              fontSize: {xs: "1rem", sm: "2rem", md: "3rem", lg: "4rem"},
-              // lineHeight: 1.2,
-              whiteSpace: "nowrap",
-              display: "block",
-            }}
-          >
-            ENGINEER
-          </Typography>
+            <Typography
+              variant="h1"
+              sx={{
+                fontFamily: "Changa One, sans-serif",
+                fontSize: {xs: ".7rem", sm: "1rem", md: "1.5rem", lg: "2rem"},
+                whiteSpace: "nowrap",
+                display: "block",
+              }}
+            >
+              SOFTWARE ENGINEER
+            </Typography>
+            
+
+            <Typography
+              variant="h1"
+              sx={{
+                fontFamily: "Changa One, sans-serif",
+                fontSize: {xs: ".7rem", sm: "1rem", md: "1.5rem", lg: "2rem"},
+                whiteSpace: "nowrap",
+                display: "block",
+              }}
+            >
+              EDUCATOR
+            </Typography>
+            
+
+            
+            <Typography
+              variant="h1"
+              sx={{
+                fontFamily: "Changa One, sans-serif",
+                fontSize: {xs: ".7rem", sm: "1rem", md: "1.5rem", lg: "2rem"},
+                whiteSpace: "nowrap",
+                display: "block",
+              }}
+            >
+              ENTREPRENEUR
+            </Typography>
+          </Box>
         </motion.div>
       </Box>
       {/* Tagline */}
       <Box
         sx={{
           position: "absolute",
-          right: {xs: "28%", sm: "30%", md: "30%", lg: "0"},
+          right: {xs: "30%", sm: "30%", md: "30%", lg: "0"},
           bottom: {xs: "10%", sm: "6%", md: "7%", lg: "40%"},
           transform: "translateY(-50%)",
           textAlign: "center",
