@@ -192,7 +192,7 @@ const TestimonialsCard = ({testimonials}) => {
         width: "100%",
         margin: "0 auto",
         backgroundColor: "rgba(30, 30, 30, 0.7)",
-        borderRadius: "12px",
+        borderRadius: "36px",
         overflow: "hidden",
         position: "relative",
         boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3)",
