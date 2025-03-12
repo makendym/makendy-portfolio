@@ -32,7 +32,7 @@ const SkillsSection = ({title, isCenter, skillsData = {}}) => {
 
       <Box
         sx={{
-          maxWidth: "110vh",
+          maxWidth: "170vh",
           width: "100%",
           margin: "0 auto",
           minHeight: "30vh",

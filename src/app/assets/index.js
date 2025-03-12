@@ -20,6 +20,8 @@ import treehouse from "./treehouse.jpeg";
 import varsitytutors from "./varsitytutors.jpeg";
 import purpleGlowIcon from "./purpleGlow.jpeg";
 import portfolioProject from "./portfolio-project.png";
+import quoteImage from "./quote-image.svg";
+import testimonialXlab from "./testimonial-xlab.jpeg";
 export {
   aboutMeImage,
   landingPageImage,
@@ -41,4 +43,6 @@ export {
   treehouse,
   varsitytutors,
   purpleGlowIcon,
+  quoteImage,
+  testimonialXlab
 };

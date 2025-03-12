@@ -130,21 +130,58 @@ const AboutSection = () => {
 };
 
 const ResponsiveCardWithCutout = ({isInView, scrollYProgress}) => {
-  const isSmallScreen = useMediaQuery("(max-width: 768px)");
+  const isSmallScreen = useMediaQuery("(max-width: 1050px)");
 
   return isSmallScreen ? (
-    // Small Screen Layout
+    // Small Screen Layout - keeping this unchanged
     <Box
       sx={{
         position: "relative",
-        height: "100%",
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "column", // Align content vertically
         alignItems: "center",
+        width: "100%",
         overflowX: "clip",
-        borderRadius: "34px",
+        marginTop: {xs: "50px", lg: "100px"}, // Adjust spacing for different screens
       }}
     >
+      {/* Image Box (Positioned Above the Text Box) */}
+      <Box
+        sx={{
+          position: "relative",
+          width: {xs: "90%", sm: "80%", md: "60%"}, // Responsive width
+          maxWidth: "900px",
+          display: "flex",
+          justifyContent: "center",
+          overflow: "hidden"
+        }}
+      >
+        <motion.div
+          initial={{y: 100, opacity: 0}}
+          animate={isInView ? {y: 0, opacity: 1} : {y: 100, opacity: 0}}
+          transition={{duration: 0.9, delay: 0.8, ease: "easeIn"}}
+          style={{
+            width: "100%",
+            position: "relative",
+            zIndex: 2,
+            overflow: "hidden"
+          }}
+        >
+          <Image
+            src={aboutMeImage}
+            alt="About Me Image"
+            width={900}
+            height={900}
+            style={{
+              objectFit: "cover",
+              borderRadius: "34px",
+            }}
+          />
+        </motion.div>
+      </Box>
+      {/* Text Box (Stacked Below Image) */}
+
+      {/* Text card below the image */}
       <motion.div
         initial={{y: 50, opacity: 0}}
         animate={isInView ? {y: 0, opacity: 1} : {y: 50, opacity: 0}}
@@ -157,12 +194,12 @@ const ResponsiveCardWithCutout = ({isInView, scrollYProgress}) => {
               maxWidth: "110vh",
               width: "100%",
               margin: "0 auto",
-              height: "90vh",
+              minHeight: "300px", // Reduced height
               backgroundColor: "rgba(36, 36, 36, 100%)",
               boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
               display: "flex",
               flexDirection: "column",
-              justifyContent: "flex-end",
+              justifyContent: "flex-start", // Changed from flex-end
               padding: "2rem",
               textAlign: "center",
               "&:hover": {
@@ -201,118 +238,100 @@ const ResponsiveCardWithCutout = ({isInView, scrollYProgress}) => {
           </Box>
         </motion.div>
       </motion.div>
-
-      <motion.div
-        initial={{y: 100, opacity: 0}}
-        animate={isInView ? {y: -5, opacity: 1} : {y: 100, opacity: 0}}
-        transition={{duration: 0.9, delay: 0.8, ease: "easeIn"}}
-        style={{
-          position: "absolute",
-          width: "100%",
-          top: "0rem",
-          zIndex: 2,
-        }}
-      >
-        <Image
-          src={aboutMeImage}
-          alt="About Me Image"
-          width={900}
-          height={900}
-          style={{
-            objectFit: "cover",
-          }}
-        />
-      </motion.div>
     </Box>
   ) : (
-    // Large Screen Layout
+    // Large Screen Layout - With cutout positioned above container and text at 50% width
     <Box
       sx={{
         overflowX: "clip",
-        borderRadius: "34px",
+        position: "relative",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        marginTop: "100px", // Add space for the image above
       }}
     >
-      <motion.div>
-        <Box
-          sx={{
-            maxWidth: "110vh",
-            margin: "0 auto",
-            padding: "2rem",
-            fontSize: "1.2rem",
-            lineHeight: "1.8",
-            minHeight: "auto",
-            backgroundColor: "rgba(36, 36, 36, 100%)",
-            zIndex: 0,
-            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-            transition: "box-shadow 0.3s ease-in-out",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            "&:hover": {
-              boxShadow: "0 8px 12px rgba(0, 0, 0, 0.2)",
-            },
-            borderRadius: "34px",
-          }}
-        >
-          <motion.div
-            initial={{x: -50, opacity: 0}}
-            animate={isInView ? {x: 0, opacity: 1} : {x: -50, opacity: 0}}
-            transition={{duration: 0.9, delay: 0.6, ease: "easeOut"}}
-            style={{flex: 1, maxWidth: "45%", paddingLeft: "3rem"}}
-          >
-            <Typography
-              variant="body1"
-              sx={{
-                fontSize: "18px",
-                width: "100%",
-                height: "100%",
-                overflow: "hidden",
-                textAlign: "left",
-              }}
-            >
-               Makendy Midouin is a first-generation college graduate whose
-                journey has been fueled by leadership, innovation, and a passion
-                for learning. Excelling in both athletics and academics, he
-                became a league MVP, conference champion, and honor society
-                inductee, demonstrating his drive for excellence across
-                disciplines. His research on bias in virtual reality and his
-                role in raising $125,000 in STEM scholarships reflect his
-                commitment to using technology for meaningful impact. Balancing
-                software engineering, research, and teaching, Makendy has
-                cultivated a career at the intersection of education, AI, and
-                entrepreneurship, developing tech-driven solutions that empower
-                learners worldwide.
-            </Typography>
-          </motion.div>
-        </Box>
-      </motion.div>
-
-      <motion.div
-        initial={{y: 100, opacity: 0}}
-        animate={isInView ? {y: 0, opacity: 1} : {y: 100, opacity: 0}}
-        transition={{duration: 0.9, delay: 0.8, ease: "easeIn"}}
-        style={{
+      {/* Image positioned above the container */}
+      <Box
+        sx={{
           position: "absolute",
-          top: "-6rem",
-          left: "10%",
-          width: "100%",
-          height: "auto",
+          top: "-300px", // Position above container
+          right: {xs: "-10%", sm: "-20%", md: "-12%", lg: "-5%", xl: "10%"}, // Responsive right positioning
           zIndex: 2,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          overflow: "hidden",
         }}
       >
-        <Image
-          src={aboutMeImage}
-          alt="About Me Image"
-          width={900}
-          height={900}
+        <motion.div
+          initial={{y: 100, opacity: 0}}
+          animate={isInView ? {y: 0, opacity: 1} : {y: 100, opacity: 0}}
+          transition={{duration: 0.9, delay: 0.8, ease: "easeIn"}}
+          style={{width: "100%", overflow: "hidden"}}
+        >
+          <Image
+            src={aboutMeImage}
+            alt="About Me Image"
+            width={1000}
+          />
+        </motion.div>
+      </Box>
+
+      {/* Container with background */}
+      <Box
+        sx={{
+          maxWidth: "170vh",
+          width: "100%",
+          margin: "0 auto",
+          position: "relative",
+          backgroundColor: "rgba(36, 36, 36, 100%)",
+          borderRadius: "34px",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+          transition: "box-shadow 0.3s ease-in-out",
+          "&:hover": {
+            boxShadow: "0 8px 12px rgba(0, 0, 0, 0.2)",
+          },
+          display: "flex",
+          minHeight: "400px",
+        }}
+      >
+        {/* Text Box - Taking only 50% of container width */}
+        <motion.div
+          initial={{x: -50, opacity: 0}}
+          animate={isInView ? {x: 0, opacity: 1} : {x: -50, opacity: 0}}
+          transition={{duration: 0.9, delay: 0.6, ease: "easeOut"}}
           style={{
-            objectFit: "cover",
+            width: "50%", // Fixed to 50% of container width
+            padding: "5rem 6rem",
+            display: "flex",
+            alignItems: "center",
           }}
-        />
-      </motion.div>
+        >
+          <Typography
+            variant="body1"
+            sx={{
+              fontSize: "18px",
+              lineHeight: "1.8",
+              overflow: "hidden",
+              textAlign: "left",
+            }}
+          >
+            Makendy Midouin is a first-generation college graduate whose journey
+            has been fueled by leadership, innovation, and a passion for
+            learning. Excelling in both athletics and academics, he became a
+            league MVP, conference champion, and honor society inductee,
+            demonstrating his drive for excellence across disciplines. His
+            research on bias in virtual reality and his role in raising $125,000
+            in STEM scholarships reflect his commitment to using technology for
+            meaningful impact. Balancing software engineering, research, and
+            teaching, Makendy has cultivated a career at the intersection of
+            education, AI, and entrepreneurship, developing tech-driven
+            solutions that empower learners worldwide.
+          </Typography>
+        </motion.div>
+
+        {/* Empty space taking the other 50% */}
+        <Box sx={{width: "50%"}} />
+      </Box>
     </Box>
   );
 };

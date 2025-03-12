@@ -7,7 +7,7 @@ import EducationSection from "./sections/educationSection";
 import WorkSection from "./sections/workSection";
 import ProjectSection from "./sections/projectSection";
 import ContactSection from "./sections/contactSection";
-
+import TestomonialsSection from "./sections/testomonialsSection";
 
 export default function Home() {
   return (
@@ -17,7 +17,8 @@ export default function Home() {
         <AboutSection />
         <EducationSection />
         <WorkSection />
-        <ProjectSection />
+      <ProjectSection />
+      <TestomonialsSection/>
         <ContactSection />
     </ThemeProvider>
   );

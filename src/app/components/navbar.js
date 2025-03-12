@@ -29,7 +29,7 @@ import SchoolIcon from "@mui/icons-material/School";
 import WorkIcon from "@mui/icons-material/Work";
 import CodeIcon from "@mui/icons-material/Code";
 import HomeIcon from "@mui/icons-material/Home";
-
+import FormatQuoteRoundedIcon from '@mui/icons-material/FormatQuoteRounded';
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [contactModalOpen, setContactModalOpen] = useState(false);
@@ -70,10 +70,31 @@ const Navbar = () => {
       title: "Projects",
       icon: <CodeIcon fontSize="large" />,
     },
+    {
+      id: "testimonial-section",
+      title: "Testimonial",
+      icon: <FormatQuoteRoundedIcon fontSize="large" />,
+    },
   ];
   
   // Add this to include home in our sections to track
   const ALL_SECTIONS = ["home", ...NAV_LINKS.map(link => link.id)];
+
+  // Function to handle scrolling to a section
+    const handleScrollToSection = (id) => {
+      if (drawerOpen) {
+        // Set the pending section and close the drawer
+        setPendingSectionId(id);
+        setDrawerOpen(false);
+      } else {
+        // Direct scroll for non-drawer navigation
+        const section = document.getElementById(id);
+        if (section) {
+          window.history.pushState({}, "", `#${id}`);
+          section.scrollIntoView({behavior: "smooth", block: "start"});
+        }
+      }
+    };
 
   // Add this useEffect to handle the mounting state
   useEffect(() => {
@@ -126,62 +147,97 @@ const Navbar = () => {
   }, []);
 
   // Add the scroll spy functionality to detect active section
-  useEffect(() => {
-    const handleScroll = () => {
-      // Debounce scroll events for better performance
-      if (!window.requestAnimationFrame) {
-        // Fallback for browsers without requestAnimationFrame
-        setTimeout(detectActiveSection, 300);
-      } else {
-        window.requestAnimationFrame(detectActiveSection);
-      }
-    };
+// Improved scroll spy functionality to detect active section
+useEffect(() => {
+  // Function to determine which section is most visible in the viewport
+  const detectActiveSection = () => {
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
 
-    const detectActiveSection = () => {
-      // Get all sections
-      const sections = ALL_SECTIONS.map(id => document.getElementById(id)).filter(Boolean);
+    // Get all section elements
+    const sectionElements = ALL_SECTIONS.map(id => document.getElementById(id)).filter(Boolean);
+    if (sectionElements.length === 0) return;
+
+    // Get the viewport height and current scroll position
+    const viewportHeight = window.innerHeight;
+    const scrollTop = window.scrollY;
+
+    // Calculate the offset - about 100px from the top for header
+    const offset = 100;
+
+    // Track which section has the most visible area
+    let maxVisibleSection = null;
+    let maxVisibleArea = 0;
+
+    // Loop through all sections to find the one with most visible area
+    sectionElements.forEach(section => {
+      // Get section dimensions and position
+      const rect = section.getBoundingClientRect();
+      const sectionTop = rect.top + scrollTop;
+      const sectionBottom = rect.bottom + scrollTop;
+      const sectionHeight = rect.height;
+
+      // Skip sections with no height
+      if (sectionHeight === 0) return;
+
+      // Calculate how much of the section is visible
+      const visibleTop = Math.max(scrollTop + offset, sectionTop);
+      const visibleBottom = Math.min(scrollTop + viewportHeight, sectionBottom);
       
-      if (sections.length === 0) return;
+      // Calculate visible area (if any)
+      const visibleArea = Math.max(0, visibleBottom - visibleTop);
       
-      // Calculate which section is currently in view
-      const scrollPosition = window.scrollY + 100; // Add offset to account for header height
-      
-      // Find the section that is currently in view
-      let currentSection = sections[0].id;
-      
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
-        // Get the top position of the section
-        const sectionTop = section.offsetTop;
-        
-        if (scrollPosition >= sectionTop) {
-          currentSection = section.id;
-          break;
-        }
+      // If this section has more visible area than our current max, update it
+      if (visibleArea > maxVisibleArea) {
+        maxVisibleArea = visibleArea;
+        maxVisibleSection = section.id;
       }
       
-      // Only update if the active section has changed
-      if (currentSection !== activeSection) {
-        setActiveSection(currentSection);
-        
-        // Update the active nav item for bottom navigation
-        const navIndex = ALL_SECTIONS.indexOf(currentSection);
-        if (navIndex !== -1) {
-          setActiveNavItem(navIndex);
-        }
+      // Special case for sections near the top of the page
+      if (scrollTop < sectionTop + 100 && section.id === 'home') {
+        maxVisibleSection = 'home';
+        maxVisibleArea = viewportHeight; // Prioritize home section when at top
       }
-    };
-    
-    // Initial check for active section
-    detectActiveSection();
-    
-    // Add scroll event listener
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [activeSection]);
+    });
+
+    // Update the active section if we found one with visible area
+    if (maxVisibleSection && maxVisibleSection !== activeSection) {
+      setActiveSection(maxVisibleSection);
+      
+      // Update the active nav item for bottom navigation
+      const navIndex = ALL_SECTIONS.indexOf(maxVisibleSection);
+      if (navIndex !== -1) {
+        setActiveNavItem(navIndex);
+      }
+    }
+  };
+
+  // Debounced scroll handler using requestAnimationFrame
+  let ticking = false;
+  const handleScroll = () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        detectActiveSection();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  };
+  
+  // Initial check for active section
+  detectActiveSection();
+  
+  // Add scroll event listener
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  
+  // Add resize listener to recalculate on window resize
+  window.addEventListener("resize", detectActiveSection, { passive: true });
+  
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+    window.removeEventListener("resize", detectActiveSection);
+  };
+}, [activeSection]);
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
@@ -354,21 +410,6 @@ const Navbar = () => {
     }
   }, [drawerOpen, pendingSectionId]);
 
-  // Simplified handleScrollToSection function (unchanged)
-  const handleScrollToSection = (id) => {
-    if (drawerOpen) {
-      // Set the pending section and close the drawer
-      setPendingSectionId(id);
-      setDrawerOpen(false);
-    } else {
-      // Direct scroll for non-drawer navigation
-      const section = document.getElementById(id);
-      if (section) {
-        window.history.pushState({}, "", `#${id}`);
-        section.scrollIntoView({behavior: "smooth", block: "start"});
-      }
-    }
-  };
   
   const drawerContent = (
     <Box
@@ -831,7 +872,7 @@ const Navbar = () => {
                   color: activeSection === link.id ? "#7c9e9e" : "#FFFFFF",
                   "& .MuiBottomNavigationAction-label": {
                     fontFamily: "Changa, sans-serif",
-                    fontSize: "0.75rem",
+                    fontSize: "0.7rem",
                     overflow: "hidden",
                     color: activeSection === link.id ? "#7c9e9e" : "#FFFFFF",
                   },
