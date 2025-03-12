@@ -72,7 +72,7 @@ const Navbar = () => {
     },
     {
       id: "testimonial-section",
-      title: "Testimonial",
+      title: "Testimonials",
       icon: <FormatQuoteRoundedIcon fontSize="large" />,
     },
   ];
