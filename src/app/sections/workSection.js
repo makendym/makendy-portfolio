@@ -25,11 +25,18 @@ const workExperience = [
     icon: stac,
   },
   {
+    role: "Lead Coding Instructor",
+    company: "Brains & Motion Education",
+    date: "Jun 2024 - Aug 2024",
+    icon: bam,
+  },
+  {
     role: "Freelance Software Engineer",
     company: "Independent Contractor",
     date: "Jun 2023 - Jan 2024",
     icon: purpleGlowIcon,
   },
+
   {
     role: "Software Engineer Intern",
     company: "Roadcall.co",
