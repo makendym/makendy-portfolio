@@ -22,67 +22,8 @@ import {
   nyuInterview,
   portfolioProject,
 } from "../assets";
+import { projects } from "../constants";
 
-const projects = [
-  {
-    title: "The Virtual Mirror",
-    description:
-      "Bias-revealing VR journey that places students in immersive scenarios to expose hidden prejudices about weight, race, and gender. Designed to spark self-reflection and personal transformation.",
-    image: xlabProject.src,
-    size: "large",
-    link: "https://github.com/makendym/-Finding-Discrimination-using-Virtual-Reality",
-    video: "https://d3lh4iw97b9uun.cloudfront.net/xlab.mp4",
-  },
-  {
-    title: "AP CompTutor",
-    description:
-      "AI-powered study buddy that creates custom practice questions to help sharpen coding skills and ace the AP CSA exam.",
-    image: apComptutor.src,
-    size: "medium",
-    link: "https://github.com/makendym/APCompTutor",
-  },
-  {
-    title: "Stack Overflow",
-    description:
-      "StackOverflow ecosystem explorer that transforms vast forum data into interactive visual narratives, answering key questions about the developer community's digital conversations.",
-    image: stackOverflow.src,
-    size: "small",
-    link: "https://github.com/makendym/StackOverflow-BigData",
-  },
-
-  {
-    title: "NYU Interview Prep",
-    description:
-      "Career matchmaker for NYU students, connecting those with shared professional interests and career paths.",
-    image: nyuInterview.src,
-    size: "medium",
-    link: "https://github.com/makendym/NYU-Interview-Prep",
-  },
-  {
-    title: "Purple Glow",
-    description:
-      "One-tap booking system that simplifies scheduling and payment for cleaning services, turning booking chaos into seamless user experience.",
-    image: purpleGlow.src,
-    size: "medium",
-    link: "https://github.com/makendym/Cleaning-Service-app",
-  },
-  {
-    title: "Fat Ear",
-    description:
-      "Dynamic music streaming platform that uses advanced SQL queries, offering seamless login, personalized playlists, and fast song search.",
-    image: fatEar.src,
-    size: "small",
-    link: "https://github.com/makendym/FatEar",
-  },
-  {
-    title: "Portfolio Design",
-    description:
-      "A clean, intuitive Figma design showcasing Makendy’s journey with easy navigation and key achievements.",
-    image: portfolioProject.src,
-    size: "small",
-    link: "https://www.figma.com/design/FeKGi60NgShEUTddoupNSt/Portfolio-Page?node-id=0-1&t=iTMwYYVWYHnklRYx-1",
-  },
-];
 
 const ProjectCard = ({title, description, image, size, link, video}) => {
   const cardRef = useRef(null);

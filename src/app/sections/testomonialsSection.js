@@ -10,8 +10,7 @@ import {
 } from "framer-motion";
 import {Box} from "@mui/material";
 import {quoteImage, testimonialXlab, pageGradientBackground} from "../assets";
-import ContactForm from "../components/contactForm";
-
+import { testimonialData } from "../constants";
 const TestomonialsSection = () => {
   const sectionRef = useRef(null);
   const cardRef = useRef(null);
@@ -423,24 +422,3 @@ const TestimonialsCard = ({testimonials}) => {
     </Box>
   );
 };
-
-const testimonialData = [
-  {
-    testimonial:
-      "Makendy was an outstanding team player during our college capstone project. His ability to break down complex problems and lead development efforts was crucial to our success.",
-    collaboration: "University Capstone Project",
-    author: "John Doe, Software Engineer at Google",
-  },
-  {
-    testimonial:
-      "I mentored Makendy during his internship, and his curiosity and problem-solving skills were impressive. He took initiative and delivered beyond expectations.",
-    collaboration: "Summer Internship at XYZ Corp",
-    author: "Jane Smith, CTO at Startup ABC",
-  },
-  {
-    testimonial:
-      "Makendy's passion for education technology was evident when we worked together at a summer coding camp. His ability to connect with students and simplify complex concepts was remarkable.",
-    collaboration: "STEM Summer Coding Camp Instructor",
-    author: "Emily Johnson, Senior Product Manager at EdTech Co.",
-  },
-];

@@ -3,7 +3,7 @@ import React, {useRef, useEffect, useState} from "react";
 import {motion, useScroll, useTransform} from "framer-motion";
 import {Typography, Box, IconButton} from "@mui/material";
 import {styled} from "@mui/material/styles";
-
+import { headings } from "../constants";
 const Container = styled("div")({
   position: "relative",
   height: "300vh",
@@ -53,13 +53,6 @@ export const TextParallaxContentExample = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isInView, setIsInView] = useState(true);
   const [userPaused, setUserPaused] = useState(false);
-
-  const headings = [
-    "Innovating education with AI-driven solutions.",
-    "From the field to the future of EdTech.",
-    "Turning research into transformative learning tools.",
-    "Empowering the next generation through technology.",
-  ];
 
   const {scrollYProgress} = useScroll({
     target: containerRef,
@@ -172,6 +165,7 @@ export const TextParallaxContentExample = () => {
           key={index}
           heading={heading}
           index={index}
+          style={{ textOverflow: "hidden", }}
         />
       ))}
       <ControlButton 
@@ -244,7 +238,7 @@ const OverlayCopy = ({heading, index}) => {
   const opacity = useTransform(scrollYProgress, [0.1, 0.5, 0.75], [0, 1, 0]);
 
   return (
-    <TextContainer ref={ref}>
+    <TextContainer ref={ref} style={{textOverflow: "hidden",}}>
       <Box
         sx={{
           height: "100%",
@@ -254,9 +248,10 @@ const OverlayCopy = ({heading, index}) => {
           justifyContent: "center",
           position: "relative",
           zIndex: 10,
+          textOverflow: "hidden",
         }}
       >
-        <motion.div style={{y, opacity}}>
+        <motion.div style={{y, opacity, textOverflow: "hidden",}}>
           <Typography
             variant="h2"
             sx={{
@@ -275,6 +270,7 @@ const OverlayCopy = ({heading, index}) => {
                 md: "60%",
               },
               margin: "0 auto",
+              textOverflow: "hidden",
             }}
           >
             {heading}

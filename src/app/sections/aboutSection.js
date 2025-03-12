@@ -6,7 +6,7 @@ import Image from "next/image";
 import {motion, useInView, useTransform, useScroll} from "framer-motion";
 import {useRef} from "react";
 import SkillsSection from "./skillsSection";
-
+import {skillsDataAbout, aboutText} from "../constants";
 const AboutSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, {
@@ -120,7 +120,7 @@ const AboutSection = () => {
             />
             <SkillsSection
               title="Skills"
-              skillsData={skillsData}
+              skillsData={skillsDataAbout}
             />
           </Box>
         </section>
@@ -153,7 +153,7 @@ const ResponsiveCardWithCutout = ({isInView, scrollYProgress}) => {
           maxWidth: "900px",
           display: "flex",
           justifyContent: "center",
-          overflow: "hidden"
+          overflow: "hidden",
         }}
       >
         <motion.div
@@ -164,7 +164,7 @@ const ResponsiveCardWithCutout = ({isInView, scrollYProgress}) => {
             width: "100%",
             position: "relative",
             zIndex: 2,
-            overflow: "hidden"
+            overflow: "hidden",
           }}
         >
           <Image
@@ -221,18 +221,7 @@ const ResponsiveCardWithCutout = ({isInView, scrollYProgress}) => {
                   overflow: "hidden",
                 }}
               >
-                Makendy Midouin is a first-generation college graduate whose
-                journey has been fueled by leadership, innovation, and a passion
-                for learning. Excelling in both athletics and academics, he
-                became a league MVP, conference champion, and honor society
-                inductee, demonstrating his drive for excellence across
-                disciplines. His research on bias in virtual reality and his
-                role in raising $125,000 in STEM scholarships reflect his
-                commitment to using technology for meaningful impact. Balancing
-                software engineering, research, and teaching, Makendy has
-                cultivated a career at the intersection of education, AI, and
-                entrepreneurship, developing tech-driven solutions that empower
-                learners worldwide.
+                {aboutText}
               </Typography>
             </motion.div>
           </Box>
@@ -315,17 +304,7 @@ const ResponsiveCardWithCutout = ({isInView, scrollYProgress}) => {
               textAlign: "left",
             }}
           >
-            Makendy Midouin is a first-generation college graduate whose journey
-            has been fueled by leadership, innovation, and a passion for
-            learning. Excelling in both athletics and academics, he became a
-            league MVP, conference champion, and honor society inductee,
-            demonstrating his drive for excellence across disciplines. His
-            research on bias in virtual reality and his role in raising $125,000
-            in STEM scholarships reflect his commitment to using technology for
-            meaningful impact. Balancing software engineering, research, and
-            teaching, Makendy has cultivated a career at the intersection of
-            education, AI, and entrepreneurship, developing tech-driven
-            solutions that empower learners worldwide.
+            {aboutText}
           </Typography>
         </motion.div>
 
@@ -337,43 +316,3 @@ const ResponsiveCardWithCutout = ({isInView, scrollYProgress}) => {
 };
 
 export default AboutSection;
-
-const skillsData = {
-  "Programming Languages": [
-    "Java",
-    "JavaScript",
-    "Python",
-    "C#",
-    "C++",
-    "HTML",
-    "CSS",
-    "SQL",
-  ],
-  "Frameworks & Libraries": [
-    "React",
-    "Next.js",
-    "Node.js",
-    "Express",
-    "Django",
-    "Flask",
-    "Bootstrap",
-  ],
-  "Cloud & DevOps": [
-    "AWS",
-    "Git",
-    "GitHub",
-    "CI/CD Pipelines",
-    "MongoDB",
-    "PostgreSQL",
-    "MySQL",
-  ],
-  "Tools & Technologies": [
-    "Hadoop",
-    "Spark",
-    "Unity",
-    "Figma",
-    "OpenAI API",
-    "Virtual Reality",
-    "Agile/Scrum",
-  ],
-};

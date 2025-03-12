@@ -11,6 +11,7 @@ import {
   stacLogo,
   pageGradientBackground,
 } from "../assets";
+import { educationData } from "../constants";
 
 const EducationCard = ({
   imagePath,
@@ -219,30 +220,6 @@ const EducationSection = () => {
   const scale = useTransform(scrollYProgress, [0, 0.4], [0.8, 1]);
   const opacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
   const borderRadius = useTransform(scrollYProgress, [0, 0.5], ["34px", "0px"]);
-
-  const educationData = [
-    {
-      imagePath: nyuBannerEducation.src,
-      logo: nyuLogo.src,
-      schoolName: "New York University",
-      degree: "M.S in Computer Science",
-      title: "Community-Driven Growth",
-      description:
-        "At NYU, Makendy deepened his technical expertise and entrepreneurial vision through the Master’s in Computer Science program. His studies were enriched by participation in the NYU Entrepreneurial Institute’s Startup Accelerator Program, where he refined his approach to innovation and business development. He applied his skills in an internship at a trucking logistics startup, co-designing platform features to solve real-world challenges. This period of academic and professional growth solidified his commitment to creating technology that enhances education.",
-      graduationDate: "Dec 2024",
-    },
-    {
-      imagePath: stacTrackEducation.src,
-      logo: stacLogo.src,
-      schoolName: "St. Thomas Aquinas College",
-      degree: "B.S in Computer Science",
-      title: "Lessons Beyond the Field",
-      description:
-        "Makendy’s time at STAC was transformative, combining athletic excellence with academic rigor. As part of a championship-winning track team, he learned how discipline and teamwork drive success. His research at XLAB on bias in virtual reality sharpened his analytical thinking, while induction into Chi Alpha Sigma and Sigma Zeta recognized his commitment to excellence. Representing the School of STEM at fundraising events and securing his first software engineering internship at Treehouse Strategy laid the foundation for his career at the intersection of technology and education.",
-      graduationDate: "May 2022",
-      imageStyle: {objectFit: "cover", objectPosition: "center"},
-    },
-  ];
 
   return (
     <Box
