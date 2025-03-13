@@ -173,9 +173,9 @@ const projects = [
 const testimonialData = [
   {
     testimonial:
-      "Makendy was an outstanding team player during our college capstone project. His ability to break down complex problems and lead development efforts was crucial to our success.",
-    collaboration: "University Capstone Project",
-    author: "John Doe, Software Engineer at Google",
+      "Makendy has worked with me on multiple projects, notably the XLAB Discrimination research using virtual reality. His ability to learn new technologies and work within a group proved to me that he is quite a dependable team-player.",
+    collaboration: "XLAB VR Research Project at STAC",
+    author: "Taulant Xhakli, Assistant Application Analyst at Montefiore Einstein Technology",
   },
   {
     testimonial:

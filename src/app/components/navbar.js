@@ -572,6 +572,7 @@ useEffect(() => {
           boxShadow: "none",
           px: 2,
           top: 0,
+          py: 2,
           // Always maintain highest z-index regardless of drawer state
           zIndex: 40001,
           visibility: isMounted ? "visible" : "hidden",
