@@ -179,9 +179,9 @@ const testimonialData = [
   },
   {
     testimonial:
-      "I mentored Makendy during his internship, and his curiosity and problem-solving skills were impressive. He took initiative and delivered beyond expectations.",
-    collaboration: "Summer Internship at XYZ Corp",
-    author: "Jane Smith, CTO at Startup ABC",
+      "Makendy has been tutoring me in Java for several months. His style of teaching adapts to my learning style breaking down complex concepts into clear, understandable fundamentals. His patience and ability to explain things step by step have made a huge difference in my understanding of the language. I truly appreciate his support and highly recommend him to anyone looking to strengthen their Java or any programming skills!",
+    collaboration: "One-on-One Tutoring at Varsity Tutors",
+    author: "Despina Kotanidis, Lead Data Analyst at Arora Engineers",
   },
   {
     testimonial:

@@ -1,6 +1,5 @@
 "use client";
-import React, {useRef, useState, useEffect} from "react";
-import Image from "next/image";
+import React, { useRef, useState, useEffect } from "react";
 import {
   motion,
   useInView,
@@ -8,22 +7,25 @@ import {
   useScroll,
   AnimatePresence,
 } from "framer-motion";
-import {Box} from "@mui/material";
-import {quoteImage, testimonialXlab, pageGradientBackground} from "../assets";
+import { Box } from "@mui/material";
+import { quoteImage, testimonialXlab } from "../assets";
 import { testimonialData } from "../constants";
-const TestomonialsSection = () => {
+
+const TestimonialsSection = () => {
   const sectionRef = useRef(null);
   const cardRef = useRef(null);
-  const isInView = useInView(cardRef, {once: false, margin: "-20% 0px"});
+  const isInView = useInView(cardRef, { once: false, margin: "-20% 0px" });
 
-  const {scrollYProgress} = useScroll({
+  const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
   });
 
+  // Memoize transform values to reduce recalculations
   const scale = useTransform(scrollYProgress, [0, 0.4], [0.8, 1]);
   const opacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
   const borderRadius = useTransform(scrollYProgress, [0, 0.5], ["34px", "0px"]);
+
   return (
     <motion.div
       ref={sectionRef}
@@ -32,6 +34,7 @@ const TestomonialsSection = () => {
         scale,
         opacity,
         borderRadius,
+        willChange: "transform, opacity", // Performance hint for browsers
       }}
     >
       <Box
@@ -57,20 +60,25 @@ const TestomonialsSection = () => {
             backgroundSize: "cover",
             backgroundPosition: "center",
             opacity: 0.2,
+            // Apply transform for better performance (uses GPU)
+            transform: "translateZ(0)",
           }}
         />
         <motion.div
           ref={cardRef}
-          initial={{x: 100, opacity: 0}} // Start off-screen to the right
-          animate={isInView ? {x: 0, opacity: 1} : {x: 100, opacity: 0}} // Slide in
-          transition={{duration: 0.9, ease: "easeOut"}}
-          style={{width: "100%"}} // Ensures full width
+          initial={{ x: 100, opacity: 0 }}
+          animate={isInView ? { x: 0, opacity: 1 } : { x: 100, opacity: 0 }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
+          style={{ 
+            width: "100%",
+            willChange: "transform, opacity", // Performance hint
+          }}
         >
           <Box
             component="section"
             sx={{
               color: "#FFFFFF",
-              padding: {xs: "60px 20px", md: "100px 80px"},
+              padding: { xs: "60px 20px", md: "100px 80px" },
               width: "100%",
               position: "relative",
               display: "flex",
@@ -86,26 +94,104 @@ const TestomonialsSection = () => {
   );
 };
 
-export default TestomonialsSection;
+export default TestimonialsSection;
 
-const TestimonialsCard = ({testimonials}) => {
+const TestimonialsCard = ({ testimonials }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dragStart, setDragStart] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const swipeThreshold = 50; // Minimum distance to trigger a swipe
-
+  const swipeThreshold = 50;
+  
+  // Cache testimonial dimensions to prevent layout shifts
+  const [contentHeight, setContentHeight] = useState({
+    testimonial: 0,
+    collaboration: 0,
+    author: 0
+  });
+  
+  // Ref to measure content
+  const testimonialRef = useRef(null);
+  const collaborationRef = useRef(null);
+  const authorRef = useRef(null);
+  
   // Auto-rotate testimonials
   useEffect(() => {
-    // Only auto-rotate if not dragging or animating
     if (!isDragging && !isAnimating) {
       const interval = setInterval(() => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-      }, 5000); // Change testimonial every 5 seconds
+      }, 5000);
 
       return () => clearInterval(interval);
     }
   }, [testimonials.length, isDragging, isAnimating]);
+
+  // Pre-calculate maximum heights for each section to prevent CLS
+  useEffect(() => {
+    // Function to calculate heights of all testimonials to find maximum
+    const calculateMaxHeights = () => {
+      // Create temporary elements to measure text heights
+      const tempDiv = document.createElement('div');
+      tempDiv.style.position = 'absolute';
+      tempDiv.style.visibility = 'hidden';
+      tempDiv.style.width = testimonialRef.current?.offsetWidth + 'px';
+      
+      // Set the same styling as the real elements
+      tempDiv.style.fontSize = window.innerWidth < 900 ? '18px' : '24px';
+      tempDiv.style.fontWeight = '500';
+      tempDiv.style.padding = window.innerWidth < 900 ? '0 20px' : '0 40px';
+      tempDiv.style.textAlign = 'center';
+      
+      document.body.appendChild(tempDiv);
+      
+      let maxTestimonialHeight = 0;
+      let maxCollabHeight = 0;
+      let maxAuthorHeight = 0;
+      
+      testimonials.forEach(item => {
+        // Measure testimonial text height
+        tempDiv.textContent = item.testimonial;
+        const testimonialHeight = tempDiv.offsetHeight;
+        maxTestimonialHeight = Math.max(maxTestimonialHeight, testimonialHeight);
+        
+        // Measure collaboration text height
+        tempDiv.textContent = item.collaboration;
+        tempDiv.style.fontSize = '16px';
+        const collabHeight = tempDiv.offsetHeight;
+        maxCollabHeight = Math.max(maxCollabHeight, collabHeight);
+        
+        // Measure author text height
+        tempDiv.textContent = item.author;
+        tempDiv.style.fontSize = '14px';
+        tempDiv.style.fontStyle = 'italic';
+        const authorHeight = tempDiv.offsetHeight;
+        maxAuthorHeight = Math.max(maxAuthorHeight, authorHeight);
+        
+        // Reset for next measurement
+        tempDiv.style.fontSize = window.innerWidth < 900 ? '18px' : '24px';
+        tempDiv.style.fontStyle = 'normal';
+      });
+      
+      document.body.removeChild(tempDiv);
+      
+      // Add some buffer space
+      setContentHeight({
+        testimonial: maxTestimonialHeight + 40, // Extra space for margin
+        collaboration: maxCollabHeight + 10,
+        author: maxAuthorHeight + 10
+      });
+    };
+    
+    // Calculate on initial load and window resize
+    calculateMaxHeights();
+    
+    const handleResize = () => {
+      calculateMaxHeights();
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [testimonials]);
 
   const handleDotClick = (index) => {
     if (isAnimating || index === currentIndex) return;
@@ -127,8 +213,6 @@ const TestimonialsCard = ({testimonials}) => {
   // Handle touch/mouse events for swiping
   const handleDragStart = (e) => {
     if (isAnimating) return;
-
-    // Capture start position of touch or mouse
     const clientX = e.type.includes("mouse") ? e.clientX : e.touches[0].clientX;
     setDragStart(clientX);
     setIsDragging(true);
@@ -136,8 +220,6 @@ const TestimonialsCard = ({testimonials}) => {
 
   const handleDragEnd = (e) => {
     if (!isDragging || isAnimating) return;
-
-    // Get end position
     const clientX = e.type.includes("mouse")
       ? e.clientX
       : e.changedTouches
@@ -145,13 +227,10 @@ const TestimonialsCard = ({testimonials}) => {
       : dragStart;
     const delta = dragStart - clientX;
 
-    // Determine if swipe was significant enough
     if (Math.abs(delta) > swipeThreshold) {
       if (delta > 0) {
-        // Swiped left, go to next
         nextTestimonial();
       } else {
-        // Swiped right, go to previous
         prevTestimonial();
       }
     }
@@ -161,22 +240,16 @@ const TestimonialsCard = ({testimonials}) => {
 
   const handleDragMove = (e) => {
     if (!isDragging || isAnimating) return;
-
-    // Prevent default to avoid scrolling on touch devices
     e.preventDefault();
   };
 
   const currentTestimonial = testimonials[currentIndex];
-
-  // Track swipe direction for proper animations
   const [[page, direction], setPage] = useState([0, 0]);
 
   useEffect(() => {
-    // Update page and direction when currentIndex changes
     setPage([currentIndex, currentIndex > page[0] ? 1 : -1]);
   }, [currentIndex, page]);
 
-  // Animation handlers to prevent multiple animations
   const handleAnimationStart = () => {
     setIsAnimating(true);
   };
@@ -188,7 +261,7 @@ const TestimonialsCard = ({testimonials}) => {
   return (
     <Box
       sx={{
-        maxWidth: {xs: "100%", md: "700px"},
+        maxWidth: { xs: "100%", md: "700px" },
         width: "100%",
         margin: "0 auto",
         backgroundColor: "rgba(30, 30, 30, 0.7)",
@@ -196,11 +269,10 @@ const TestimonialsCard = ({testimonials}) => {
         overflow: "hidden",
         position: "relative",
         boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3)",
-        padding: {xs: "40px 20px", md: "50px 40px"},
+        padding: { xs: "40px 20px", md: "50px 40px" },
         cursor: isDragging ? "grabbing" : "grab",
-        userSelect: "none", // Prevent text selection during swipe
+        userSelect: "none",
       }}
-      // Add event listeners for both touch and mouse events
       onTouchStart={handleDragStart}
       onTouchMove={handleDragMove}
       onTouchEnd={handleDragEnd}
@@ -216,6 +288,7 @@ const TestimonialsCard = ({testimonials}) => {
           display: "flex",
           justifyContent: "center",
           marginBottom: "20px",
+          height: "60px", // Fixed height for icon
         }}
       >
         <Box
@@ -224,36 +297,53 @@ const TestimonialsCard = ({testimonials}) => {
           alt="Quote"
           sx={{
             height: "60px",
+            width: "auto",
           }}
         />
       </Box>
 
-      {/* Testimonial text */}
-      <Box sx={{minHeight: "200px", position: "relative", overflow: "hidden"}}>
-        <AnimatePresence
-          initial={false}
-          mode="wait"
-        >
+      {/* Testimonial text with pre-calculated height */}
+      <Box 
+        sx={{
+          height: contentHeight.testimonial,
+          position: "relative",
+          overflow: "hidden",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        ref={testimonialRef}
+      >
+        <AnimatePresence initial={false} mode="wait">
           <motion.div
             key={`testimonial-${currentIndex}`}
-            initial={{opacity: 0, x: direction > 0 ? 100 : -100}}
-            animate={{opacity: 1, x: 0}}
-            exit={{opacity: 0, x: direction < 0 ? 100 : -100}}
-            transition={{duration: 0.4, ease: "easeInOut"}}
+            initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: direction < 0 ? 100 : -100 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
             onAnimationStart={handleAnimationStart}
             onAnimationComplete={handleAnimationComplete}
             style={{
-              position: "absolute",
               width: "100%",
+              textAlign: "center",
             }}
           >
             <Box
               sx={{
-                fontSize: {xs: "18px", md: "24px"},
+                fontSize: { xs: "18px", md: "24px" },
                 fontWeight: "500",
                 color: "#FFFFFF",
                 textAlign: "center",
-                padding: {xs: "0 20px", md: "0 40px"},
+                padding: { xs: "0 20px", md: "0 40px" },
+                // Use text-overflow for very long content
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: {
+                  xs: Math.floor(contentHeight.testimonial / 24), // Approximate line count
+                  md: Math.floor(contentHeight.testimonial / 30)
+                },
+                WebkitBoxOrient: "vertical",
               }}
             >
               {currentTestimonial.testimonial}
@@ -262,27 +352,27 @@ const TestimonialsCard = ({testimonials}) => {
         </AnimatePresence>
       </Box>
 
-      {/* Collaboration */}
+      {/* Collaboration with fixed height */}
       <Box
         sx={{
-          minHeight: "30px",
+          height: contentHeight.collaboration,
           position: "relative",
           marginTop: "10px",
           overflow: "hidden",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
+        ref={collaborationRef}
       >
-        <AnimatePresence
-          initial={false}
-          mode="wait"
-        >
+        <AnimatePresence initial={false} mode="wait">
           <motion.div
             key={`collab-${currentIndex}`}
-            initial={{opacity: 0, x: direction > 0 ? 100 : -100}}
-            animate={{opacity: 1, x: 0}}
-            exit={{opacity: 0, x: direction < 0 ? 100 : -100}}
-            transition={{duration: 0.4, ease: "easeInOut", delay: 0.1}}
+            initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: direction < 0 ? 100 : -100 }}
+            transition={{ duration: 0.4, ease: "easeInOut", delay: 0.1 }}
             style={{
-              position: "absolute",
               width: "100%",
               display: "flex",
               justifyContent: "center",
@@ -301,28 +391,28 @@ const TestimonialsCard = ({testimonials}) => {
         </AnimatePresence>
       </Box>
 
-      {/* Author */}
+      {/* Author with fixed height */}
       <Box
         sx={{
-          minHeight: "50px",
+          height: contentHeight.author,
           position: "relative",
           marginTop: "30px",
           marginBottom: "30px",
           overflow: "hidden",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
+        ref={authorRef}
       >
-        <AnimatePresence
-          initial={false}
-          mode="wait"
-        >
+        <AnimatePresence initial={false} mode="wait">
           <motion.div
             key={`author-${currentIndex}`}
-            initial={{opacity: 0, x: direction > 0 ? 100 : -100}}
-            animate={{opacity: 1, x: 0}}
-            exit={{opacity: 0, x: direction < 0 ? 100 : -100}}
-            transition={{duration: 0.4, ease: "easeInOut", delay: 0.2}}
+            initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: direction < 0 ? 100 : -100 }}
+            transition={{ duration: 0.4, ease: "easeInOut", delay: 0.2 }}
             style={{
-              position: "absolute",
               width: "100%",
               textAlign: "center",
             }}
@@ -346,7 +436,8 @@ const TestimonialsCard = ({testimonials}) => {
           display: "flex",
           justifyContent: "center",
           gap: "8px",
-          marginTop: "50px",
+          marginTop: "20px",
+          height: "8px", // Fixed height for indicators
         }}
       >
         {testimonials.map((_, index) => (
@@ -377,7 +468,9 @@ const TestimonialsCard = ({testimonials}) => {
           right: 0,
           transform: "translateY(-50%)",
           padding: "0 10px",
-          pointerEvents: isAnimating ? "none" : "auto", // Disable during animation
+          pointerEvents: isAnimating ? "none" : "auto",
+          // Fixed size to prevent layout shifts
+          height: "40px",
         }}
       >
         <Box
@@ -394,7 +487,8 @@ const TestimonialsCard = ({testimonials}) => {
             color: "white",
             fontSize: "20px",
             opacity: isAnimating ? 0.3 : 0.7,
-            "&:hover": {opacity: isAnimating ? 0.3 : 1},
+            "&:hover": { opacity: isAnimating ? 0.3 : 1 },
+            transform: "translateZ(0)", // Hardware acceleration
           }}
         >
           ←
@@ -413,7 +507,8 @@ const TestimonialsCard = ({testimonials}) => {
             color: "white",
             fontSize: "20px",
             opacity: isAnimating ? 0.3 : 0.7,
-            "&:hover": {opacity: isAnimating ? 0.3 : 1},
+            "&:hover": { opacity: isAnimating ? 0.3 : 1 },
+            transform: "translateZ(0)", // Hardware acceleration
           }}
         >
           →
