@@ -509,7 +509,7 @@ useEffect(() => {
               paddingX: 2,
               whiteSpace: "nowrap",
               backgroundColor: "#7c9e9e",
-              borderRadius: "36px",
+              borderRadius: "34px",
             }}
           >
             <Typography

@@ -17,7 +17,7 @@ const SkillsSection = ({title, isCenter, skillsData = {}}) => {
       ref={sectionRef}
       id="skills-section"
     >
-      <Box sx={{marginBottom: 2, paddingTop:2}}>
+      <Box sx={{marginBottom: 2, paddingTop:2 ,margin: "0 auto"}}>
         <Typography
           variant="h2"
           component="h2"

@@ -6,62 +6,8 @@ import {motion, useInView, useTransform, useScroll} from "framer-motion";
 import {useRef} from "react";
 import {pageGradientBackground} from "../assets";
 import SkillsSection from "./skillsSection";
-import {
-  stacLogo,
-  bam,
-  roadcall,
-  stac,
-  treehouse,
-  varsitytutors,
-  purpleGlowIcon,
-} from "../assets";
+import {skillsDataWork,workExperience} from "../constants";
 
-// Work experience data remains the same
-const workExperience = [
-  {
-    role: "Computer Science Adjunct Faculty",
-    company: "St. Thomas Aquinas College",
-    date: "Sep 2024 - Present",
-    icon: stac,
-  },
-  {
-    role: "Lead Coding Instructor",
-    company: "Brains & Motion Education",
-    date: "Jun 2024 - Aug 2024",
-    icon: bam,
-  },
-  {
-    role: "Freelance Software Engineer",
-    company: "Independent Contractor",
-    date: "Jun 2023 - Jan 2024",
-    icon: purpleGlowIcon,
-  },
-
-  {
-    role: "Software Engineer Intern",
-    company: "Roadcall.co",
-    date: "Jun 2023 - Sep 2023",
-    icon: roadcall,
-  },
-  {
-    role: "Software Engineer Intern",
-    company: "Treehouse Strategy and Communications",
-    date: "May 2021 - Sep 2021",
-    icon: treehouse,
-  },
-  {
-    role: "Computer Science Tutor",
-    company: "Varsity Tutor",
-    date: "May 2020 - Sep 2023",
-    icon: varsitytutors,
-  },
-  {
-    role: "XLAB Researcher",
-    company: "St. Thomas Aquinas College",
-    date: "Sep 2019 - May 2022",
-    icon: stac,
-  },
-];
 
 const TimelineItem = ({role, company, date, icon, isInView, index, isLast}) => {
   return (
@@ -294,9 +240,8 @@ const WorkSection = () => {
               display: "flex",
               flexDirection: {xs: "column", md: "row"},
               gap: 4,
-              maxWidth: "1400px",
+              maxWidth: "170vh",
               margin: "0 auto",
-              padding: {xs: "0", md: "0 2rem"},
               alignItems: "stretch", // This ensures children stretch to match heights
             }}
           >
@@ -330,6 +275,7 @@ const WorkSection = () => {
                 backgroundColor: "rgba(36, 36, 36, 1)",
                 boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                 borderRadius: "34px",
+                 margin: "0 auto"
               }}
             >
               <SkillsSection
@@ -341,7 +287,7 @@ const WorkSection = () => {
                   flexDirection: "column",
                 }}
                 isCenter={true}
-                skillsData={skillsData}
+                skillsData={skillsDataWork}
               />
             </Box>
           </Box>
@@ -351,31 +297,6 @@ const WorkSection = () => {
   );
 };
 
-const skillsData = {
-  "Related Skills": [
-    "React",
-    "GraphQL",
-    "Express.js",
-    "Node.js",
-    "MongoDB",
-    "Git",
-    "GitHub",
-    "C++",
-    "Jira",
-    "Redux",
-    "Bit Bucket",
-    "C#",
-    "Rest API",
-    "Agile Scrum",
-    "JavaScript",
-    "Python",
-    "Java",
-    "SQL",
-    "MYSQL",
-    "SFML",
-    "Presentation",
-    "Excel",
-  ],
-};
+
 
 export default WorkSection;

@@ -10,8 +10,15 @@ import {
   purpleGlow,
   fatEar,
   portfolioProject,
+  bam,
+  roadcall,
+  stac,
+  treehouse,
+  varsitytutors,
+  purpleGlowIcon,
 } from "../assets";
 
+const videoUrl = "https://d3lh4iw97b9uun.cloudfront.net/portfolioVid4.mp4";
 const headings = [
   "Innovating education with AI-driven solutions.",
   "From the field to the future of EdTech.",
@@ -83,7 +90,51 @@ const educationData = [
     imageStyle: {objectFit: "cover", objectPosition: "center"},
   },
 ];
+const workExperience = [
+  {
+    role: "Computer Science Adjunct Faculty",
+    company: "St. Thomas Aquinas College",
+    date: "Sep 2024 - Present",
+    icon: stac,
+  },
+  {
+    role: "Lead Coding Instructor",
+    company: "Brains & Motion Education",
+    date: "Jun 2024 - Aug 2024",
+    icon: bam,
+  },
+  {
+    role: "Freelance Software Engineer",
+    company: "Independent Contractor",
+    date: "Jun 2023 - Jan 2024",
+    icon: purpleGlowIcon,
+  },
 
+  {
+    role: "Software Engineer Intern",
+    company: "Roadcall.co",
+    date: "Jun 2023 - Sep 2023",
+    icon: roadcall,
+  },
+  {
+    role: "Software Engineer Intern",
+    company: "Treehouse Strategy and Communications",
+    date: "May 2021 - Sep 2021",
+    icon: treehouse,
+  },
+  {
+    role: "Computer Science Tutor",
+    company: "Varsity Tutor",
+    date: "May 2020 - Sep 2023",
+    icon: varsitytutors,
+  },
+  {
+    role: "XLAB Researcher",
+    company: "St. Thomas Aquinas College",
+    date: "Sep 2019 - May 2022",
+    icon: stac,
+  },
+];
 const skillsDataWork = {
   "Related Skills": [
     "React",
@@ -175,7 +226,8 @@ const testimonialData = [
     testimonial:
       "Makendy has worked with me on multiple projects, notably the XLAB Discrimination research using virtual reality. His ability to learn new technologies and work within a group proved to me that he is quite a dependable team-player.",
     collaboration: "XLAB VR Research Project at STAC",
-    author: "Taulant Xhakli, Assistant Application Analyst at Montefiore Einstein Technology",
+    author:
+      "Taulant Xhakli, Assistant Application Analyst at Montefiore Einstein Technology",
   },
   {
     testimonial:
@@ -185,17 +237,19 @@ const testimonialData = [
   },
   {
     testimonial:
-      "Makendy's passion for education technology was evident when we worked together at a summer coding camp. His ability to connect with students and simplify complex concepts was remarkable.",
-    collaboration: "STEM Summer Coding Camp Instructor",
-    author: "Emily Johnson, Senior Product Manager at EdTech Co.",
+      "Makendy was my right hand man while running Brains and Motion day camp. He was not only a naturally gifted educator, he made himself indispensable with his leadership skills and big picture thinking. Makendy immediately distinguished himself as a world class manager, able to juggle customer support, logistics, and creative problem solving. I lost track of how many times parents took me aside to specifically praise him and his work.",
+    collaboration: "STEM Summer Camp at Brains & Motion",
+    author: "Jack Aman, Camp Director at Brains & Motion",
   },
 ];
 
 export {
+  videoUrl,
   headings,
   aboutText,
   skillsDataAbout,
   educationData,
+  workExperience,
   skillsDataWork,
   projects,
   testimonialData,

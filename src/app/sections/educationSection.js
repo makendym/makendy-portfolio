@@ -4,14 +4,8 @@ import {Box, Typography} from "@mui/material";
 import Image from "next/image";
 import {motion, useInView, useTransform, useScroll} from "framer-motion";
 import {useRef} from "react";
-import {
-  nyuBannerEducation,
-  nyuLogo,
-  stacTrackEducation,
-  stacLogo,
-  pageGradientBackground,
-} from "../assets";
-import { educationData } from "../constants";
+import {pageGradientBackground} from "../assets";
+import {educationData} from "../constants";
 
 const EducationCard = ({
   imagePath,

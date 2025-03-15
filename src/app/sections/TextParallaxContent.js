@@ -3,7 +3,7 @@ import React, {useRef, useEffect, useState} from "react";
 import {motion, useScroll, useTransform} from "framer-motion";
 import {Typography, Box, IconButton} from "@mui/material";
 import {styled} from "@mui/material/styles";
-import { headings } from "../constants";
+import { headings,videoUrl } from "../constants";
 const Container = styled("div")({
   position: "relative",
   height: "300vh",
@@ -156,7 +156,7 @@ export const TextParallaxContentExample = () => {
   return (
     <Container ref={containerRef}>
       <StickyVideo
-        videoUrl="https://d3lh4iw97b9uun.cloudfront.net/xlab.mp4"
+        videoUrl={videoUrl}
         videoRef={videoRef}
         opacity={videoOpacity}
       />
