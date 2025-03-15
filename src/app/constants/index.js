@@ -241,6 +241,12 @@ const testimonialData = [
     collaboration: "STEM Summer Camp at Brains & Motion",
     author: "Jack Aman, Camp Director at Brains & Motion",
   },
+  {
+    testimonial:
+      "Makendy was a standout student in my class at St. Thomas Aquinas College while pursuing his Bachelor's in Computer Science. He demonstrated strong engagement by actively participating in discussions, asking insightful questions, and supporting his peers. His dedication was evident in his consistently timely and high-quality work, often exceeding expectations.",
+    collaboration: "Student at St. Thomas Aquinas College",
+    author: "Paola Garcia Cardenas, Sr. Staff Cybersecurity Engineer & CS/Cybersecurity Adjunct",
+  },
 ];
 
 export {
