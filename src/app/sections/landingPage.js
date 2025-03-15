@@ -207,7 +207,7 @@ const LandingPage = () => {
             textAlign: "right",
             width: "auto",
             minWidth: "max-content",
-            overflow: "hidden",
+            overflow: "visible",
           }}
         >
           <motion.div
@@ -221,6 +221,7 @@ const LandingPage = () => {
                 flexDirection: { xs: "column", md: "column" },
                 alignItems: { xs: "flex-end", md: "flex-end" },
                 gap: { xs: 0, md: 1 },
+                height: "auto",
               }}
             >
               <Typography
