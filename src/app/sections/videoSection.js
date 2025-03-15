@@ -1,6 +1,7 @@
 "use client";
 import React, {useEffect, useRef} from "react";
-import {Box} from "@mui/material";
+import {Box, ThemeProvider} from "@mui/material";
+import theme from "../theme";
 
 const VideoSection = () => {
   const sectionRef = useRef(null);
@@ -44,105 +45,107 @@ const VideoSection = () => {
   }, []);
 
   return (
-    <Box
-      ref={sectionRef}
-      component="section"
-      sx={{
-        height: "400vh",
-        position: "relative",
-        overflow: "visible",
-        // marginTop: "0", // Ensure no gap with previous section
-        // marginBottom: "0", // Ensure no gap with next section
-      }}
-    >
+    <ThemeProvider theme={theme}>
       <Box
+        ref={sectionRef}
+        component="section"
         sx={{
-          position: "sticky",
-          top: 0,
-          width: "100%",
-          height: "100vh",
-          overflow: "hidden", // Contain the video
+          height: "400vh",
+          position: "relative",
+          overflow: "visible",
+          // marginTop: "0", // Ensure no gap with previous section
+          // marginBottom: "0", // Ensure no gap with next section
         }}
       >
         <Box
           sx={{
-            position: "relative", // Container for video
+            position: "sticky",
+            top: 0,
             width: "100%",
-            height: "100%",
-            "&::after": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              background: "rgba(0, 0, 0, 0.3)",
-              pointerEvents: "none",
-            },
+            height: "100vh",
+            overflow: "hidden", // Contain the video
           }}
         >
-          <video
-            ref={videoRef}
-            src="https://d3lh4iw97b9uun.cloudfront.net/xlab.mp4"
-            muted
-            playsInline
-            style={{
+          <Box
+            sx={{
+              position: "relative", // Container for video
               width: "100%",
               height: "100%",
-              objectFit: "cover",
-              position: "absolute",
-              top: 0,
-              left: 0,
-            }}
-          />
-        </Box>
-      </Box>
-
-      <Box
-        sx={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100vh",
-          color: "white",
-          pointerEvents: "none",
-        }}
-      >
-        {[
-          "Transforming vision into reality.",
-          "Building strength through resilience.",
-          "Connecting communities for change.",
-          "Creating impact that matters.",
-        ].map((text, index) => (
-          <Box
-            key={index}
-            sx={{
-              height: "100vh",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              textAlign: "center",
-              width: "100%",
+              "&::after": {
+                content: '""',
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                background: "rgba(0, 0, 0, 0.3)",
+                pointerEvents: "none",
+              },
             }}
           >
+            <video
+              ref={videoRef}
+              src="https://d3lh4iw97b9uun.cloudfront.net/xlab.mp4"
+              muted
+              playsInline
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                position: "absolute",
+                top: 0,
+                left: 0,
+              }}
+            />
+          </Box>
+        </Box>
+
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100vh",
+            color: "white",
+            pointerEvents: "none",
+          }}
+        >
+          {[
+            "Transforming vision into reality.",
+            "Building strength through resilience.",
+            "Connecting communities for change.",
+            "Creating impact that matters.",
+          ].map((text, index) => (
             <Box
-              component="h3"
+              key={index}
               sx={{
-                fontSize: "2.5rem",
-                fontWeight: 400,
-                lineHeight: 1.25,
-                fontFamily: "Changa One, sans-serif",
-                maxWidth: "16ch",
-                textWrap: "balance",
+                height: "100vh",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+                width: "100%",
               }}
             >
-              {text}
+              <Box
+                component="h3"
+                sx={{
+                  fontSize: "2.5rem",
+                  fontWeight: 400,
+                  lineHeight: 1.25,
+                  fontFamily: "Changa One, sans-serif",
+                  maxWidth: "16ch",
+                  textWrap: "balance",
+                }}
+              >
+                {text}
+              </Box>
             </Box>
-          </Box>
-        ))}
+          ))}
+        </Box>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 };
 

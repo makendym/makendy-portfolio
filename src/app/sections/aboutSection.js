@@ -1,12 +1,13 @@
 "use client";
 import React from "react";
-import {Box, Typography, useMediaQuery} from "@mui/material";
+import {Box, Typography, useMediaQuery, ThemeProvider} from "@mui/material";
 import {pageGradientBackground, aboutMeImage} from "../assets";
 import Image from "next/image";
 import {motion, useInView, useTransform, useScroll} from "framer-motion";
 import {useRef} from "react";
 import SkillsSection from "./skillsSection";
 import {skillsDataAbout, aboutText} from "../constants";
+import theme from "../theme";
 const AboutSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, {
@@ -24,108 +25,110 @@ const AboutSection = () => {
   const borderRadius = useTransform(scrollYProgress, [0, 0.5], ["34px", "0px"]);
 
   return (
-    <Box
-      id="about-section"
-      sx={{
-        position: "relative",
-        minHeight: "100vh",
-        width: "100%",
-        overflow: "hidden",
-      }}
-    >
-      {/* Main scaling container */}
-      <motion.div
-        ref={sectionRef}
-        style={{
-          scale,
-          opacity,
-          borderRadius,
-        }}
+    <ThemeProvider theme={theme}>
+      <Box
+        id="about-section"
         sx={{
           position: "relative",
           minHeight: "100vh",
-          zIndex: 1,
-          overflowX: "clip",
+          width: "100%",
+          overflow: "hidden",
         }}
       >
-        {/* Gradient background that scales with the container */}
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundImage: `url(${pageGradientBackground.src})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            transform: "rotate(180deg)",
-            transformOrigin: "center",
-            zIndex: 0,
-          }}
-        />
-
-        {/* Dark overlay that scales with the container */}
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(36, 36, 36, 0.8)",
-            zIndex: 1,
-          }}
-        />
-
-        {/* Content section */}
-        <section
-          // id="about-section"
+        {/* Main scaling container */}
+        <motion.div
+          ref={sectionRef}
           style={{
-            color: "#FFFFFF",
-            padding: "100px 20px",
-            minHeight: "100vh",
-            textAlign: "center",
+            scale,
+            opacity,
+            borderRadius,
+          }}
+          sx={{
             position: "relative",
-            zIndex: 2,
+            minHeight: "100vh",
+            zIndex: 1,
+            overflowX: "clip",
           }}
         >
+          {/* Gradient background that scales with the container */}
           <Box
             sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundImage: `url(${pageGradientBackground.src})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              transform: "rotate(180deg)",
+              transformOrigin: "center",
+              zIndex: 0,
+            }}
+          />
+
+          {/* Dark overlay that scales with the container */}
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(36, 36, 36, 0.8)",
+              zIndex: 1,
+            }}
+          />
+
+          {/* Content section */}
+          <section
+            // id="about-section"
+            style={{
+              color: "#FFFFFF",
+              padding: "100px 20px",
+              minHeight: "100vh",
+              textAlign: "center",
               position: "relative",
-              width: "100%",
-              overflowX: "clip",
+              zIndex: 2,
             }}
           >
-            <motion.div
-              initial={{x: 100, opacity: 0}}
-              animate={isInView ? {x: 0, opacity: 1} : {x: 100, opacity: 0}}
-              transition={{duration: 0.9, ease: "easeOut", delay: 0.2}}
+            <Box
+              sx={{
+                position: "relative",
+                width: "100%",
+                overflowX: "clip",
+              }}
             >
-              <Box sx={{marginBottom: 4}}>
-                <Typography
-                  variant="h2"
-                  component="h2"
-                  sx={{fontSize: {xs: "62px", sm: "72px"}}}
-                >
-                  About
-                </Typography>
-              </Box>
-            </motion.div>
+              <motion.div
+                initial={{x: 100, opacity: 0}}
+                animate={isInView ? {x: 0, opacity: 1} : {x: 100, opacity: 0}}
+                transition={{duration: 0.9, ease: "easeOut", delay: 0.2}}
+              >
+                <Box sx={{marginBottom: 4}}>
+                  <Typography
+                    variant="h2"
+                    component="h2"
+                    sx={{fontSize: {xs: "62px", sm: "72px"}}}
+                  >
+                    About
+                  </Typography>
+                </Box>
+              </motion.div>
 
-            <ResponsiveCardWithCutout
-              isInView={isInView}
-              scrollYProgress={scrollYProgress}
-            />
-            <SkillsSection
-              title="Skills"
-              skillsData={skillsDataAbout}
-            />
-          </Box>
-        </section>
-      </motion.div>
-    </Box>
+              <ResponsiveCardWithCutout
+                isInView={isInView}
+                scrollYProgress={scrollYProgress}
+              />
+              <SkillsSection
+                title="Skills"
+                skillsData={skillsDataAbout}
+              />
+            </Box>
+          </section>
+        </motion.div>
+      </Box>
+    </ThemeProvider>
   );
 };
 

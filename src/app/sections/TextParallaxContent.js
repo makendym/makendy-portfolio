@@ -1,9 +1,10 @@
 "use client";
 import React, {useRef, useEffect, useState} from "react";
 import {motion, useScroll, useTransform} from "framer-motion";
-import {Typography, Box, IconButton} from "@mui/material";
+import {Typography, Box, IconButton, ThemeProvider} from "@mui/material";
 import {styled} from "@mui/material/styles";
-import { headings,videoUrl } from "../constants";
+import {headings, videoUrl} from "../constants";
+import theme from "../theme";
 const Container = styled("div")({
   position: "relative",
   height: "300vh",
@@ -85,19 +86,25 @@ export const TextParallaxContentExample = () => {
     const unsubscribe = videoOpacity.onChange((value) => {
       const newIsInView = value > 0.1;
       setIsInView(newIsInView);
-      
+
       // Auto-pause when scrolled out of view
       if (!newIsInView && videoRef.current && videoRef.current.playing) {
         videoRef.current.pause();
         if (isPlaying) setIsPlaying(false);
-      } 
+      }
       // Auto-resume only if user hasn't manually paused
-      else if (newIsInView && videoRef.current && !videoRef.current.playing && !userPaused) {
-        videoRef.current.play()
+      else if (
+        newIsInView &&
+        videoRef.current &&
+        !videoRef.current.playing &&
+        !userPaused
+      ) {
+        videoRef.current
+          .play()
           .then(() => {
             if (!isPlaying) setIsPlaying(true);
           })
-          .catch(e => console.error("Could not play video:", e));
+          .catch((e) => console.error("Could not play video:", e));
       }
     });
 
@@ -114,8 +121,9 @@ export const TextParallaxContentExample = () => {
         videoRef.current.pause();
       } else if (isInView && isPlaying && !userPaused) {
         // Only play when in view AND not manually paused by user
-        videoRef.current.play()
-          .catch(e => console.error("Could not play video:", e));
+        videoRef.current
+          .play()
+          .catch((e) => console.error("Could not play video:", e));
       }
     }
   }, [isInView, isPlaying, userPaused]);
@@ -126,17 +134,23 @@ export const TextParallaxContentExample = () => {
       if (document.hidden && videoRef.current) {
         videoRef.current.pause();
         if (isPlaying) setIsPlaying(false);
-      } else if (!document.hidden && videoRef.current && isInView && !userPaused) {
-        videoRef.current.play()
+      } else if (
+        !document.hidden &&
+        videoRef.current &&
+        isInView &&
+        !userPaused
+      ) {
+        videoRef.current
+          .play()
           .then(() => {
             if (!isPlaying) setIsPlaying(true);
           })
-          .catch(e => console.error("Could not play video:", e));
+          .catch((e) => console.error("Could not play video:", e));
       }
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
-    
+
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
@@ -154,39 +168,61 @@ export const TextParallaxContentExample = () => {
   }, []);
 
   return (
-    <Container ref={containerRef}>
-      <StickyVideo
-        videoUrl={videoUrl}
-        videoRef={videoRef}
-        opacity={videoOpacity}
-      />
-      {headings.map((heading, index) => (
-        <OverlayCopy
-          key={index}
-          heading={heading}
-          index={index}
-          style={{ textOverflow: "hidden", }}
+    <ThemeProvider theme={theme}>
+      <Container ref={containerRef}>
+        <StickyVideo
+          videoUrl={videoUrl}
+          videoRef={videoRef}
+          opacity={videoOpacity}
         />
-      ))}
-      <ControlButton 
-        onClick={togglePlayPause} 
-        aria-label={isPlaying ? "Pause" : "Play"}
-        style={{ opacity: videoOpacity }}
-        whileHover={isInView ? { scale: 1.1 } : {}}
-        disabled={!isInView}
-      >
-        {isPlaying ? (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <rect x="6" y="4" width="4" height="16" />
-            <rect x="14" y="4" width="4" height="16" />
-          </svg>
-        ) : (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z" />
-          </svg>
-        )}
-      </ControlButton>
-    </Container>
+        {headings.map((heading, index) => (
+          <OverlayCopy
+            key={index}
+            heading={heading}
+            index={index}
+            style={{textOverflow: "hidden"}}
+          />
+        ))}
+        <ControlButton
+          onClick={togglePlayPause}
+          aria-label={isPlaying ? "Pause" : "Play"}
+          style={{opacity: videoOpacity}}
+          whileHover={isInView ? {scale: 1.1} : {}}
+          disabled={!isInView}
+        >
+          {isPlaying ? (
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <rect
+                x="6"
+                y="4"
+                width="4"
+                height="16"
+              />
+              <rect
+                x="14"
+                y="4"
+                width="4"
+                height="16"
+              />
+            </svg>
+          ) : (
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          )}
+        </ControlButton>
+      </Container>
+    </ThemeProvider>
   );
 };
 
@@ -238,7 +274,10 @@ const OverlayCopy = ({heading, index}) => {
   const opacity = useTransform(scrollYProgress, [0.1, 0.5, 0.75], [0, 1, 0]);
 
   return (
-    <TextContainer ref={ref} style={{textOverflow: "hidden",}}>
+    <TextContainer
+      ref={ref}
+      style={{textOverflow: "hidden"}}
+    >
       <Box
         sx={{
           height: "100%",
@@ -251,7 +290,7 @@ const OverlayCopy = ({heading, index}) => {
           textOverflow: "hidden",
         }}
       >
-        <motion.div style={{y, opacity, textOverflow: "hidden",}}>
+        <motion.div style={{y, opacity, textOverflow: "hidden"}}>
           <Typography
             variant="h2"
             sx={{

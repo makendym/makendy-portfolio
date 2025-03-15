@@ -1,11 +1,12 @@
 "use client";
 import React from "react";
-import {Box, Typography} from "@mui/material";
+import {Box, Typography, ThemeProvider} from "@mui/material";
 import Image from "next/image";
 import {motion, useInView, useTransform, useScroll} from "framer-motion";
 import {useRef} from "react";
 import {pageGradientBackground} from "../assets";
 import {educationData} from "../constants";
+import theme from "../theme";
 
 const EducationCard = ({
   imagePath,
@@ -216,100 +217,102 @@ const EducationSection = () => {
   const borderRadius = useTransform(scrollYProgress, [0, 0.5], ["34px", "0px"]);
 
   return (
-    <Box
-      component="section"
-      id="education-section"
-      sx={{
-        position: "relative",
-        minHeight: "100vh",
-        width: "100%",
-        overflow: "hidden",
-      }}
-    >
-      <motion.div
-        ref={sectionRef}
-        style={{
-          scale,
-          opacity,
-          borderRadius,
-        }}
+    <ThemeProvider theme={theme}>
+      <Box
+        component="section"
+        id="education-section"
         sx={{
           position: "relative",
           minHeight: "100vh",
-          zIndex: 1,
-          overflowX: "clip",
+          width: "100%",
+          overflow: "hidden",
         }}
       >
-        {/* Gradient background that scales with the container */}
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundImage: `url(${pageGradientBackground.src})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            // transform: "rotate(180deg)",
-            // transformOrigin: "center",
-            zIndex: 0,
+        <motion.div
+          ref={sectionRef}
+          style={{
+            scale,
+            opacity,
+            borderRadius,
           }}
-        />
-
-        {/* Dark overlay that scales with the container */}
-        <Box
           sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(36, 36, 36, 0.8)",
-            zIndex: 1,
-          }}
-        />
-
-        <Box
-          // component="section"
-          // id="education-section"
-          sx={{
-            color: "#FFFFFF",
-            padding: {xs: "60px 20px", md: "100px 20px"},
-            minHeight: "100vh",
             position: "relative",
-            zIndex: 2,
+            minHeight: "100vh",
+            zIndex: 1,
+            overflowX: "clip",
           }}
         >
-          <motion.div
-            initial={{y: -50, opacity: 0}}
-            animate={isInView ? {y: 0, opacity: 1} : {y: -50, opacity: 0}}
-            transition={{duration: 0.9, ease: "easeOut"}}
-          >
-            <Typography
-              variant="h2"
-              component="h2"
-              sx={{
-                fontSize: {xs: "48px", sm: "56px"},
-                textAlign: "center",
-                mb: 4,
-              }}
-            >
-              Education
-            </Typography>
-          </motion.div>
+          {/* Gradient background that scales with the container */}
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundImage: `url(${pageGradientBackground.src})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              // transform: "rotate(180deg)",
+              // transformOrigin: "center",
+              zIndex: 0,
+            }}
+          />
 
-          {educationData.map((education, index) => (
-            <EducationCard
-              key={education.schoolName}
-              {...education}
-              reverse={index % 2 === 1}
-              isInView={isInView}
-            />
-          ))}
-        </Box>
-      </motion.div>
-    </Box>
+          {/* Dark overlay that scales with the container */}
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(36, 36, 36, 0.8)",
+              zIndex: 1,
+            }}
+          />
+
+          <Box
+            // component="section"
+            // id="education-section"
+            sx={{
+              color: "#FFFFFF",
+              padding: {xs: "60px 20px", md: "100px 20px"},
+              minHeight: "100vh",
+              position: "relative",
+              zIndex: 2,
+            }}
+          >
+            <motion.div
+              initial={{y: -50, opacity: 0}}
+              animate={isInView ? {y: 0, opacity: 1} : {y: -50, opacity: 0}}
+              transition={{duration: 0.9, ease: "easeOut"}}
+            >
+              <Typography
+                variant="h2"
+                component="h2"
+                sx={{
+                  fontSize: {xs: "48px", sm: "56px"},
+                  textAlign: "center",
+                  mb: 4,
+                }}
+              >
+                Education
+              </Typography>
+            </motion.div>
+
+            {educationData.map((education, index) => (
+              <EducationCard
+                key={education.schoolName}
+                {...education}
+                reverse={index % 2 === 1}
+                isInView={isInView}
+              />
+            ))}
+          </Box>
+        </motion.div>
+      </Box>
+    </ThemeProvider>
   );
 };
 

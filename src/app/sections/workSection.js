@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
-import {Box, Typography} from "@mui/material";
+import {Box, Typography, ThemeProvider} from "@mui/material";
 import Image from "next/image";
 import {motion, useInView, useTransform, useScroll} from "framer-motion";
 import {useRef} from "react";
 import {pageGradientBackground} from "../assets";
 import SkillsSection from "./skillsSection";
-import {skillsDataWork,workExperience} from "../constants";
-
+import {skillsDataWork, workExperience} from "../constants";
+import theme from "../theme";
 
 const TimelineItem = ({role, company, date, icon, isInView, index, isLast}) => {
   return (
@@ -157,146 +157,144 @@ const WorkSection = () => {
   const borderRadius = useTransform(scrollYProgress, [0, 0.5], ["34px", "0px"]);
 
   return (
-    <Box
-      component="section"
-      id="work-section"
-      sx={{
-        position: "relative",
-        minHeight: "100vh",
-        width: "100%",
-        overflow: "hidden",
-      }}
-    >
-      <motion.div
-        ref={sectionRef}
-        style={{
-          scale,
-          opacity,
-          borderRadius,
-        }}
+    <ThemeProvider theme={theme}>
+      <Box
+        component="section"
+        id="work-section"
         sx={{
           position: "relative",
           minHeight: "100vh",
-          zIndex: 1,
-          overflowX: "clip",
+          width: "100%",
+          overflow: "hidden",
         }}
       >
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundImage: `url(${pageGradientBackground.src})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            transform: "rotate(180deg)",
-            transformOrigin: "center",
+        <motion.div
+          ref={sectionRef}
+          style={{
+            scale,
+            opacity,
+            borderRadius,
           }}
-        />
-        <Box
           sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(36, 36, 36, 0.8)",
-            zIndex: 1,
-          }}
-        />
-        <Box
-          // component="section"
-          // id="work-section"
-          sx={{
-            color: "#FFFFFF",
-            padding: {xs: "60px 20px", md: "100px 20px"},
-            minHeight: "100vh",
             position: "relative",
-            zIndex: 2,
+            minHeight: "100vh",
+            zIndex: 1,
+            overflowX: "clip",
           }}
         >
-          <motion.div
-            initial={{y: -50, opacity: 0}}
-            animate={isInView ? {y: 0, opacity: 1} : {y: -50, opacity: 0}}
-            transition={{duration: 0.9, ease: "easeOut"}}
-          >
-            <Typography
-              variant="h2"
-              component="h2"
-              sx={{
-                fontSize: {xs: "48px", sm: "56px"},
-                textAlign: "center",
-                mb: 6,
-              }}
-            >
-              Work Experience
-            </Typography>
-          </motion.div>
-
           <Box
             sx={{
-              display: "flex",
-              flexDirection: {xs: "column", md: "row"},
-              gap: 4,
-              maxWidth: "170vh",
-              margin: "0 auto",
-              alignItems: "stretch", // This ensures children stretch to match heights
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundImage: `url(${pageGradientBackground.src})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              transform: "rotate(180deg)",
+              transformOrigin: "center",
+            }}
+          />
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(36, 36, 36, 0.8)",
+              zIndex: 1,
+            }}
+          />
+          <Box
+            sx={{
+              color: "#FFFFFF",
+              padding: {xs: "60px 20px", md: "100px 20px"},
+              minHeight: "100vh",
+              position: "relative",
+              zIndex: 2,
             }}
           >
-            {/* Timeline Section */}
-            <Box
-              sx={{
-                flex: "1.5",
-                backgroundColor: "rgba(36, 36, 36, 1)",
-                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                borderRadius: "34px",
-                padding: "2rem",
-                display: "flex",
-                flexDirection: "column",
-              }}
+            <motion.div
+              initial={{y: -50, opacity: 0}}
+              animate={isInView ? {y: 0, opacity: 1} : {y: -50, opacity: 0}}
+              transition={{duration: 0.9, ease: "easeOut"}}
             >
-              {workExperience.map((work, index) => (
-                <TimelineItem
-                  key={index}
-                  {...work}
-                  isInView={isInView}
-                  index={index}
-                  isLast={index === workExperience.length - 1}
-                />
-              ))}
-            </Box>
-
-            {/* Skills Section */}
-            <Box
-              sx={{
-                flex: "1",
-                backgroundColor: "rgba(36, 36, 36, 1)",
-                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                borderRadius: "34px",
-                 margin: "0 auto"
-              }}
-            >
-              <SkillsSection
+              <Typography
+                variant="h2"
+                component="h2"
                 sx={{
-                  flex: "1",
-                  width: "100%",
-                  height: "100%",
+                  fontSize: {xs: "48px", sm: "56px"},
+                  textAlign: "center",
+                  mb: 6,
+                }}
+              >
+                Work Experience
+              </Typography>
+            </motion.div>
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: {xs: "column", md: "row"},
+                gap: 4,
+                maxWidth: "170vh",
+                margin: "0 auto",
+                alignItems: "stretch", // This ensures children stretch to match heights
+              }}
+            >
+              {/* Timeline Section */}
+              <Box
+                sx={{
+                  flex: "1.5",
+                  backgroundColor: "rgba(36, 36, 36, 1)",
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                  borderRadius: "34px",
+                  padding: "2rem",
                   display: "flex",
                   flexDirection: "column",
                 }}
-                isCenter={true}
-                skillsData={skillsDataWork}
-              />
+              >
+                {workExperience.map((work, index) => (
+                  <TimelineItem
+                    key={index}
+                    {...work}
+                    isInView={isInView}
+                    index={index}
+                    isLast={index === workExperience.length - 1}
+                  />
+                ))}
+              </Box>
+
+              {/* Skills Section */}
+              <Box
+                sx={{
+                  flex: "1",
+                  backgroundColor: "rgba(36, 36, 36, 1)",
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                  borderRadius: "34px",
+                  margin: "0 auto",
+                }}
+              >
+                <SkillsSection
+                  sx={{
+                    flex: "1",
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                  isCenter={true}
+                  skillsData={skillsDataWork}
+                />
+              </Box>
             </Box>
           </Box>
-        </Box>
-      </motion.div>
-    </Box>
+        </motion.div>
+      </Box>
+    </ThemeProvider>
   );
 };
-
-
 
 export default WorkSection;

@@ -8,22 +8,13 @@ import {
   CardContent,
   Button,
   Link,
+  ThemeProvider,
 } from "@mui/material";
-import Grid from "@mui/material/Grid2"; //+
 import {motion, useInView, useScroll, useTransform} from "framer-motion";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import {
-  pageGradientBackground,
-  fatEar,
-  purpleGlow,
-  apComptutor,
-  stackOverflow,
-  xlabProject,
-  nyuInterview,
-  portfolioProject,
-} from "../assets";
-import { projects } from "../constants";
-
+import {pageGradientBackground} from "../assets";
+import {projects} from "../constants";
+import theme from "../theme";
 
 const ProjectCard = ({title, description, image, size, link, video}) => {
   const cardRef = useRef(null);
@@ -134,182 +125,184 @@ const ProjectsSection = () => {
   const borderRadius = useTransform(scrollYProgress, [0, 0.5], ["34px", "0px"]);
 
   return (
-    <Box
-      component="section"
-      id="projects-section"
-      sx={{
-        position: "relative",
-        minHeight: "100vh",
-        width: "100%",
-        overflow: "hidden",
-      }}
-    >
-      <motion.div
-        ref={sectionRef}
-        style={{
-          scale,
-          opacity,
-          borderRadius,
+    <ThemeProvider theme={theme}>
+      <Box
+        component="section"
+        id="projects-section"
+        sx={{
+          position: "relative",
+          minHeight: "100vh",
+          width: "100%",
+          overflow: "hidden",
         }}
       >
-        {/* Previous Box components remain the same until the grid */}
-        <Box
-          sx={{
-            backgroundColor: "rgb(36, 36, 36,1)",
-            position: "relative",
-            minHeight: "100vh",
-            zIndex: 1,
-            overflowX: "clip",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+        <motion.div
+          ref={sectionRef}
+          style={{
+            scale,
+            opacity,
+            borderRadius,
           }}
         >
+          {/* Previous Box components remain the same until the grid */}
           <Box
             sx={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              backgroundImage: `url(${pageGradientBackground.src})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              // transform: "rotate(180deg)",
-              // transformOrigin: "center",
-              opacity: 0.2,
-            }}
-          />
-          <Box
-            sx={{
-              py: 8,
-              px: {xs: 2, md: 4},
+              backgroundColor: "rgb(36, 36, 36,1)",
+              position: "relative",
               minHeight: "100vh",
-              overflow: "hidden",
+              zIndex: 1,
+              overflowX: "clip",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <Typography
-              variant="h2"
-              sx={{
-                color: "white",
-                textAlign: "center",
-                mb: 3,
-                fontSize: {xs: "2.5rem", md: "3.5rem"},
-                fontWeight: "bold",
-              }}
-            >
-              PROJECTS
-            </Typography>
             <Box
               sx={{
-                display: "grid",
-                gridTemplateColumns: {
-                  xs: "1fr",
-                  sm: "repeat(2, 1fr)",
-                  md: "repeat(3, 1fr)",
-                },
-                gap: 2,
-                gridAutoRows: "280px",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                backgroundImage: `url(${pageGradientBackground.src})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                // transform: "rotate(180deg)",
+                // transformOrigin: "center",
+                opacity: 0.2,
+              }}
+            />
+            <Box
+              sx={{
+                py: 8,
+                px: {xs: 2, md: 4},
+                minHeight: "100vh",
                 overflow: "hidden",
-                padding: "20px",
               }}
             >
-              {/* First 5 projects */}
-              {projects.slice(0, 7).map((project, index) => (
-                <Box
-                  key={project.title}
-                  sx={{
-                    gridColumn: {
-                      xs: "span 1",
-                      sm: project.size === "large" ? "span 2" : "span 1",
-                      md: project.size === "large" ? "span 1" : "span 1",
-                    },
-                    gridRow: {
-                      xs: project.size === "large" ? "span 1" : "span 1",
-                      sm: project.size === "large" ? "span 2" : "span 1",
-                      md: project.size === "large" ? "span 3" : "span 1",
-                    },
-                    overflow: "hidden",
-                    borderRadius: "24px",
-                    transition: "transform 0.3s ease-in-out",
-                    "&:hover": {
-                      transform: "scale(1.04)",
-                    },
-                  }}
-                >
-                  <ProjectCard {...project} />
-                </Box>
-              ))}
-
-              {/* Text and Button Container replacing the last project card */}
-              <Box
+              <Typography
+                variant="h2"
                 sx={{
-                  gridColumn: "span 1",
-                  gridRow: "span 1",
-                  overflow: "hidden",
-                  borderRadius: "24px",
-                  bgcolor: "rgba(36, 36, 36, 1)",
-                  p: 3,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  height: "100%",
-                  width: "100%",
-                  position: "relative",
+                  color: "white",
+                  textAlign: "center",
+                  mb: 3,
+                  fontSize: {xs: "2.5rem", md: "3.5rem"},
+                  fontWeight: "bold",
                 }}
               >
-                {/* Background gradient similar to project cards */}
-                <Box
-                  sx={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    background:
-                      "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%)",
-                  }}
-                />
-
-                {/* Content */}
-                <Box sx={{position: "relative", zIndex: 1}}>
-                  <Typography
-                    variant="body1"
+                PROJECTS
+              </Typography>
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: {
+                    xs: "1fr",
+                    sm: "repeat(2, 1fr)",
+                    md: "repeat(3, 1fr)",
+                  },
+                  gap: 2,
+                  gridAutoRows: "280px",
+                  overflow: "hidden",
+                  padding: "20px",
+                }}
+              >
+                {/* First 5 projects */}
+                {projects.slice(0, 7).map((project, index) => (
+                  <Box
+                    key={project.title}
                     sx={{
-                      color: "rgba(255,255,255,0.7)",
-                      mb: 3,
+                      gridColumn: {
+                        xs: "span 1",
+                        sm: project.size === "large" ? "span 2" : "span 1",
+                        md: project.size === "large" ? "span 1" : "span 1",
+                      },
+                      gridRow: {
+                        xs: project.size === "large" ? "span 1" : "span 1",
+                        sm: project.size === "large" ? "span 2" : "span 1",
+                        md: project.size === "large" ? "span 3" : "span 1",
+                      },
                       overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    After working on a diverse range of projects, from VR
-                    experiences to websites and complex applications, these are
-                    some of Makendy’s favorites.
-                  </Typography>
-                  <Button
-                    variant="outlined"
-                    endIcon={<ArrowForwardIcon />}
-                    href="https://github.com/makendym"
-                    sx={{
-                      color: "white",
-                      borderColor: "white",
-                      borderRadius: "34px",
-                      padding: "15px",
+                      borderRadius: "24px",
+                      transition: "transform 0.3s ease-in-out",
                       "&:hover": {
-                        borderColor: "white",
-                        bgcolor: "rgba(255,255,255,0.1)",
+                        transform: "scale(1.04)",
                       },
                     }}
                   >
-                    Explore All
-                  </Button>
+                    <ProjectCard {...project} />
+                  </Box>
+                ))}
+
+                {/* Text and Button Container replacing the last project card */}
+                <Box
+                  sx={{
+                    gridColumn: "span 1",
+                    gridRow: "span 1",
+                    overflow: "hidden",
+                    borderRadius: "24px",
+                    bgcolor: "rgba(36, 36, 36, 1)",
+                    p: 3,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    height: "100%",
+                    width: "100%",
+                    position: "relative",
+                  }}
+                >
+                  {/* Background gradient similar to project cards */}
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background:
+                        "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%)",
+                    }}
+                  />
+
+                  {/* Content */}
+                  <Box sx={{position: "relative", zIndex: 1}}>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        color: "rgba(255,255,255,0.7)",
+                        mb: 3,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      After working on a diverse range of projects, from VR
+                      experiences to websites and complex applications, these
+                      are some of Makendy’s favorites.
+                    </Typography>
+                    <Button
+                      variant="outlined"
+                      endIcon={<ArrowForwardIcon />}
+                      href="https://github.com/makendym"
+                      sx={{
+                        color: "white",
+                        borderColor: "white",
+                        borderRadius: "34px",
+                        padding: "15px",
+                        "&:hover": {
+                          borderColor: "white",
+                          bgcolor: "rgba(255,255,255,0.1)",
+                        },
+                      }}
+                    >
+                      Explore All
+                    </Button>
+                  </Box>
                 </Box>
               </Box>
             </Box>
           </Box>
-        </Box>
-      </motion.div>
-    </Box>
+        </motion.div>
+      </Box>
+    </ThemeProvider>
   );
 };
 

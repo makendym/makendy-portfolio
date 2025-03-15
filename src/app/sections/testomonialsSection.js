@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState, useEffect } from "react";
+import React, {useRef, useState, useEffect} from "react";
 import {
   motion,
   useInView,
@@ -7,16 +7,17 @@ import {
   useScroll,
   AnimatePresence,
 } from "framer-motion";
-import { Box } from "@mui/material";
-import { quoteImage, testimonialXlab } from "../assets";
-import { testimonialData } from "../constants";
+import {Box, ThemeProvider} from "@mui/material";
+import {quoteImage, testimonialXlab} from "../assets";
+import {testimonialData} from "../constants";
+import theme from "../theme";
 
 const TestimonialsSection = () => {
   const sectionRef = useRef(null);
   const cardRef = useRef(null);
-  const isInView = useInView(cardRef, { once: false, margin: "-20% 0px" });
+  const isInView = useInView(cardRef, {once: false, margin: "-20% 0px"});
 
-  const { scrollYProgress } = useScroll({
+  const {scrollYProgress} = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
   });
@@ -27,94 +28,96 @@ const TestimonialsSection = () => {
   const borderRadius = useTransform(scrollYProgress, [0, 0.5], ["34px", "0px"]);
 
   return (
-    <motion.div
-      ref={sectionRef}
-      id="testimonial-section"
-      style={{
-        scale,
-        opacity,
-        borderRadius,
-        willChange: "transform, opacity", // Performance hint for browsers
-      }}
-    >
-      <Box
-        sx={{
-          backgroundColor: "rgb(36, 36, 36)",
-          position: "relative",
-          minHeight: "70vh",
-          zIndex: 1,
-          overflowX: "clip",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+    <ThemeProvider theme={theme}>
+      <motion.div
+        ref={sectionRef}
+        id="testimonial-section"
+        style={{
+          scale,
+          opacity,
+          borderRadius,
+          willChange: "transform, opacity", // Performance hint for browsers
         }}
       >
         <Box
           sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundImage: `url(${testimonialXlab.src})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            opacity: 0.2,
-            // Apply transform for better performance (uses GPU)
-            transform: "translateZ(0)",
-          }}
-        />
-        <motion.div
-          ref={cardRef}
-          initial={{ x: 100, opacity: 0 }}
-          animate={isInView ? { x: 0, opacity: 1 } : { x: 100, opacity: 0 }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
-          style={{ 
-            width: "100%",
-            willChange: "transform, opacity", // Performance hint
+            backgroundColor: "rgb(36, 36, 36)",
+            position: "relative",
+            minHeight: "70vh",
+            zIndex: 1,
+            overflowX: "clip",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <Box
-            component="section"
             sx={{
-              color: "#FFFFFF",
-              padding: { xs: "60px 20px", md: "100px 80px" },
+              position: "absolute",
+              top: 0,
+              left: 0,
               width: "100%",
-              position: "relative",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              height: "100%",
+              backgroundImage: `url(${testimonialXlab.src})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              opacity: 0.2,
+              // Apply transform for better performance (uses GPU)
+              transform: "translateZ(0)",
+            }}
+          />
+          <motion.div
+            ref={cardRef}
+            initial={{x: 100, opacity: 0}}
+            animate={isInView ? {x: 0, opacity: 1} : {x: 100, opacity: 0}}
+            transition={{duration: 0.9, ease: "easeOut"}}
+            style={{
+              width: "100%",
+              willChange: "transform, opacity", // Performance hint
             }}
           >
-            <TestimonialsCard testimonials={testimonialData} />
-          </Box>
-        </motion.div>
-      </Box>
-    </motion.div>
+            <Box
+              component="section"
+              sx={{
+                color: "#FFFFFF",
+                padding: {xs: "60px 20px", md: "100px 80px"},
+                width: "100%",
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <TestimonialsCard testimonials={testimonialData} />
+            </Box>
+          </motion.div>
+        </Box>
+      </motion.div>
+    </ThemeProvider>
   );
 };
 
 export default TestimonialsSection;
 
-const TestimonialsCard = ({ testimonials }) => {
+const TestimonialsCard = ({testimonials}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dragStart, setDragStart] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const swipeThreshold = 50;
-  
+
   // Cache testimonial dimensions to prevent layout shifts
   const [contentHeight, setContentHeight] = useState({
     testimonial: 0,
     collaboration: 0,
-    author: 0
+    author: 0,
   });
-  
+
   // Ref to measure content
   const testimonialRef = useRef(null);
   const collaborationRef = useRef(null);
   const authorRef = useRef(null);
-  
+
   // Auto-rotate testimonials
   useEffect(() => {
     if (!isDragging && !isAnimating) {
@@ -131,66 +134,69 @@ const TestimonialsCard = ({ testimonials }) => {
     // Function to calculate heights of all testimonials to find maximum
     const calculateMaxHeights = () => {
       // Create temporary elements to measure text heights
-      const tempDiv = document.createElement('div');
-      tempDiv.style.position = 'absolute';
-      tempDiv.style.visibility = 'hidden';
-      tempDiv.style.width = testimonialRef.current?.offsetWidth + 'px';
-      
+      const tempDiv = document.createElement("div");
+      tempDiv.style.position = "absolute";
+      tempDiv.style.visibility = "hidden";
+      tempDiv.style.width = testimonialRef.current?.offsetWidth + "px";
+
       // Set the same styling as the real elements
-      tempDiv.style.fontSize = window.innerWidth < 900 ? '18px' : '24px';
-      tempDiv.style.fontWeight = '500';
-      tempDiv.style.padding = window.innerWidth < 900 ? '0 20px' : '0 40px';
-      tempDiv.style.textAlign = 'center';
-      
+      tempDiv.style.fontSize = window.innerWidth < 900 ? "18px" : "24px";
+      tempDiv.style.fontWeight = "500";
+      tempDiv.style.padding = window.innerWidth < 900 ? "0 20px" : "0 40px";
+      tempDiv.style.textAlign = "center";
+
       document.body.appendChild(tempDiv);
-      
+
       let maxTestimonialHeight = 0;
       let maxCollabHeight = 0;
       let maxAuthorHeight = 0;
-      
-      testimonials.forEach(item => {
+
+      testimonials.forEach((item) => {
         // Measure testimonial text height
         tempDiv.textContent = item.testimonial;
         const testimonialHeight = tempDiv.offsetHeight;
-        maxTestimonialHeight = Math.max(maxTestimonialHeight, testimonialHeight);
-        
+        maxTestimonialHeight = Math.max(
+          maxTestimonialHeight,
+          testimonialHeight
+        );
+
         // Measure collaboration text height
         tempDiv.textContent = item.collaboration;
-        tempDiv.style.fontSize = '16px';
+        tempDiv.style.fontSize = "16px";
         const collabHeight = tempDiv.offsetHeight;
         maxCollabHeight = Math.max(maxCollabHeight, collabHeight);
-        
+
         // Measure author text height
         tempDiv.textContent = item.author;
-        tempDiv.style.fontSize = '14px';
-        tempDiv.style.fontStyle = 'italic';
+        tempDiv.style.fontSize = "14px";
+        tempDiv.style.fontStyle = "italic";
         const authorHeight = tempDiv.offsetHeight;
         maxAuthorHeight = Math.max(maxAuthorHeight, authorHeight);
-        
+
         // Reset for next measurement
-        tempDiv.style.fontSize = window.innerWidth < 900 ? '18px' : '24px';
-        tempDiv.style.fontStyle = 'normal';
+        tempDiv.style.fontSize = window.innerWidth < 900 ? "18px" : "24px";
+        tempDiv.style.fontStyle = "normal";
       });
-      
+
       document.body.removeChild(tempDiv);
-      
+
       // Add some buffer space
       setContentHeight({
         testimonial: maxTestimonialHeight + 40, // Extra space for margin
         collaboration: maxCollabHeight + 10,
-        author: maxAuthorHeight + 10
+        author: maxAuthorHeight + 10,
       });
     };
-    
+
     // Calculate on initial load and window resize
     calculateMaxHeights();
-    
+
     const handleResize = () => {
       calculateMaxHeights();
     };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [testimonials]);
 
   const handleDotClick = (index) => {
@@ -261,7 +267,7 @@ const TestimonialsCard = ({ testimonials }) => {
   return (
     <Box
       sx={{
-        maxWidth: { xs: "100%", md: "700px" },
+        maxWidth: {xs: "100%", md: "700px"},
         width: "100%",
         margin: "0 auto",
         backgroundColor: "rgba(30, 30, 30, 0.7)",
@@ -269,7 +275,7 @@ const TestimonialsCard = ({ testimonials }) => {
         overflow: "hidden",
         position: "relative",
         boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3)",
-        padding: { xs: "40px 20px", md: "50px 40px" },
+        padding: {xs: "40px 20px", md: "50px 40px"},
         cursor: isDragging ? "grabbing" : "grab",
         userSelect: "none",
       }}
@@ -303,7 +309,7 @@ const TestimonialsCard = ({ testimonials }) => {
       </Box>
 
       {/* Testimonial text with pre-calculated height */}
-      <Box 
+      <Box
         sx={{
           height: contentHeight.testimonial,
           position: "relative",
@@ -314,13 +320,16 @@ const TestimonialsCard = ({ testimonials }) => {
         }}
         ref={testimonialRef}
       >
-        <AnimatePresence initial={false} mode="wait">
+        <AnimatePresence
+          initial={false}
+          mode="wait"
+        >
           <motion.div
             key={`testimonial-${currentIndex}`}
-            initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: direction < 0 ? 100 : -100 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
+            initial={{opacity: 0, x: direction > 0 ? 100 : -100}}
+            animate={{opacity: 1, x: 0}}
+            exit={{opacity: 0, x: direction < 0 ? 100 : -100}}
+            transition={{duration: 0.4, ease: "easeInOut"}}
             onAnimationStart={handleAnimationStart}
             onAnimationComplete={handleAnimationComplete}
             style={{
@@ -330,18 +339,18 @@ const TestimonialsCard = ({ testimonials }) => {
           >
             <Box
               sx={{
-                fontSize: { xs: "18px", md: "24px" },
+                fontSize: {xs: "18px", md: "24px"},
                 fontWeight: "500",
                 color: "#FFFFFF",
                 textAlign: "center",
-                padding: { xs: "0 20px", md: "0 40px" },
+                padding: {xs: "0 20px", md: "0 40px"},
                 // Use text-overflow for very long content
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 display: "-webkit-box",
                 WebkitLineClamp: {
                   xs: Math.floor(contentHeight.testimonial / 24), // Approximate line count
-                  md: Math.floor(contentHeight.testimonial / 30)
+                  md: Math.floor(contentHeight.testimonial / 30),
                 },
                 WebkitBoxOrient: "vertical",
               }}
@@ -365,13 +374,16 @@ const TestimonialsCard = ({ testimonials }) => {
         }}
         ref={collaborationRef}
       >
-        <AnimatePresence initial={false} mode="wait">
+        <AnimatePresence
+          initial={false}
+          mode="wait"
+        >
           <motion.div
             key={`collab-${currentIndex}`}
-            initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: direction < 0 ? 100 : -100 }}
-            transition={{ duration: 0.4, ease: "easeInOut", delay: 0.1 }}
+            initial={{opacity: 0, x: direction > 0 ? 100 : -100}}
+            animate={{opacity: 1, x: 0}}
+            exit={{opacity: 0, x: direction < 0 ? 100 : -100}}
+            transition={{duration: 0.4, ease: "easeInOut", delay: 0.1}}
             style={{
               width: "100%",
               display: "flex",
@@ -405,13 +417,16 @@ const TestimonialsCard = ({ testimonials }) => {
         }}
         ref={authorRef}
       >
-        <AnimatePresence initial={false} mode="wait">
+        <AnimatePresence
+          initial={false}
+          mode="wait"
+        >
           <motion.div
             key={`author-${currentIndex}`}
-            initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: direction < 0 ? 100 : -100 }}
-            transition={{ duration: 0.4, ease: "easeInOut", delay: 0.2 }}
+            initial={{opacity: 0, x: direction > 0 ? 100 : -100}}
+            animate={{opacity: 1, x: 0}}
+            exit={{opacity: 0, x: direction < 0 ? 100 : -100}}
+            transition={{duration: 0.4, ease: "easeInOut", delay: 0.2}}
             style={{
               width: "100%",
               textAlign: "center",
@@ -487,7 +502,7 @@ const TestimonialsCard = ({ testimonials }) => {
             color: "white",
             fontSize: "20px",
             opacity: isAnimating ? 0.3 : 0.7,
-            "&:hover": { opacity: isAnimating ? 0.3 : 1 },
+            "&:hover": {opacity: isAnimating ? 0.3 : 1},
             transform: "translateZ(0)", // Hardware acceleration
           }}
         >
@@ -507,7 +522,7 @@ const TestimonialsCard = ({ testimonials }) => {
             color: "white",
             fontSize: "20px",
             opacity: isAnimating ? 0.3 : 0.7,
-            "&:hover": { opacity: isAnimating ? 0.3 : 1 },
+            "&:hover": {opacity: isAnimating ? 0.3 : 1},
             transform: "translateZ(0)", // Hardware acceleration
           }}
         >
