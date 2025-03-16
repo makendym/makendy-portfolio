@@ -26,7 +26,7 @@ const headings = [
   "Empowering the next generation through technology.",
 ];
 const aboutText =
-  "Makendy Midouin is a first-generation college graduate whose journey has been fueled by leadership, innovation, and a passion for learning. Excelling in both athletics and academics, he became a league MVP, conference champion, and honor society inductee, demonstrating his drive for excellence across disciplines. His research on bias in virtual reality and his role in raising $125,000 in STEM scholarships reflect his commitment to using technology for meaningful impact. Balancing software engineering, research, and teaching, Makendy has cultivated a career at the intersection of education, AI, and entrepreneurship, developing tech-driven solutions that empower learners worldwide.";
+  "Makendy Midouin is a first-generation college graduate whose journey has been fueled by leadership, innovation, and a passion for learning. Excelling in both athletics and academics, he became a captain, league MVP, conference champion, and honor society inductee, demonstrating his drive for excellence across disciplines. His research on bias in virtual reality and his role in raising $125,000 in STEM scholarships reflect his commitment to using technology for meaningful impact. Balancing software engineering, research, and teaching, Makendy has cultivated a career at the intersection of education, AI, and entrepreneurship, developing tech-driven solutions that empower learners worldwide.";
 const skillsDataAbout = {
   "Programming Languages": [
     "Java",
