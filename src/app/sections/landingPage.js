@@ -22,19 +22,26 @@ const LandingPage = () => {
         bg: "rgba(255, 173, 91, 0.1)",
         dot: "#FF8A00",
         glow: "rgba(255, 138, 0, 0.5)",
-        text: "#FFFFFF"
+        text: "#FFFFFF",
       };
     } else {
       return {
         bg: "rgba(88, 195, 95, 0.1)",
         dot: "#58C35F",
         glow: "rgba(88, 195, 95, 0.5)",
-        text: "#FFFFFF"
+        text: "#FFFFFF",
       };
     }
   };
 
   const statusColors = getStatusColors();
+
+  useEffect(() => {
+    // Only start animations after image has loaded
+    const img = new window.Image();
+    img.src = landingPageImage.src;
+    img.onload = () => controls.start("visible");
+  }, [controls]);
 
   const pulseVariant = {
     initial: {scale: 0.9, opacity: 0.7},
@@ -131,12 +138,16 @@ const LandingPage = () => {
           <Image
             src={landingPageImage}
             alt="Landing Page Portrait"
-            fill
+            width={1920} // Add explicit dimensions instead of fill
+            height={1080}
+            priority={true}
+            quality={80} // Reduce quality slightly
+            loading="eager"
             style={{
               objectFit: "cover",
+              width: "100%",
+              height: "100%",
             }}
-            priority
-            fetchPriority="high"
             sizes="100vw"
           />
           <Box
@@ -158,7 +169,7 @@ const LandingPage = () => {
             sx={{
               position: "absolute",
               left: {xs: "25%", sm: "3%"},
-              top: { xs: "90%", sm: "50%" },
+              top: {xs: "90%", sm: "50%"},
               zIndex: 10,
             }}
           >
@@ -175,7 +186,19 @@ const LandingPage = () => {
               }}
             >
               {/* Radial dot with modified gradient effect */}
-              <Box sx={{position: "relative", width: 15, height: 15, overflow: "hidden", borderRadius: "50%"}}>
+              <Box
+                component={motion.div}
+                variants={pulseVariant}
+                initial="initial"
+                animate="animate"
+                sx={{
+                  position: "relative",
+                  width: 15,
+                  height: 15,
+                  overflow: "hidden",
+                  borderRadius: "50%",
+                }}
+              >
                 {/* Dot with gradient from dark center to lighter edges */}
                 <Box
                   sx={{
