@@ -84,7 +84,7 @@ export const TextParallaxContentExample = () => {
   // Monitor scroll position to determine if video is in view
   useEffect(() => {
     const unsubscribe = videoOpacity.onChange((value) => {
-      const newIsInView = value > 0.1;
+      const newIsInView = value > 0.05;
       setIsInView(newIsInView);
 
       // Auto-pause when scrolled out of view

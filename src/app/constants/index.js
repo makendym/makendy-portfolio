@@ -259,6 +259,14 @@ const testimonialData = [
     collaboration: "Application Development at RoadCall Co.",
     author: "Apurva Raj Purohit, Frontend Developer at RoadCall Co.",
   },
+  {
+    testimonial: 
+      "Working with Makendy has been an exceptional experience. His ability to break down complex technical challenges, particularly in web development, showcases both technical expertise and a problem-solving mindset. Whether addressing intricate issues like Google Maps clustering behavior or special case customer issues, Makendy has consistently demonstrated a proactive approach to problem-solving, ensuring efficient and effective resolutions. I’ve had the opportunity to work directly with Makendy and observe his collaboration with team members, particularly in debugging and brainstorming solutions in the web development space.",  
+    collaboration: 
+      "Web Development Collaboration",  
+    author: 
+      "Lugduni Desrosiers, Software Engineer at Google"
+  },
 ];
 
 export {
