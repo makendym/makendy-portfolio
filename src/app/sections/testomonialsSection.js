@@ -68,28 +68,16 @@ const TestimonialsSection = () => {
           />
           <motion.div
             ref={cardRef}
-            initial={{x: 100, opacity: 0}}
-            animate={isInView ? {x: 0, opacity: 1} : {x: 100, opacity: 0}}
+            initial={{opacity: 0}}
+            animate={isInView ? {opacity: 1} : {opacity: 0}}
             transition={{duration: 0.9, ease: "easeOut"}}
             style={{
-              width: "100%",
-              willChange: "transform, opacity", // Performance hint
+              width: "90%",
+              willChange: "opacity", // Performance hint
+              position: "relative", // Added for positioning the arrows outside
             }}
           >
-            <Box
-              component="section"
-              sx={{
-                color: "#FFFFFF",
-                padding: {xs: "60px 20px", md: "100px 80px"},
-                width: "100%",
-                position: "relative",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <TestimonialsCard testimonials={testimonialData} />
-            </Box>
+            <TestimonialsCard testimonials={testimonialData} />
           </motion.div>
         </Box>
       </motion.div>
@@ -117,17 +105,19 @@ const TestimonialsCard = ({testimonials}) => {
   const testimonialRef = useRef(null);
   const collaborationRef = useRef(null);
   const authorRef = useRef(null);
+  const containerRef = useRef(null);
 
   // Auto-rotate testimonials
   useEffect(() => {
     if (!isDragging && !isAnimating) {
       const interval = setInterval(() => {
+        setPage([currentIndex, 1]);
         setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
       }, 5000);
 
       return () => clearInterval(interval);
     }
-  }, [testimonials.length, isDragging, isAnimating]);
+  }, [testimonials.length, isDragging, isAnimating, currentIndex]);
 
   // Pre-calculate maximum heights for each section to prevent CLS
   useEffect(() => {
@@ -199,18 +189,27 @@ const TestimonialsCard = ({testimonials}) => {
     return () => window.removeEventListener("resize", handleResize);
   }, [testimonials]);
 
+  // Update the handleDotClick function to include direction
   const handleDotClick = (index) => {
     if (isAnimating || index === currentIndex) return;
+    
+    // Set direction based on which dot was clicked
+    const direction = index > currentIndex ? 1 : -1;
+    setPage([currentIndex, direction]);
     setCurrentIndex(index);
   };
 
+  // Update nextTestimonial to explicitly set direction
   const nextTestimonial = () => {
     if (isAnimating) return;
+    setPage([currentIndex, 1]); // 1 = right to left
     setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
   };
 
+  // Update prevTestimonial to explicitly set direction
   const prevTestimonial = () => {
     if (isAnimating) return;
+    setPage([currentIndex, -1]); // -1 = left to right
     setCurrentIndex(
       (prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length
     );
@@ -223,7 +222,8 @@ const TestimonialsCard = ({testimonials}) => {
     setDragStart(clientX);
     setIsDragging(true);
   };
-
+  
+  // Update handleDragEnd to use the correct direction
   const handleDragEnd = (e) => {
     if (!isDragging || isAnimating) return;
     const clientX = e.type.includes("mouse")
@@ -235,8 +235,10 @@ const TestimonialsCard = ({testimonials}) => {
 
     if (Math.abs(delta) > swipeThreshold) {
       if (delta > 0) {
+        setPage([currentIndex, 1]); // Swipe left means content comes from right
         nextTestimonial();
       } else {
+        setPage([currentIndex, -1]); // Swipe right means content comes from left
         prevTestimonial();
       }
     }
@@ -252,10 +254,6 @@ const TestimonialsCard = ({testimonials}) => {
   const currentTestimonial = testimonials[currentIndex];
   const [[page, direction], setPage] = useState([0, 0]);
 
-  useEffect(() => {
-    setPage([currentIndex, currentIndex > page[0] ? 1 : -1]);
-  }, [currentIndex, page]);
-
   const handleAnimationStart = () => {
     setIsAnimating(true);
   };
@@ -264,227 +262,46 @@ const TestimonialsCard = ({testimonials}) => {
     setIsAnimating(false);
   };
 
+  // Define animation variants for slide transitions
+  const slideVariants = {
+    enter: (direction) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0
+    }),
+    center: {
+      x: 0,
+      opacity: 1
+    },
+    exit: (direction) => ({
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0
+    })
+  };
+
+  // Container for the entire testimonial card
   return (
     <Box
+      ref={containerRef}
       sx={{
         maxWidth: {xs: "100%", md: "700px"},
         width: "100%",
         margin: "0 auto",
-        backgroundColor: "rgba(30, 30, 30, 0.7)",
-        borderRadius: "34px",
-        overflow: "hidden",
         position: "relative",
-        boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3)",
-        padding: {xs: "40px 20px", md: "50px 40px"},
-        cursor: isDragging ? "grabbing" : "grab",
-        userSelect: "none",
+        overflow: "visible", // Changed to allow arrows to be shown outside
       }}
-      onTouchStart={handleDragStart}
-      onTouchMove={handleDragMove}
-      onTouchEnd={handleDragEnd}
-      onMouseDown={handleDragStart}
-      onMouseMove={handleDragMove}
-      onMouseUp={handleDragEnd}
-      onMouseLeave={handleDragEnd}
     >
-      {/* Quote icon */}
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          marginBottom: "20px",
-          height: "60px", // Fixed height for icon
-        }}
-      >
-        <Box
-          component="img"
-          src={quoteImage.src}
-          alt="Quote"
-          sx={{
-            height: "60px",
-            width: "auto",
-          }}
-        />
-      </Box>
-
-      {/* Testimonial text with pre-calculated height */}
-      <Box
-        sx={{
-          height: contentHeight.testimonial,
-          position: "relative",
-          overflow: "hidden",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-        ref={testimonialRef}
-      >
-        <AnimatePresence
-          initial={false}
-          mode="wait"
-        >
-          <motion.div
-            key={`testimonial-${currentIndex}`}
-            initial={{opacity: 0, x: direction > 0 ? 100 : -100}}
-            animate={{opacity: 1, x: 0}}
-            exit={{opacity: 0, x: direction < 0 ? 100 : -100}}
-            transition={{duration: 0.4, ease: "easeInOut"}}
-            onAnimationStart={handleAnimationStart}
-            onAnimationComplete={handleAnimationComplete}
-            style={{
-              width: "100%",
-              textAlign: "center",
-            }}
-          >
-            <Box
-              sx={{
-                fontSize: {xs: "18px", md: "24px"},
-                fontWeight: "500",
-                color: "#FFFFFF",
-                textAlign: "center",
-                padding: {xs: "0 20px", md: "0 40px"},
-                // Use text-overflow for very long content
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                display: "-webkit-box",
-                WebkitLineClamp: {
-                  xs: Math.floor(contentHeight.testimonial / 24), // Approximate line count
-                  md: Math.floor(contentHeight.testimonial / 30),
-                },
-                WebkitBoxOrient: "vertical",
-              }}
-            >
-              {currentTestimonial.testimonial}
-            </Box>
-          </motion.div>
-        </AnimatePresence>
-      </Box>
-
-      {/* Collaboration with fixed height */}
-      <Box
-        sx={{
-          height: contentHeight.collaboration,
-          position: "relative",
-          marginTop: "10px",
-          overflow: "hidden",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-        ref={collaborationRef}
-      >
-        <AnimatePresence
-          initial={false}
-          mode="wait"
-        >
-          <motion.div
-            key={`collab-${currentIndex}`}
-            initial={{opacity: 0, x: direction > 0 ? 100 : -100}}
-            animate={{opacity: 1, x: 0}}
-            exit={{opacity: 0, x: direction < 0 ? 100 : -100}}
-            transition={{duration: 0.4, ease: "easeInOut", delay: 0.1}}
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <Box
-              sx={{
-                fontSize: "16px",
-                color: "#CCCCCC",
-                fontWeight: "500",
-              }}
-            >
-              {currentTestimonial.collaboration}
-            </Box>
-          </motion.div>
-        </AnimatePresence>
-      </Box>
-
-      {/* Author with fixed height */}
-      <Box
-        sx={{
-          height: contentHeight.author,
-          position: "relative",
-          marginTop: "30px",
-          marginBottom: "30px",
-          overflow: "hidden",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-        ref={authorRef}
-      >
-        <AnimatePresence
-          initial={false}
-          mode="wait"
-        >
-          <motion.div
-            key={`author-${currentIndex}`}
-            initial={{opacity: 0, x: direction > 0 ? 100 : -100}}
-            animate={{opacity: 1, x: 0}}
-            exit={{opacity: 0, x: direction < 0 ? 100 : -100}}
-            transition={{duration: 0.4, ease: "easeInOut", delay: 0.2}}
-            style={{
-              width: "100%",
-              textAlign: "center",
-            }}
-          >
-            <Box
-              sx={{
-                fontSize: "14px",
-                color: "#AAAAAA",
-                fontStyle: "italic",
-              }}
-            >
-              — {currentTestimonial.author}
-            </Box>
-          </motion.div>
-        </AnimatePresence>
-      </Box>
-
-      {/* Navigation dots */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "8px",
-          marginTop: "20px",
-          height: "8px", // Fixed height for indicators
-        }}
-      >
-        {testimonials.map((_, index) => (
-          <Box
-            key={index}
-            onClick={() => handleDotClick(index)}
-            sx={{
-              width: "8px",
-              height: "8px",
-              borderRadius: "50%",
-              backgroundColor:
-                index === currentIndex ? "#FFFFFF" : "rgba(255, 255, 255, 0.3)",
-              cursor: "pointer",
-              transition: "background-color 0.3s ease",
-            }}
-          />
-        ))}
-      </Box>
-
-      {/* Arrow navigation buttons */}
+      {/* Arrow navigation buttons - MOVED OUTSIDE THE CARD */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           position: "absolute",
           top: "50%",
-          left: 0,
-          right: 0,
+          left: {xs: "0px", md: "-70px"},
+          right: {xs: "0px", md: "-70px"},
           transform: "translateY(-50%)",
-          padding: "0 10px",
+          zIndex: 2,
           pointerEvents: isAnimating ? "none" : "auto",
-          // Fixed size to prevent layout shifts
           height: "40px",
         }}
       >
@@ -496,14 +313,14 @@ const TestimonialsCard = ({testimonials}) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "rgba(0,0,0,0.3)",
+            backgroundColor: "rgba(0,0,0,0.5)",
             borderRadius: "50%",
             cursor: isAnimating ? "default" : "pointer",
             color: "white",
             fontSize: "20px",
             opacity: isAnimating ? 0.3 : 0.7,
             "&:hover": {opacity: isAnimating ? 0.3 : 1},
-            transform: "translateZ(0)", // Hardware acceleration
+            transition: "opacity 0.2s ease",
           }}
         >
           ←
@@ -516,17 +333,242 @@ const TestimonialsCard = ({testimonials}) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "rgba(0,0,0,0.3)",
+            backgroundColor: "rgba(0,0,0,0.5)",
             borderRadius: "50%",
             cursor: isAnimating ? "default" : "pointer",
             color: "white",
             fontSize: "20px",
             opacity: isAnimating ? 0.3 : 0.7,
             "&:hover": {opacity: isAnimating ? 0.3 : 1},
-            transform: "translateZ(0)", // Hardware acceleration
+            transition: "opacity 0.2s ease",
           }}
         >
           →
+        </Box>
+      </Box>
+
+      {/* Main Card Container */}
+      <Box
+        sx={{
+          // backgroundColor: "rgba(30, 30, 30, 0.7)",
+          overflow: "hidden",
+          position: "relative",
+          padding: {xs: "40px 20px", md: "50px 40px"},
+          cursor: isDragging ? "grabbing" : "grab",
+          userSelect: "none",
+        }}
+        onTouchStart={handleDragStart}
+        onTouchMove={handleDragMove}
+        onTouchEnd={handleDragEnd}
+        onMouseDown={handleDragStart}
+        onMouseMove={handleDragMove}
+        onMouseUp={handleDragEnd}
+        onMouseLeave={handleDragEnd}
+      >
+        {/* Quote icon */}
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            height: "auto", // Fixed height for icon
+          }}
+        >
+          <Box
+            component="img"
+            src={quoteImage.src}
+            alt="Quote"
+            sx={{
+              height: "60px",
+              width: "auto",
+            }}
+          />
+        </Box>
+
+        {/* Testimonial text with sliding animation */}
+        <Box
+          sx={{
+            height: contentHeight.testimonial,
+            position: "relative",
+            overflow: "hidden",
+            display: "flex",
+            height: "auto",
+            justifyContent: "center",
+            padding: "50px 0",
+          }}
+          ref={testimonialRef}
+        >
+          <AnimatePresence
+            initial={false}
+            custom={direction}
+            mode="wait"
+          >
+            <motion.div
+              key={`testimonial-${currentIndex}`}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 }
+              }}
+              onAnimationStart={handleAnimationStart}
+              onAnimationComplete={handleAnimationComplete}
+              style={{
+                width: "100%",
+                textAlign: "center",
+              }}
+            >
+              <Box
+                sx={{
+                  fontSize: {xs: "18px", md: "24px"},
+                  fontWeight: "500",
+                  color: "#FFFFFF",
+                  textAlign: "center",
+                  padding: {xs: "0 20px", md: "0 40px"},
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  display: "-webkit-box",
+                  WebkitLineClamp: {
+                    xs: Math.floor(contentHeight.testimonial / 24),
+                    md: Math.floor(contentHeight.testimonial / 30),
+                  },
+                  WebkitBoxOrient: "vertical",
+                }}
+              >
+                {currentTestimonial.testimonial}
+              </Box>
+            </motion.div>
+          </AnimatePresence>
+        </Box>
+
+        {/* Collaboration with sliding animation */}
+        <Box
+          sx={{
+            height: contentHeight.collaboration,
+            position: "relative",
+            marginTop: "10px",
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          ref={collaborationRef}
+        >
+          <AnimatePresence
+            initial={false}
+            custom={direction}
+            mode="wait"
+          >
+            <motion.div
+              key={`collab-${currentIndex}`}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 }
+              }}
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                textAlign: "center",
+              }}
+            >
+              <Box
+                sx={{
+                  fontSize: "16px",
+                  color: "#CCCCCC",
+                  fontWeight: "500",
+                  textAlign: "center",
+                }}
+              >
+                {currentTestimonial.collaboration}
+              </Box>
+            </motion.div>
+          </AnimatePresence>
+        </Box>
+
+        {/* Author with sliding animation */}
+        <Box
+          sx={{
+            height: contentHeight.author,
+            position: "relative",
+            marginTop: "30px",
+            marginBottom: "30px",
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+          }}
+          ref={authorRef}
+        >
+          <AnimatePresence
+            initial={false}
+            custom={direction}
+            mode="wait"
+          >
+            <motion.div
+              key={`author-${currentIndex}`}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 }
+              }}
+              style={{
+                width: "100%",
+                textAlign: "center",
+              }}
+            >
+              <Box
+                sx={{
+                  fontSize: "14px",
+                  color: "#AAAAAA",
+                  fontStyle: "italic",
+                  textAlign: "center",
+                }}
+              >
+                — {currentTestimonial.author}
+              </Box>
+            </motion.div>
+          </AnimatePresence>
+        </Box>
+
+        {/* Navigation dots */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "8px",
+            marginTop: "20px",
+            height: "8px", // Fixed height for indicators
+          }}
+        >
+          {testimonials.map((_, index) => (
+            <Box
+              key={index}
+              onClick={() => handleDotClick(index)}
+              sx={{
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                backgroundColor:
+                  index === currentIndex ? "#FFFFFF" : "rgba(255, 255, 255, 0.3)",
+                cursor: "pointer",
+                transition: "background-color 0.3s ease",
+              }}
+            />
+          ))}
         </Box>
       </Box>
     </Box>

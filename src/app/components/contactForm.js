@@ -163,7 +163,6 @@ const ContactForm = ({
           padding: {xs: "2rem", sm: "3rem"},
           borderRadius: "34px",
           backgroundColor,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
         }}
         className={className}
         style={style}
