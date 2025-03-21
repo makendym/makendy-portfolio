@@ -662,7 +662,7 @@ useEffect(() => {
                   marginX: "auto",
                   padding: 1,
                   borderRadius: 34,
-                  maxWidth: "80%",
+                  maxWidth: "100%",
                   overflow: "hidden",
                   zIndex: 1100,
                 }}
@@ -675,7 +675,7 @@ useEffect(() => {
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      paddingX: 2,
+                      // paddingX: 2,
                       border: "none",
                       outline: "none",
                       whiteSpace: "nowrap",
@@ -732,9 +732,9 @@ useEffect(() => {
                   display: "flex",
                   alignItems: "center",
                   backgroundColor: "rgba(255, 255, 255, 1.0)",
-                  padding: 1,
-                  borderRadius: 34,
-                  maxWidth: "80%",
+                  padding: .5,
+                  borderRadius: "34px",
+                  maxWidth: "100%",
                 }}
               >
                 <Button

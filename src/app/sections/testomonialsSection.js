@@ -72,7 +72,7 @@ const TestimonialsSection = () => {
             animate={isInView ? {opacity: 1} : {opacity: 0}}
             transition={{duration: 0.9, ease: "easeOut"}}
             style={{
-              width: "90%",
+              width: "95%", // Increased from 90% to 95% for wider content
               willChange: "opacity", // Performance hint
               position: "relative", // Added for positioning the arrows outside
             }}
@@ -92,6 +92,7 @@ const TestimonialsCard = ({testimonials}) => {
   const [dragStart, setDragStart] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const swipeThreshold = 50;
 
   // Cache testimonial dimensions to prevent layout shifts
@@ -109,7 +110,7 @@ const TestimonialsCard = ({testimonials}) => {
 
   // Auto-rotate testimonials
   useEffect(() => {
-    if (!isDragging && !isAnimating) {
+    if (!isDragging && !isAnimating && !isPaused) {
       const interval = setInterval(() => {
         setPage([currentIndex, 1]);
         setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
@@ -117,7 +118,7 @@ const TestimonialsCard = ({testimonials}) => {
 
       return () => clearInterval(interval);
     }
-  }, [testimonials.length, isDragging, isAnimating, currentIndex]);
+  }, [testimonials.length, isDragging, isAnimating, isPaused, currentIndex]);
 
   // Pre-calculate maximum heights for each section to prevent CLS
   useEffect(() => {
@@ -192,7 +193,7 @@ const TestimonialsCard = ({testimonials}) => {
   // Update the handleDotClick function to include direction
   const handleDotClick = (index) => {
     if (isAnimating || index === currentIndex) return;
-    
+
     // Set direction based on which dot was clicked
     const direction = index > currentIndex ? 1 : -1;
     setPage([currentIndex, direction]);
@@ -215,14 +216,24 @@ const TestimonialsCard = ({testimonials}) => {
     );
   };
 
+  // Handlers for pause on hover or touch
+  const handlePause = () => {
+    setIsPaused(true);
+  };
+
+  const handleResume = () => {
+    setIsPaused(false);
+  };
+
   // Handle touch/mouse events for swiping
   const handleDragStart = (e) => {
     if (isAnimating) return;
     const clientX = e.type.includes("mouse") ? e.clientX : e.touches[0].clientX;
     setDragStart(clientX);
     setIsDragging(true);
+    setIsPaused(true); // Pause rotation when user starts dragging
   };
-  
+
   // Update handleDragEnd to use the correct direction
   const handleDragEnd = (e) => {
     if (!isDragging || isAnimating) return;
@@ -244,6 +255,7 @@ const TestimonialsCard = ({testimonials}) => {
     }
 
     setIsDragging(false);
+    // Don't resume automatically - wait until user moves mouse out
   };
 
   const handleDragMove = (e) => {
@@ -262,28 +274,29 @@ const TestimonialsCard = ({testimonials}) => {
     setIsAnimating(false);
   };
 
-  // Define animation variants for slide transitions
+  // Define animation variants for slide transitions - SLOWED DOWN
   const slideVariants = {
     enter: (direction) => ({
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0
+      x: direction > 0 ? 100 : -100,
+      opacity: 0,
     }),
     center: {
       x: 0,
-      opacity: 1
+      opacity: 1,
     },
     exit: (direction) => ({
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0
-    })
+      x: direction < 0 ? 100 : -100,
+      opacity: 0,
+    }),
   };
+
 
   // Container for the entire testimonial card
   return (
     <Box
       ref={containerRef}
       sx={{
-        maxWidth: {xs: "100%", md: "700px"},
+        maxWidth: {xs: "100%", md: "900px"}, // Increased from 700px to 900px
         width: "100%",
         margin: "0 auto",
         position: "relative",
@@ -363,28 +376,53 @@ const TestimonialsCard = ({testimonials}) => {
         onMouseDown={handleDragStart}
         onMouseMove={handleDragMove}
         onMouseUp={handleDragEnd}
-        onMouseLeave={handleDragEnd}
+        onMouseLeave={handleResume} // Resume rotation when mouse leaves
+        onMouseEnter={handlePause} // Pause rotation when mouse enters
       >
-        {/* Quote icon */}
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            height: "auto", // Fixed height for icon
-          }}
+        <AnimatePresence
+          initial={false}
+          custom={direction}
+          mode="wait"
         >
-          <Box
-            component="img"
-            src={quoteImage.src}
-            alt="Quote"
-            sx={{
-              height: "60px",
-              width: "auto",
+          {/* Quote icon */}
+          <motion.div
+            key={`testimonial-${currentIndex}`}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              x: {type: "spring", stiffness: 200, damping: 40}, // Slower animation
+              opacity: {duration: 0.3}, // Slightly longer fade
             }}
-          />
-        </Box>
-
+            onAnimationStart={handleAnimationStart}
+            onAnimationComplete={handleAnimationComplete}
+            style={{
+              width: "100%",
+              textAlign: "center",
+            }}
+          >
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                height: "auto", // Fixed height for icon
+              }}
+            >
+              <Box
+                component="img"
+                src={quoteImage.src}
+                alt="Quote"
+                sx={{
+                  height: "60px",
+                  width: "auto",
+                }}
+              />
+            </Box>
+          </motion.div>
+        </AnimatePresence>
         {/* Testimonial text with sliding animation */}
         <Box
           sx={{
@@ -411,8 +449,8 @@ const TestimonialsCard = ({testimonials}) => {
               animate="center"
               exit="exit"
               transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 }
+                x: {type: "spring", stiffness: 200, damping: 40}, // Slower animation
+                opacity: {duration: 0.3}, // Slightly longer fade
               }}
               onAnimationStart={handleAnimationStart}
               onAnimationComplete={handleAnimationComplete}
@@ -470,8 +508,8 @@ const TestimonialsCard = ({testimonials}) => {
               animate="center"
               exit="exit"
               transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 }
+                x: {type: "spring", stiffness: 200, damping: 40}, // Slower animation
+                opacity: {duration: 0.3}, // Slightly longer fade
               }}
               style={{
                 width: "100%",
@@ -522,8 +560,8 @@ const TestimonialsCard = ({testimonials}) => {
               animate="center"
               exit="exit"
               transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 }
+                x: {type: "spring", stiffness: 200, damping: 40}, // Slower animation
+                opacity: {duration: 0.3}, // Slightly longer fade
               }}
               style={{
                 width: "100%",
@@ -544,6 +582,24 @@ const TestimonialsCard = ({testimonials}) => {
           </AnimatePresence>
         </Box>
 
+        {/* Pause indicator */}
+        {isPaused && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: "10px",
+              right: "10px",
+              backgroundColor: "rgba(0,0,0,0.4)",
+              borderRadius: "4px",
+              padding: "4px 8px",
+              color: "#FFFFFF",
+              fontSize: "12px",
+            }}
+          >
+            Paused
+          </Box>
+        )}
+
         {/* Navigation dots */}
         <Box
           sx={{
@@ -563,7 +619,9 @@ const TestimonialsCard = ({testimonials}) => {
                 height: "8px",
                 borderRadius: "50%",
                 backgroundColor:
-                  index === currentIndex ? "#FFFFFF" : "rgba(255, 255, 255, 0.3)",
+                  index === currentIndex
+                    ? "#FFFFFF"
+                    : "rgba(255, 255, 255, 0.3)",
                 cursor: "pointer",
                 transition: "background-color 0.3s ease",
               }}
