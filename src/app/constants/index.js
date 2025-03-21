@@ -225,38 +225,38 @@ const testimonialData = [
   {
     testimonial:
       "Makendy has worked with me on multiple projects, notably the XLAB Discrimination research using virtual reality. His ability to learn new technologies and work within a group proved to me that he is quite a dependable team-player.",
-    collaboration: "VR Research Collaboration at XLAB (STAC)",
+    collaboration: "XLAB Virtual Reality Research - Lead Researcher(STAC)",
     author:
       "Taulant Xhakli, Assistant Application Analyst at Montefiore Einstein Technology",
   },
   {
     testimonial:
       "Makendy has been tutoring me in Java for several months. His style of teaching adapts to my learning style breaking down complex concepts into clear, understandable fundamentals. His patience and ability to explain things step by step have made a huge difference in my understanding of the language. I truly appreciate his support and highly recommend him to anyone looking to strengthen their Java or any programming skills!",
-    collaboration: "Java Tutoring at Varsity Tutors",
+    collaboration: "Varsity Tutors - Private Java Instructor",
     author: "Despina Kotanidis, Lead Data Analyst at Arora Engineers",
   },
   {
     testimonial:
       "Makendy was my right hand man while running Brains and Motion day camp. He was not only a naturally gifted educator, he made himself indispensable with his leadership skills and big picture thinking. Makendy immediately distinguished himself as a world class manager, able to juggle customer support, logistics, and creative problem solving. I lost track of how many times parents took me aside to specifically praise him and his work.",
-    collaboration: "Leadership & Education at Brains and Motion",
+    collaboration: "NYU BAM! Summer Camp - Lead Instructor",
     author: "Jack Aman, Camp Director at Brains & Motion",
   },
   {
     testimonial:
       "Makendy was a standout student in my class at St. Thomas Aquinas College while pursuing his Bachelor's in Computer Science. He demonstrated strong engagement by actively participating in discussions, asking insightful questions, and supporting his peers. His dedication was evident in his consistently timely and high-quality work, often exceeding expectations.",
-    collaboration: "Student at St. Thomas Aquinas College",
+    collaboration: "St.Thomas Aquinas College - Computer Science Student",
     author: "Paola Garcia Cardenas, Sr. Staff Cybersecurity Engineer & CS/Cybersecurity Adjunct",
   },
   {
     testimonial:
     "I worked with Makendy on multiple projects at NYU, and honestly, what stood out the most was his passion for tech and creating impact. He’s one of those people who’s always coming up with creative ideas and actually gets excited about building cool stuff. One of the most talented, driven, and passionate people that I’ve met, and genuinely loves what he does.",
-    collaboration: "Software Projects at NYU",
+    collaboration: "NYU Software Development - Project Collaborator",
     author: "Sean Pan, Software Engineer Associate at Capital One",
   },
   {
     testimonial:
     "Makendy was a dedicated and talented intern during our time working together at RoadCall.co. His ability to quickly grasp complex frontend concepts and contribute meaningful features in React.js was impressive. He played a crucial role in implementing key functionalities like admin notes, pagination, and badge counts, ensuring a seamless user experience. Beyond his technical skills, Makendy was an excellent team player—always open to feedback, eager to learn, and proactive in code reviews. His work ethic and problem-solving mindset made him a valuable asset to our team. I have no doubt that he will continue to thrive in his career.",
-    collaboration: "Application Development at RoadCall Co.",
+    collaboration: "RoadCall Co. - Software Engineer Intern",
     author: "Apurva Raj Purohit, Frontend Developer at RoadCall Co.",
   },
   {
@@ -266,6 +266,14 @@ const testimonialData = [
       "Web Development Collaboration",  
     author: 
       "Lugduni Desrosiers, Software Engineer at Google"
+  },
+  {
+    testimonial: 
+      "Working with Makendy as the Lead Instructor at the NYU STEM & Arts Summer Camp was truly an exceptional experience. Makendy brought an incredible blend of passion, creativity, and leadership to the program, fostering an environment where students not only learned but thrived. His ability to engage campers with both technical and artistic concepts was impressive, seamlessly blending STEM principles with artistic creativity. Makendy demonstrated strong problem-solving skills and a unique ability to adapt lessons to meet the diverse needs of our students, making complex ideas accessible and exciting. His dedication to the campers’ growth and his unwavering enthusiasm made a lasting impact on both the students and the team. I couldn’t have asked for a more committed and talented instructor to lead the program.",  
+    collaboration: 
+      "NYU BAM! Summer Camp - Lead Instructor",  
+    author: 
+      "Kristopher Kasper, Chief Operating Officer, Brains & Motion Education."
   },
 ];
 
