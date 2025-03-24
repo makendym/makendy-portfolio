@@ -44,5 +44,5 @@ export {
   varsitytutors,
   purpleGlowIcon,
   quoteImage,
-  testimonialXlab
+  testimonialXlab,
 };

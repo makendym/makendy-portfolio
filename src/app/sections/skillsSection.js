@@ -1,29 +1,98 @@
 "use client";
-import React, {useRef} from "react";
-import {Box, Typography, ThemeProvider} from "@mui/material";
+import React, {useRef, useState} from "react";
+import {Box, Typography, ThemeProvider, Tooltip} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import {motion} from "framer-motion";
 import {useInView} from "framer-motion";
 import theme from "../theme";
-const SkillsSection = ({title, isCenter, skillsData = {}}) => {
+
+const SkillsSection = ({ title, isCenter, skillsData = {} }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, {
     once: false,
     margin: "-20% 0px -20% 0px",
   });
-
+  const [hoveredSkill, setHoveredSkill] = useState(null);
+  
+// Map skills to companies based on your resume
+const skillToCompanyMap = {
+  // Languages
+  "JavaScript": ["Roadcall.co", "Treehouse Strategy", "NYU Interview Prep", "Cleaning Service"],
+  "Python": ["Brains & Motion", "NYU Interview Prep", "Stack Overflow"],
+  "Java": ["Academic Projects", "St. Thomas Aquinas College"],
+  "C#": ["XLAB Research", "The Virtual Mirror"],
+  "C++": ["Treehouse Strategy"],
+  "HTML/CSS": ["Treehouse Strategy", "NYU Interview Prep", "Cleaning Service"],
+  "SQL": ["FatEar", "NYU Interview Prep"],
+  
+  // Frameworks & Libraries
+  "React": ["Roadcall.co", "Treehouse Strategy", "NYU Interview Prep", "Cleaning Service"],
+  "Next.js": ["Personal Projects", "Portfolio"],
+  "Flask": ["FatEar"],
+  "Django": ["NYU Interview Prep"],
+  "Node.js": ["NYU Interview Prep", "Cleaning Service"],
+  "Express.js": ["Cleaning Service"],
+  "Bootstrap": ["Various Projects"],
+  "Redux": ["Roadcall.co"],
+  
+  // Databases
+  "MongoDB": ["NYU Interview Prep", "Stack Overflow"],
+  "PostgreSQL": ["NYU Interview Prep"],
+  "MySQL": ["FatEar"],
+  
+  // Big Data Tools
+  "Hadoop": ["Stack Overflow Project"],
+  "Spark": ["Stack Overflow Project"],
+  
+  // Cloud & Services
+  "AWS": ["NYU Interview Prep", "Stack Overflow", "Cleaning Service"],
+  "GraphQL": ["Cleaning Service"],
+  "REST API": ["Treehouse Strategy", "NYU Interview Prep"],
+  
+  // Version Control & Collaboration
+  "Git": ["Roadcall.co", "Treehouse Strategy", "XLAB Research", "All Projects"],
+  "GitHub": ["NYU Interview Prep", "Stack Overflow", "FatEar"],
+  "Bitbucket": ["Roadcall.co"],
+  
+  // Project Management & Methodologies
+  "Agile Scrum": ["Roadcall.co", "XLAB Research"],
+  "Jira": ["Roadcall.co"],
+  "Zenhub": ["Various Projects"],
+  "Trello": ["Various Projects"],
+  "CI/CD Pipelines": ["Various Projects"],
+  
+  // Design & Other Tools
+  "Figma": ["UI/UX Design Projects"],
+  "Unity": ["XLAB Research", "The Virtual Mirror"],
+  "Virtual Reality": ["XLAB Research"],
+  "OpenAI API": ["AP CompTutor"],
+  
+  // Specialized Skills
+  "TypeScript": ["Roadcall.co"],
+  "Data Visualization": ["Stack Overflow", "Treehouse Strategy"],
+  "Apache Echarts": ["Stack Overflow"],
+  "DynamoDB": ["Stack Overflow"],
+  "AI": ["NYU Coursework", "Brains & Motion"],
+  "Algorithms": ["NYU Coursework", "Brains & Motion"],
+  "Game Design": ["Brains & Motion"],
+  "Presentation": ["Brains & Motion", "St. Thomas Aquinas College"],
+  "Excel": ["St. Thomas Aquinas College"],
+  "SFML": [ "St. Thomas Aquinas College"],
+  "Teaching": ["Brains & Motion", "St. Thomas Aquinas College"]
+};
+  
   return (
     <ThemeProvider theme={theme}>
       <section
         ref={sectionRef}
         id="skills-section"
       >
-        <Box sx={{marginBottom: 2, paddingTop: 2, margin: "0 auto"}}>
+        <Box sx={{ marginBottom: 2, paddingTop: 2, margin: "0 auto" }}>
           <Typography
             variant="h2"
             component="h2"
             sx={{
-              fontSize: {xs: "48px", sm: "56px"},
+              fontSize: { xs: "48px", sm: "56px" },
               textAlign: "center",
             }}
           >
@@ -47,14 +116,14 @@ const SkillsSection = ({title, isCenter, skillsData = {}}) => {
           <Grid
             container
             spacing={1}
-            sx={{width: "100%"}}
+            sx={{ width: "100%" }}
           >
             {Object.entries(skillsData).map(
               ([category, skills], categoryIndex) => (
                 <Grid
                   xs={12}
                   key={category}
-                  sx={{mt: categoryIndex === 0 ? 0 : 2}}
+                  sx={{ mt: categoryIndex === 0 ? 0 : 2 }}
                   style={{
                     height: "100%",
                     width: "100%",
@@ -63,7 +132,7 @@ const SkillsSection = ({title, isCenter, skillsData = {}}) => {
                 >
                   <Box>
                     <motion.div
-                      animate={isInView ? {opacity: 1} : {opacity: 0}}
+                      animate={isInView ? { opacity: 1 } : { opacity: 0 }}
                       transition={{
                         duration: 0.5,
                         delay: categoryIndex * 0.1,
@@ -75,7 +144,7 @@ const SkillsSection = ({title, isCenter, skillsData = {}}) => {
                         sx={{
                           mb: 1,
                           color: "#fff",
-                          fontSize: {xs: "1rem", sm: "1.1rem"},
+                          fontSize: { xs: "1rem", sm: "1.1rem" },
                           textAlign: isCenter ? "center" : "left",
                           fontWeight: "bold",
                           width: "100%",
@@ -92,51 +161,93 @@ const SkillsSection = ({title, isCenter, skillsData = {}}) => {
                     container
                     spacing={1.5}
                     alignItems="flex-start"
+                    sx={{ width: "100%", height: "auto" }}
                   >
-                    {skills.map((skill, index) => (
-                      <Grid
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        lg={3}
-                        key={skill}
-                      >
-                        <motion.div
-                          animate={isInView ? {opacity: 1} : {opacity: 0}}
-                          transition={{
-                            duration: 0.5,
-                            delay: categoryIndex * 0.1 + index * 0.1,
-                            ease: "easeOut",
-                          }}
-                          style={{
-                            padding: "2px",
-                          }}
+                    {skills.map((skill, index) => {
+                      const companies = skillToCompanyMap[skill] || ["Unknown"];
+                      
+                      return (
+                        <Grid
+                          xs={12}
+                          sm={6}
+                          md={4}
+                          lg={3}
+                          key={skill}
                         >
-                          <Box
-                            sx={{
-                              background: "transparent",
-                              border: "1px solid #fff",
-                              borderRadius: "34px",
-                              padding: "0.5rem 1rem",
-                              color: "#fff",
-                              fontSize: {xs: "0.85rem", sm: "0.9rem"},
-                              minHeight: "40px",
-                              display: "flex",
-                              alignItems: "center",
-                              textAlign: "left",
-                              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                              "&:hover": {
-                                boxShadow: "0 8px 12px rgba(0, 0, 0, 0.2)",
-                                transform: "translateY(-2px)",
-                              },
-                              transition: "all 0.3s ease",
+                          <motion.div
+                            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                            transition={{
+                              duration: 0.5,
+                              delay: categoryIndex * 0.1 + index * 0.1,
+                              ease: "easeOut",
+                            }}
+                            style={{
+                              padding: "2px",
                             }}
                           >
-                            {skill}
-                          </Box>
-                        </motion.div>
-                      </Grid>
-                    ))}
+                            <Tooltip 
+                              title={
+                                <Box sx={{ maxWidth: 220 }}>
+                                  <Typography variant="body2" sx={{ fontWeight: "bold", mb: 0.5, whiteSpace: "normal" }}>
+                                    Used at:
+                                  </Typography>
+                                  {companies.map((company, idx) => (
+                                    <Typography key={idx} variant="body2" sx={{ mb: 0.5, whiteSpace: "normal" }}>
+                                      • {company}
+                                    </Typography>
+                                  ))}
+                                </Box>
+                              }
+                              arrow 
+                              placement="top"
+                              enterTouchDelay={0}
+                              leaveTouchDelay={2500}
+                              componentsProps={{
+                                tooltip: {
+                                  sx: {
+                                    overflow: "visible",
+                                    maxHeight: "none",
+                                    "& .MuiTooltip-arrow": {
+                                      color: theme.palette.grey[800]
+                                    },
+                                    "& .MuiTypography-root": {
+                                      overflow: "visible"
+                                    }
+                                  }
+                                }
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  background: hoveredSkill === skill ? "rgba(255, 255, 255, 0.1)" : "transparent",
+                                  border: "1px solid #fff",
+                                  borderRadius: "34px",
+                                  padding: "0.5rem 1rem",
+                                  color: "#fff",
+                                  fontSize: { xs: "0.85rem", sm: "0.9rem" },
+                                  minHeight: "40px",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  textAlign: "left",
+                                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                                  "&:hover": {
+                                    boxShadow: "0 8px 12px rgba(0, 0, 0, 0.2)",
+                                    transform: "translateY(-2px)",
+                                    background: "rgba(255, 255, 255, 0.1)",
+                                  },
+                                  transition: "all 0.3s ease",
+                                  cursor: "pointer",
+                                }}
+                                onMouseEnter={() => setHoveredSkill(skill)}
+                                onMouseLeave={() => setHoveredSkill(null)}
+                              >
+                                {skill}
+                              </Box>
+                            </Tooltip>
+                          </motion.div>
+                        </Grid>
+                      );
+                    })}
                   </Grid>
                 </Grid>
               )

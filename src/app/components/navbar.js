@@ -29,7 +29,8 @@ import SchoolIcon from "@mui/icons-material/School";
 import WorkIcon from "@mui/icons-material/Work";
 import CodeIcon from "@mui/icons-material/Code";
 import HomeIcon from "@mui/icons-material/Home";
-import FormatQuoteRoundedIcon from '@mui/icons-material/FormatQuoteRounded';
+import FormatQuoteRoundedIcon from "@mui/icons-material/FormatQuoteRounded";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [contactModalOpen, setContactModalOpen] = useState(false);
@@ -42,7 +43,7 @@ const Navbar = () => {
   const [showBottomNav, setShowBottomNav] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [activeNavItem, setActiveNavItem] = useState(0);
-  
+
   // Add state for active section
   const [activeSection, setActiveSection] = useState("home");
 
@@ -76,25 +77,40 @@ const Navbar = () => {
       icon: <FormatQuoteRoundedIcon fontSize="large" />,
     },
   ];
-  
-  // Add this to include home in our sections to track
-  const ALL_SECTIONS = ["home", ...NAV_LINKS.map(link => link.id)];
 
+  // Add this to include home in our sections to track
+  const ALL_SECTIONS = ["home", ...NAV_LINKS.map((link) => link.id)];
+
+  // Inside your Navbar component, add this function to handle resume download
+  const handleDownloadResume = () => {
+    const resumeUrl = "/makendy_midouin_resume.pdf"; // Directly accessible from the public folder
+    const link = document.createElement("a");
+    link.href = resumeUrl;
+    link.download = "makendy_midouin_resume.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   // Function to handle scrolling to a section
-    const handleScrollToSection = (id) => {
-      if (drawerOpen) {
-        // Set the pending section and close the drawer
-        setPendingSectionId(id);
-        setDrawerOpen(false);
-      } else {
-        // Direct scroll for non-drawer navigation
-        const section = document.getElementById(id);
-        if (section) {
-          window.history.pushState({}, "", `#${id}`);
-          section.scrollIntoView({behavior: "smooth", block: "start"});
-        }
+  const handleScrollToSection = (id) => {
+    if (id === "resume-download") {
+      handleDownloadResume();
+      return;
+    }
+
+    if (drawerOpen) {
+      // Set the pending section and close the drawer
+      setPendingSectionId(id);
+      setDrawerOpen(false);
+    } else {
+      // Direct scroll for non-drawer navigation
+      const section = document.getElementById(id);
+      if (section) {
+        window.history.pushState({}, "", `#${id}`);
+        section.scrollIntoView({behavior: "smooth", block: "start"});
       }
-    };
+    }
+  };
 
   // Add this useEffect to handle the mounting state
   useEffect(() => {
@@ -147,97 +163,103 @@ const Navbar = () => {
   }, []);
 
   // Add the scroll spy functionality to detect active section
-// Improved scroll spy functionality to detect active section
-useEffect(() => {
-  // Function to determine which section is most visible in the viewport
-  const detectActiveSection = () => {
-    // Check if we're in a browser environment
-    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+  // Improved scroll spy functionality to detect active section
+  useEffect(() => {
+    // Function to determine which section is most visible in the viewport
+    const detectActiveSection = () => {
+      // Check if we're in a browser environment
+      if (typeof window === "undefined" || typeof document === "undefined")
+        return;
 
-    // Get all section elements
-    const sectionElements = ALL_SECTIONS.map(id => document.getElementById(id)).filter(Boolean);
-    if (sectionElements.length === 0) return;
+      // Get all section elements
+      const sectionElements = ALL_SECTIONS.map((id) =>
+        document.getElementById(id)
+      ).filter(Boolean);
+      if (sectionElements.length === 0) return;
 
-    // Get the viewport height and current scroll position
-    const viewportHeight = window.innerHeight;
-    const scrollTop = window.scrollY;
+      // Get the viewport height and current scroll position
+      const viewportHeight = window.innerHeight;
+      const scrollTop = window.scrollY;
 
-    // Calculate the offset - about 100px from the top for header
-    const offset = 100;
+      // Calculate the offset - about 100px from the top for header
+      const offset = 100;
 
-    // Track which section has the most visible area
-    let maxVisibleSection = null;
-    let maxVisibleArea = 0;
+      // Track which section has the most visible area
+      let maxVisibleSection = null;
+      let maxVisibleArea = 0;
 
-    // Loop through all sections to find the one with most visible area
-    sectionElements.forEach(section => {
-      // Get section dimensions and position
-      const rect = section.getBoundingClientRect();
-      const sectionTop = rect.top + scrollTop;
-      const sectionBottom = rect.bottom + scrollTop;
-      const sectionHeight = rect.height;
+      // Loop through all sections to find the one with most visible area
+      sectionElements.forEach((section) => {
+        // Get section dimensions and position
+        const rect = section.getBoundingClientRect();
+        const sectionTop = rect.top + scrollTop;
+        const sectionBottom = rect.bottom + scrollTop;
+        const sectionHeight = rect.height;
 
-      // Skip sections with no height
-      if (sectionHeight === 0) return;
+        // Skip sections with no height
+        if (sectionHeight === 0) return;
 
-      // Calculate how much of the section is visible
-      const visibleTop = Math.max(scrollTop + offset, sectionTop);
-      const visibleBottom = Math.min(scrollTop + viewportHeight, sectionBottom);
-      
-      // Calculate visible area (if any)
-      const visibleArea = Math.max(0, visibleBottom - visibleTop);
-      
-      // If this section has more visible area than our current max, update it
-      if (visibleArea > maxVisibleArea) {
-        maxVisibleArea = visibleArea;
-        maxVisibleSection = section.id;
-      }
-      
-      // Special case for sections near the top of the page
-      if (scrollTop < sectionTop + 100 && section.id === 'home') {
-        maxVisibleSection = 'home';
-        maxVisibleArea = viewportHeight; // Prioritize home section when at top
-      }
-    });
+        // Calculate how much of the section is visible
+        const visibleTop = Math.max(scrollTop + offset, sectionTop);
+        const visibleBottom = Math.min(
+          scrollTop + viewportHeight,
+          sectionBottom
+        );
 
-    // Update the active section if we found one with visible area
-    if (maxVisibleSection && maxVisibleSection !== activeSection) {
-      setActiveSection(maxVisibleSection);
-      
-      // Update the active nav item for bottom navigation
-      const navIndex = ALL_SECTIONS.indexOf(maxVisibleSection);
-      if (navIndex !== -1) {
-        setActiveNavItem(navIndex);
-      }
-    }
-  };
+        // Calculate visible area (if any)
+        const visibleArea = Math.max(0, visibleBottom - visibleTop);
 
-  // Debounced scroll handler using requestAnimationFrame
-  let ticking = false;
-  const handleScroll = () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        detectActiveSection();
-        ticking = false;
+        // If this section has more visible area than our current max, update it
+        if (visibleArea > maxVisibleArea) {
+          maxVisibleArea = visibleArea;
+          maxVisibleSection = section.id;
+        }
+
+        // Special case for sections near the top of the page
+        if (scrollTop < sectionTop + 100 && section.id === "home") {
+          maxVisibleSection = "home";
+          maxVisibleArea = viewportHeight; // Prioritize home section when at top
+        }
       });
-      ticking = true;
-    }
-  };
-  
-  // Initial check for active section
-  detectActiveSection();
-  
-  // Add scroll event listener
-  window.addEventListener("scroll", handleScroll, { passive: true });
-  
-  // Add resize listener to recalculate on window resize
-  window.addEventListener("resize", detectActiveSection, { passive: true });
-  
-  return () => {
-    window.removeEventListener("scroll", handleScroll);
-    window.removeEventListener("resize", detectActiveSection);
-  };
-}, [activeSection]);
+
+      // Update the active section if we found one with visible area
+      if (maxVisibleSection && maxVisibleSection !== activeSection) {
+        setActiveSection(maxVisibleSection);
+
+        // Update the active nav item for bottom navigation
+        const navIndex = ALL_SECTIONS.indexOf(maxVisibleSection);
+        if (navIndex !== -1) {
+          setActiveNavItem(navIndex);
+        }
+      }
+    };
+
+    // Debounced scroll handler using requestAnimationFrame
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          detectActiveSection();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    // Initial check for active section
+    detectActiveSection();
+
+    // Add scroll event listener
+    window.addEventListener("scroll", handleScroll, {passive: true});
+
+    // Add resize listener to recalculate on window resize
+    window.addEventListener("resize", detectActiveSection, {passive: true});
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", detectActiveSection);
+    };
+  }, [activeSection]);
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
@@ -410,7 +432,6 @@ useEffect(() => {
     }
   }, [drawerOpen, pendingSectionId]);
 
-  
   const drawerContent = (
     <Box
       ref={drawerRef}
@@ -450,17 +471,22 @@ useEffect(() => {
                 }}
                 sx={{
                   color: activeSection === link.id ? "#7c9e9e" : "white",
-                  backgroundColor: activeSection === link.id ? "rgba(124, 158, 158, 0.1)" : "transparent",
+                  backgroundColor:
+                    activeSection === link.id
+                      ? "rgba(124, 158, 158, 0.1)"
+                      : "transparent",
                   "&:hover": {
                     backgroundColor: "rgba(255, 255, 255, 0.1)",
                   },
                   py: 1.5,
                 }}
               >
-                <ListItemIcon sx={{
-                  color: activeSection === link.id ? "#7c9e9e" : "#7c9e9e",
-                  width: "10px"
-                }}>
+                <ListItemIcon
+                  sx={{
+                    color: activeSection === link.id ? "#7c9e9e" : "#7c9e9e",
+                    width: "10px",
+                  }}
+                >
                   {link.icon}
                 </ListItemIcon>
                 <ListItemText
@@ -495,6 +521,41 @@ useEffect(() => {
           }}
           onClick={(e) => e.stopPropagation()} // Prevent clicks from closing the drawer
         >
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent drawer from closing
+              handleDownloadResume();
+            }}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              paddingX: 2,
+              paddingY: .6,
+              whiteSpace: "nowrap",
+              backgroundColor: "#121212",
+              border: "1px solid #7c9e9e",
+              borderRadius: "34px",
+              // mr: 1, // Add margin to separate from Let's Chat button
+            }}
+          >
+            <Typography
+              sx={{
+                color: "#7c9e9e",
+                fontFamily: "Changa, sans-serif",
+                fontSize: {xs: "1rem", sm: "16px", md: "18px"},
+                textTransform: "none",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              Resume
+            </Typography>
+            <FileDownloadIcon sx={{ml: 0.5, color: "#7c9e9e"}} />
+          </Button>
+
           {/* Let's Chat button on the left */}
           <Button
             color="primary"
@@ -681,14 +742,18 @@ useEffect(() => {
                       whiteSpace: "nowrap",
                       marginX: 1,
                       // Highlight active section in desktop menu
-                      backgroundColor: activeSection === link.id ? "rgba(124, 158, 158, 0.2)" : "transparent",
+                      backgroundColor:
+                        activeSection === link.id
+                          ? "rgba(124, 158, 158, 0.2)"
+                          : "transparent",
                       borderRadius: 2,
                     }}
                     disableRipple
                   >
                     <Typography
                       sx={{
-                        color: activeSection === link.id ? "#7c9e9e" : "inherit",
+                        color:
+                          activeSection === link.id ? "#7c9e9e" : "inherit",
                         fontFamily: "Changa, sans-serif",
                         fontWeight: activeSection === link.id ? 400 : 100,
                         fontSize: {xs: "14px", sm: "16px", md: "18px"},
@@ -727,38 +792,75 @@ useEffect(() => {
 
             {/* "Let's Chat" button on the right */}
             {isMounted && !isMobile && (
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  backgroundColor: "rgba(255, 255, 255, 1.0)",
-                  padding: .5,
-                  borderRadius: "34px",
-                  maxWidth: "100%",
-                }}
-              >
-                <Button
-                  color="inherit"
-                  onClick={handleOpenContactModal}
+              <>
+                <Box
                   sx={{
-                    textTransform: "none",
+                    display: "flex",
+                    alignItems: "center",
+                    backgroundColor: "rgba(255, 255, 255, 1.0)",
+                    padding: 0.5,
+                    borderRadius: "34px",
+                    maxWidth: "100%",
                   }}
                 >
-                  <Typography
+                  <Button
+                    color="inherit"
+                    onClick={handleOpenContactModal}
                     sx={{
-                      color: "#000000",
-                      fontFamily: "Changa, sans-serif",
-                      fontSize: {xs: "14px", sm: "16px", md: "18px"},
                       textTransform: "none",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
                     }}
                   >
-                    Let&apos;s Chat
-                  </Typography>
-                </Button>
-              </Box>
+                    <Typography
+                      sx={{
+                        color: "#000000",
+                        fontFamily: "Changa, sans-serif",
+                        fontSize: {xs: "14px", sm: "16px", md: "18px"},
+                        textTransform: "none",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      Let&apos;s Chat
+                    </Typography>
+                  </Button>
+                </Box>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    backgroundColor: "rgba(124, 158, 158, 0.8)",
+                    padding: 0.5,
+                    borderRadius: "34px",
+                    ml: 1, // Add margin to separate from Let's Chat button
+                    maxWidth: "100%",
+                  }}
+                >
+                  <Button
+                    color="inherit"
+                    onClick={handleDownloadResume}
+                    sx={{
+                      textTransform: "none",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        color: "#FFFFFF",
+                        fontFamily: "Changa, sans-serif",
+                        fontSize: {xs: "14px", sm: "16px", md: "18px"},
+                        textTransform: "none",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      Resume
+                    </Typography>
+                    <FileDownloadIcon sx={{ml: 0.5, color: "#FFFFFF"}} />
+                  </Button>
+                </Box>
+              </>
             )}
           </Box>
         </Toolbar>
@@ -867,7 +969,9 @@ useEffect(() => {
                 label={link.title}
                 icon={React.cloneElement(link.icon, {
                   fontSize: "medium",
-                  style: { color: activeSection === link.id ? "#7c9e9e" : "#FFFFFF" }
+                  style: {
+                    color: activeSection === link.id ? "#7c9e9e" : "#FFFFFF",
+                  },
                 })}
                 sx={{
                   color: activeSection === link.id ? "#7c9e9e" : "#FFFFFF",
@@ -917,6 +1021,51 @@ useEffect(() => {
           }, 100);
         }}
       />
+
+      {isMounted && isMobile && !drawerOpen && (
+        <Box
+          sx={{
+            position: "fixed",
+            right: 16,
+            bottom: 80,
+            zIndex: 9998,
+            display: showBottomNav ? "block" : "none",
+            transition: "all 0.6s ease-in-out",
+          }}
+        >
+          <Button
+            variant="contained"
+            onClick={handleDownloadResume}
+            sx={{
+              borderRadius: 28,
+              backgroundColor: "rgba(124, 158, 158, 0.9)",
+              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
+              padding: "8px 16px",
+              "&:hover": {
+                backgroundColor: "rgba(124, 158, 158, 1)",
+              },
+              display: "flex",
+              alignItems: "center",
+              overflow: "hidden",
+            }}
+          >
+            <Typography
+              sx={{
+                color: "#FFFFFF",
+                fontFamily: "Changa, sans-serif",
+                fontSize: "14px",
+                textTransform: "none",
+                mr: 1,
+                overflow: "hidden",
+
+              }}
+            >
+              Resume
+            </Typography>
+            <FileDownloadIcon />
+          </Button>
+        </Box>
+      )}
     </>
   );
 };

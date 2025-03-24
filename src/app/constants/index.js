@@ -33,16 +33,14 @@ const skillsDataAbout = {
     "JavaScript",
     "Python",
     "C#",
-    "C++",
-    "HTML",
-    "CSS",
+    "HTML/CSS",
     "SQL",
   ],
   "Frameworks & Libraries": [
     "React",
     "Next.js",
     "Node.js",
-    "Express",
+    "Express.js",
     "Django",
     "Flask",
     "Bootstrap",
@@ -63,7 +61,7 @@ const skillsDataAbout = {
     "Figma",
     "OpenAI API",
     "Virtual Reality",
-    "Agile/Scrum",
+    "Agile Scrum",
   ],
 };
 
@@ -147,15 +145,15 @@ const skillsDataWork = {
     "C++",
     "Jira",
     "Redux",
-    "Bit Bucket",
+    "Bitbucket",
     "C#",
-    "Rest API",
+    "REST API",
     "Agile Scrum",
     "JavaScript",
     "Python",
     "Java",
     "SQL",
-    "MYSQL",
+    "MySQL",
     "SFML",
     "Presentation",
     "Excel",
@@ -274,6 +272,13 @@ const testimonialData = [
       "NYU BAM! Summer Camp - Lead Instructor",  
     author: 
       "Kristopher Kasper, Chief Operating Officer, Brains & Motion Education."
+  },
+  {
+    testimonial: 
+      "I had the pleasure of working with Makendy on several projects. Most notably, we collaborated on an EdTech startup. It was very clear to me from the start that he likes to learn as much as he likes to teach – always filling gaps and picking up new skills. Definitely a doer by nature and always biases towards action. He consistently impressed me with his dedication, showing up fully committed every day, ready to tackle any challenges head-on. Can’t recommend him enough if you’re looking for someone to make an immediate impact.",  
+    collaboration: "NYU Entrepreneurial Institute's Startup Accelerator Program - EdTech Startup Collaborator",
+    author: "Chinmayan Pradeep, AI Engineer Intern & Graduate Research Assistant, Subconsious AI and Neuroinformatics Lab, NYU"
+      
   },
 ];
 
