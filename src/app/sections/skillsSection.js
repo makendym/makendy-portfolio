@@ -5,6 +5,7 @@ import Grid from "@mui/material/Grid2";
 import {motion} from "framer-motion";
 import {useInView} from "framer-motion";
 import theme from "../theme";
+import {skillToCompanyMap} from "../constants";
 
 const SkillsSection = ({ title, isCenter, skillsData = {} }) => {
   const sectionRef = useRef(null);
@@ -14,72 +15,7 @@ const SkillsSection = ({ title, isCenter, skillsData = {} }) => {
   });
   const [hoveredSkill, setHoveredSkill] = useState(null);
   
-// Map skills to companies based on your resume
-const skillToCompanyMap = {
-  // Languages
-  "JavaScript": ["Roadcall.co", "Treehouse Strategy", "NYU Interview Prep", "Cleaning Service"],
-  "Python": ["Brains & Motion", "NYU Interview Prep", "Stack Overflow"],
-  "Java": ["Academic Projects", "St. Thomas Aquinas College"],
-  "C#": ["XLAB Research", "The Virtual Mirror"],
-  "C++": ["Treehouse Strategy"],
-  "HTML/CSS": ["Treehouse Strategy", "NYU Interview Prep", "Cleaning Service"],
-  "SQL": ["FatEar", "NYU Interview Prep"],
-  
-  // Frameworks & Libraries
-  "React": ["Roadcall.co", "Treehouse Strategy", "NYU Interview Prep", "Cleaning Service"],
-  "Next.js": ["Personal Projects", "Portfolio"],
-  "Flask": ["FatEar"],
-  "Django": ["NYU Interview Prep"],
-  "Node.js": ["NYU Interview Prep", "Cleaning Service"],
-  "Express.js": ["Cleaning Service"],
-  "Bootstrap": ["Various Projects"],
-  "Redux": ["Roadcall.co"],
-  
-  // Databases
-  "MongoDB": ["NYU Interview Prep", "Stack Overflow"],
-  "PostgreSQL": ["NYU Interview Prep"],
-  "MySQL": ["FatEar"],
-  
-  // Big Data Tools
-  "Hadoop": ["Stack Overflow Project"],
-  "Spark": ["Stack Overflow Project"],
-  
-  // Cloud & Services
-  "AWS": ["NYU Interview Prep", "Stack Overflow", "Cleaning Service"],
-  "GraphQL": ["Cleaning Service"],
-  "REST API": ["Treehouse Strategy", "NYU Interview Prep"],
-  
-  // Version Control & Collaboration
-  "Git": ["Roadcall.co", "Treehouse Strategy", "XLAB Research", "All Projects"],
-  "GitHub": ["NYU Interview Prep", "Stack Overflow", "FatEar"],
-  "Bitbucket": ["Roadcall.co"],
-  
-  // Project Management & Methodologies
-  "Agile Scrum": ["Roadcall.co", "XLAB Research"],
-  "Jira": ["Roadcall.co"],
-  "Zenhub": ["Various Projects"],
-  "Trello": ["Various Projects"],
-  "CI/CD Pipelines": ["Various Projects"],
-  
-  // Design & Other Tools
-  "Figma": ["UI/UX Design Projects"],
-  "Unity": ["XLAB Research", "The Virtual Mirror"],
-  "Virtual Reality": ["XLAB Research"],
-  "OpenAI API": ["AP CompTutor"],
-  
-  // Specialized Skills
-  "TypeScript": ["Roadcall.co"],
-  "Data Visualization": ["Stack Overflow", "Treehouse Strategy"],
-  "Apache Echarts": ["Stack Overflow"],
-  "DynamoDB": ["Stack Overflow"],
-  "AI": ["NYU Coursework", "Brains & Motion"],
-  "Algorithms": ["NYU Coursework", "Brains & Motion"],
-  "Game Design": ["Brains & Motion"],
-  "Presentation": ["Brains & Motion", "St. Thomas Aquinas College"],
-  "Excel": ["St. Thomas Aquinas College"],
-  "SFML": [ "St. Thomas Aquinas College"],
-  "Teaching": ["Brains & Motion", "St. Thomas Aquinas College"]
-};
+
   
   return (
     <ThemeProvider theme={theme}>

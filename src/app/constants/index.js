@@ -159,6 +159,83 @@ const skillsDataWork = {
     "Excel",
   ],
 };
+
+// Map skills to companies based on your resume
+const skillToCompanyMap = {
+  // Languages
+  JavaScript: [
+    "Roadcall.co",
+    "Treehouse Strategy",
+    "NYU Interview Prep",
+    "Cleaning Service",
+  ],
+  Python: ["Brains & Motion", "NYU Interview Prep", "Stack Overflow"],
+  Java: ["Academic Projects", "St. Thomas Aquinas College"],
+  "C#": ["XLAB Research", "The Virtual Mirror"],
+  "C++": ["Treehouse Strategy"],
+  "HTML/CSS": ["Treehouse Strategy", "NYU Interview Prep", "Cleaning Service"],
+  SQL: ["FatEar", "NYU Interview Prep"],
+
+  // Frameworks & Libraries
+  React: [
+    "Roadcall.co",
+    "Treehouse Strategy",
+    "NYU Interview Prep",
+    "Cleaning Service",
+  ],
+  "Next.js": ["Personal Projects", "Portfolio"],
+  Flask: ["FatEar"],
+  Django: ["NYU Interview Prep"],
+  "Node.js": ["NYU Interview Prep", "Cleaning Service"],
+  "Express.js": ["Cleaning Service"],
+  Bootstrap: ["Various Projects"],
+  Redux: ["Roadcall.co"],
+
+  // Databases
+  MongoDB: ["NYU Interview Prep", "Stack Overflow"],
+  PostgreSQL: ["NYU Interview Prep"],
+  MySQL: ["FatEar"],
+
+  // Big Data Tools
+  Hadoop: ["Stack Overflow Project"],
+  Spark: ["Stack Overflow Project"],
+
+  // Cloud & Services
+  AWS: ["NYU Interview Prep", "Stack Overflow", "Cleaning Service"],
+  GraphQL: ["Cleaning Service"],
+  "REST API": ["Treehouse Strategy", "NYU Interview Prep"],
+
+  // Version Control & Collaboration
+  Git: ["Roadcall.co", "Treehouse Strategy", "XLAB Research", "All Projects"],
+  GitHub: ["NYU Interview Prep", "Stack Overflow", "FatEar"],
+  Bitbucket: ["Roadcall.co"],
+
+  // Project Management & Methodologies
+  "Agile Scrum": ["Roadcall.co", "XLAB Research"],
+  Jira: ["Roadcall.co"],
+  Zenhub: ["Various Projects"],
+  Trello: ["Various Projects"],
+  "CI/CD Pipelines": ["Various Projects"],
+
+  // Design & Other Tools
+  Figma: ["UI/UX Design Projects"],
+  Unity: ["XLAB Research", "The Virtual Mirror"],
+  "Virtual Reality": ["XLAB Research"],
+  "OpenAI API": ["AP CompTutor"],
+
+  // Specialized Skills
+  TypeScript: ["Roadcall.co"],
+  "Data Visualization": ["Stack Overflow", "Treehouse Strategy"],
+  "Apache Echarts": ["Stack Overflow"],
+  DynamoDB: ["Stack Overflow"],
+  AI: ["NYU Coursework", "Brains & Motion"],
+  Algorithms: ["NYU Coursework", "Brains & Motion"],
+  "Game Design": ["Brains & Motion"],
+  Presentation: ["Brains & Motion", "St. Thomas Aquinas College"],
+  Excel: ["St. Thomas Aquinas College"],
+  SFML: ["St. Thomas Aquinas College"],
+  Teaching: ["Brains & Motion", "St. Thomas Aquinas College"],
+};
 const projects = [
   {
     title: "The Virtual Mirror",
@@ -243,42 +320,41 @@ const testimonialData = [
     testimonial:
       "Makendy was a standout student in my class at St. Thomas Aquinas College while pursuing his Bachelor's in Computer Science. He demonstrated strong engagement by actively participating in discussions, asking insightful questions, and supporting his peers. His dedication was evident in his consistently timely and high-quality work, often exceeding expectations.",
     collaboration: "St.Thomas Aquinas College - Computer Science Student",
-    author: "Paola Garcia Cardenas, Sr. Staff Cybersecurity Engineer & CS/Cybersecurity Adjunct",
+    author:
+      "Paola Garcia Cardenas, Sr. Staff Cybersecurity Engineer & CS/Cybersecurity Adjunct",
   },
   {
     testimonial:
-    "I worked with Makendy on multiple projects at NYU, and honestly, what stood out the most was his passion for tech and creating impact. He’s one of those people who’s always coming up with creative ideas and actually gets excited about building cool stuff. One of the most talented, driven, and passionate people that I’ve met, and genuinely loves what he does.",
+      "I worked with Makendy on multiple projects at NYU, and honestly, what stood out the most was his passion for tech and creating impact. He’s one of those people who’s always coming up with creative ideas and actually gets excited about building cool stuff. One of the most talented, driven, and passionate people that I’ve met, and genuinely loves what he does.",
     collaboration: "NYU Software Development - Project Collaborator",
     author: "Sean Pan, Software Engineer Associate at Capital One",
   },
   {
     testimonial:
-    "Makendy was a dedicated and talented intern during our time working together at RoadCall.co. His ability to quickly grasp complex frontend concepts and contribute meaningful features in React.js was impressive. He played a crucial role in implementing key functionalities like admin notes, pagination, and badge counts, ensuring a seamless user experience. Beyond his technical skills, Makendy was an excellent team player—always open to feedback, eager to learn, and proactive in code reviews. His work ethic and problem-solving mindset made him a valuable asset to our team. I have no doubt that he will continue to thrive in his career.",
+      "Makendy was a dedicated and talented intern during our time working together at RoadCall.co. His ability to quickly grasp complex frontend concepts and contribute meaningful features in React.js was impressive. He played a crucial role in implementing key functionalities like admin notes, pagination, and badge counts, ensuring a seamless user experience. Beyond his technical skills, Makendy was an excellent team player—always open to feedback, eager to learn, and proactive in code reviews. His work ethic and problem-solving mindset made him a valuable asset to our team. I have no doubt that he will continue to thrive in his career.",
     collaboration: "RoadCall Co. - Software Engineer Intern",
     author: "Apurva Raj Purohit, Frontend Developer at RoadCall Co.",
   },
   {
-    testimonial: 
-      "Working with Makendy has been an exceptional experience. His ability to break down complex technical challenges, particularly in web development, showcases both technical expertise and a problem-solving mindset. Whether addressing intricate issues like Google Maps clustering behavior or special case customer issues, Makendy has consistently demonstrated a proactive approach to problem-solving, ensuring efficient and effective resolutions. I’ve had the opportunity to work directly with Makendy and observe his collaboration with team members, particularly in debugging and brainstorming solutions in the web development space.",  
-    collaboration: 
-      "Web Development Collaboration",  
-    author: 
-      "Lugduni Desrosiers, Software Engineer at Google"
+    testimonial:
+      "Working with Makendy has been an exceptional experience. His ability to break down complex technical challenges, particularly in web development, showcases both technical expertise and a problem-solving mindset. Whether addressing intricate issues like Google Maps clustering behavior or special case customer issues, Makendy has consistently demonstrated a proactive approach to problem-solving, ensuring efficient and effective resolutions. I’ve had the opportunity to work directly with Makendy and observe his collaboration with team members, particularly in debugging and brainstorming solutions in the web development space.",
+    collaboration: "Web Development Collaboration",
+    author: "Lugduni Desrosiers, Software Engineer at Google",
   },
   {
-    testimonial: 
-      "Working with Makendy as the Lead Instructor at the NYU STEM & Arts Summer Camp was truly an exceptional experience. Makendy brought an incredible blend of passion, creativity, and leadership to the program, fostering an environment where students not only learned but thrived. His ability to engage campers with both technical and artistic concepts was impressive, seamlessly blending STEM principles with artistic creativity. Makendy demonstrated strong problem-solving skills and a unique ability to adapt lessons to meet the diverse needs of our students, making complex ideas accessible and exciting. His dedication to the campers’ growth and his unwavering enthusiasm made a lasting impact on both the students and the team. I couldn’t have asked for a more committed and talented instructor to lead the program.",  
-    collaboration: 
-      "NYU BAM! Summer Camp - Lead Instructor",  
-    author: 
-      "Kristopher Kasper, Chief Operating Officer, Brains & Motion Education."
+    testimonial:
+      "Working with Makendy as the Lead Instructor at the NYU STEM & Arts Summer Camp was truly an exceptional experience. Makendy brought an incredible blend of passion, creativity, and leadership to the program, fostering an environment where students not only learned but thrived. His ability to engage campers with both technical and artistic concepts was impressive, seamlessly blending STEM principles with artistic creativity. Makendy demonstrated strong problem-solving skills and a unique ability to adapt lessons to meet the diverse needs of our students, making complex ideas accessible and exciting. His dedication to the campers’ growth and his unwavering enthusiasm made a lasting impact on both the students and the team. I couldn’t have asked for a more committed and talented instructor to lead the program.",
+    collaboration: "NYU BAM! Summer Camp - Lead Instructor",
+    author:
+      "Kristopher Kasper, Chief Operating Officer, Brains & Motion Education.",
   },
   {
-    testimonial: 
-      "I had the pleasure of working with Makendy on several projects. Most notably, we collaborated on an EdTech startup. It was very clear to me from the start that he likes to learn as much as he likes to teach – always filling gaps and picking up new skills. Definitely a doer by nature and always biases towards action. He consistently impressed me with his dedication, showing up fully committed every day, ready to tackle any challenges head-on. Can’t recommend him enough if you’re looking for someone to make an immediate impact.",  
-    collaboration: "NYU Entrepreneurial Institute's Startup Accelerator Program - EdTech Startup Collaborator",
-    author: "Chinmayan Pradeep, AI Engineer Intern & Graduate Research Assistant, Subconsious AI and Neuroinformatics Lab, NYU"
-      
+    testimonial:
+      "I had the pleasure of working with Makendy on several projects. Most notably, we collaborated on an EdTech startup. It was very clear to me from the start that he likes to learn as much as he likes to teach – always filling gaps and picking up new skills. Definitely a doer by nature and always biases towards action. He consistently impressed me with his dedication, showing up fully committed every day, ready to tackle any challenges head-on. Can’t recommend him enough if you’re looking for someone to make an immediate impact.",
+    collaboration:
+      "NYU Entrepreneurial Institute's Startup Accelerator Program - EdTech Startup Collaborator",
+    author:
+      "Chinmayan Pradeep, AI Engineer Intern & Graduate Research Assistant, Subconsious AI and Neuroinformatics Lab, NYU",
   },
 ];
 
@@ -292,4 +368,5 @@ export {
   skillsDataWork,
   projects,
   testimonialData,
+  skillToCompanyMap
 };
