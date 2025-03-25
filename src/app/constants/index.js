@@ -31,6 +31,7 @@ const skillsDataAbout = {
   "Programming Languages": [
     "Java",
     "JavaScript",
+    "TypeScript",
     "Python",
     "C#",
     "HTML/CSS",
@@ -135,6 +136,7 @@ const workExperience = [
 ];
 const skillsDataWork = {
   "Related Skills": [
+    "TypeScript",
     "React",
     "GraphQL",
     "Express.js",
@@ -160,7 +162,7 @@ const skillsDataWork = {
   ],
 };
 
-// Map skills to companies based on your resume
+// Map skills to companies based on resume
 const skillToCompanyMap = {
   // Languages
   JavaScript: [
@@ -355,6 +357,14 @@ const testimonialData = [
       "NYU Entrepreneurial Institute's Startup Accelerator Program - EdTech Startup Collaborator",
     author:
       "Chinmayan Pradeep, AI Engineer Intern & Graduate Research Assistant, Subconsious AI and Neuroinformatics Lab, NYU",
+  },
+  {
+    testimonial:
+      "Makendy has been an absolutely incredible mentor to me. His technical skills are truly impressive, particularly when it comes to DSA and resume building. He consistently pushed me to achieve my best, patiently guiding me through complex problems and conducting thorough mock interviews, which were crucial in my successful journey to becoming a Software Engineer at Amazon Web Services. Beyond that, Makendy's support has been unwavering. He's always been there to offer encouragement and insightful advice, never failing to go above and beyond. It's clear he's invested significant time and energy into my development, and his impact has been profound. He's a truly wonderful mentor, and I credit him significantly for my success in breaking into AWS.",
+    collaboration:
+      "Technical Mentorship - DSA and Career Coaching",
+    author:
+      "Brian St-Juste, Software Engineer Intern at Amazon Web Services",
   },
 ];
 
