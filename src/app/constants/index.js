@@ -301,6 +301,12 @@ const projects = [
 const testimonialData = [
   {
     testimonial:
+      "Makendy has been an absolutely incredible mentor to me. His technical skills are truly impressive, particularly when it comes to DSA and resume building. He consistently pushed me to achieve my best, patiently guiding me through complex problems and conducting thorough mock interviews, which were crucial in my successful journey to becoming a Software Engineer at Amazon Web Services. Beyond that, Makendy's support has been unwavering. He's always been there to offer encouragement and insightful advice, never failing to go above and beyond. It's clear he's invested significant time and energy into my development, and his impact has been profound. He's a truly wonderful mentor, and I credit him significantly for my success in breaking into AWS.",
+    collaboration: "Technical Mentorship - DSA and Career Coaching",
+    author: "Brian St-Juste, Software Engineer Intern at Amazon Web Services",
+  },
+  {
+    testimonial:
       "Makendy has worked with me on multiple projects, notably the XLAB Discrimination research using virtual reality. His ability to learn new technologies and work within a group proved to me that he is quite a dependable team-player.",
     collaboration: "XLAB Virtual Reality Research - Lead Researcher(STAC)",
     author:
@@ -311,6 +317,13 @@ const testimonialData = [
       "Makendy has been tutoring me in Java for several months. His style of teaching adapts to my learning style breaking down complex concepts into clear, understandable fundamentals. His patience and ability to explain things step by step have made a huge difference in my understanding of the language. I truly appreciate his support and highly recommend him to anyone looking to strengthen their Java or any programming skills!",
     collaboration: "Varsity Tutors - Private Java Instructor",
     author: "Despina Kotanidis, Lead Data Analyst at Arora Engineers",
+  },
+  {
+    testimonial:
+      "Working with Makendy as the Lead Instructor at the NYU STEM & Arts Summer Camp was truly an exceptional experience. Makendy brought an incredible blend of passion, creativity, and leadership to the program, fostering an environment where students not only learned but thrived. His ability to engage campers with both technical and artistic concepts was impressive, seamlessly blending STEM principles with artistic creativity. Makendy demonstrated strong problem-solving skills and a unique ability to adapt lessons to meet the diverse needs of our students, making complex ideas accessible and exciting. His dedication to the campers’ growth and his unwavering enthusiasm made a lasting impact on both the students and the team. I couldn’t have asked for a more committed and talented instructor to lead the program.",
+    collaboration: "NYU BAM! Summer Camp - Lead Instructor",
+    author:
+      "Kristopher Kasper, Chief Operating Officer, Brains & Motion Education.",
   },
   {
     testimonial:
@@ -345,26 +358,11 @@ const testimonialData = [
   },
   {
     testimonial:
-      "Working with Makendy as the Lead Instructor at the NYU STEM & Arts Summer Camp was truly an exceptional experience. Makendy brought an incredible blend of passion, creativity, and leadership to the program, fostering an environment where students not only learned but thrived. His ability to engage campers with both technical and artistic concepts was impressive, seamlessly blending STEM principles with artistic creativity. Makendy demonstrated strong problem-solving skills and a unique ability to adapt lessons to meet the diverse needs of our students, making complex ideas accessible and exciting. His dedication to the campers’ growth and his unwavering enthusiasm made a lasting impact on both the students and the team. I couldn’t have asked for a more committed and talented instructor to lead the program.",
-    collaboration: "NYU BAM! Summer Camp - Lead Instructor",
-    author:
-      "Kristopher Kasper, Chief Operating Officer, Brains & Motion Education.",
-  },
-  {
-    testimonial:
       "I had the pleasure of working with Makendy on several projects. Most notably, we collaborated on an EdTech startup. It was very clear to me from the start that he likes to learn as much as he likes to teach – always filling gaps and picking up new skills. Definitely a doer by nature and always biases towards action. He consistently impressed me with his dedication, showing up fully committed every day, ready to tackle any challenges head-on. Can’t recommend him enough if you’re looking for someone to make an immediate impact.",
     collaboration:
       "NYU Entrepreneurial Institute's Startup Accelerator Program - EdTech Startup Collaborator",
     author:
       "Chinmayan Pradeep, AI Engineer Intern & Graduate Research Assistant, Subconsious AI and Neuroinformatics Lab, NYU",
-  },
-  {
-    testimonial:
-      "Makendy has been an absolutely incredible mentor to me. His technical skills are truly impressive, particularly when it comes to DSA and resume building. He consistently pushed me to achieve my best, patiently guiding me through complex problems and conducting thorough mock interviews, which were crucial in my successful journey to becoming a Software Engineer at Amazon Web Services. Beyond that, Makendy's support has been unwavering. He's always been there to offer encouragement and insightful advice, never failing to go above and beyond. It's clear he's invested significant time and energy into my development, and his impact has been profound. He's a truly wonderful mentor, and I credit him significantly for my success in breaking into AWS.",
-    collaboration:
-      "Technical Mentorship - DSA and Career Coaching",
-    author:
-      "Brian St-Juste, Software Engineer Intern at Amazon Web Services",
   },
 ];
 
@@ -378,5 +376,5 @@ export {
   skillsDataWork,
   projects,
   testimonialData,
-  skillToCompanyMap
+  skillToCompanyMap,
 };
