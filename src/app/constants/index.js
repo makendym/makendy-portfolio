@@ -91,6 +91,12 @@ const educationData = [
 ];
 const workExperience = [
   {
+    role: "Summer Camp Director",
+    company: "Brains & Motion Education",
+    date: "Jun 2025 - Present",
+    icon: bam,
+  },
+  {
     role: "Computer Science Adjunct Faculty",
     company: "St. Thomas Aquinas College",
     date: "Sep 2024 - Present",
