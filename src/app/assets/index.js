@@ -22,6 +22,7 @@ import purpleGlowIcon from "./purpleGlow.jpeg";
 import portfolioProject from "./portfolio-project.png";
 import quoteImage from "./quote-image.svg";
 import testimonialXlab from "./testimonial-xlab.jpeg";
+import olympicStadiumVr from "./olympic-stadium-vr.jpeg";
 export {
   aboutMeImage,
   landingPageImage,
@@ -45,4 +46,5 @@ export {
   purpleGlowIcon,
   quoteImage,
   testimonialXlab,
+  olympicStadiumVr,
 };

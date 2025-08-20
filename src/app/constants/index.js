@@ -16,6 +16,7 @@ import {
   treehouse,
   varsitytutors,
   purpleGlowIcon,
+  olympicStadiumVr,
 } from "../assets";
 
 const videoUrl = "https://d3lh4iw97b9uun.cloudfront.net/portfolioVid4.mp4";
@@ -319,6 +320,13 @@ const projects = [
     image: purpleGlow.src,
     size: "medium",
     link: "https://github.com/makendym/Cleaning-Service-app",
+  },
+  {
+    title: "Olympic Stadium VR",
+    description: "Immersive VR simulation of Olympic track events featuring motion-captured athletic animations. Users experience races from a viewing room with multiple camera angles for 100m, 200m, and 400m events, showcasing advanced VR development and MOCAP integration.",
+    image: olympicStadiumVr.src, // You could use a screenshot or Unity preview
+    size: "medium", // This deserves large size due to complexity
+    link: "https://github.com/makendym/Olympic-Stadium-VR-Project",
   },
   {
     title: "Fat Ear",
