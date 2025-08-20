@@ -255,6 +255,39 @@ const projects = [
     video: "https://d3lh4iw97b9uun.cloudfront.net/xlab.mp4",
   },
   {
+    title: "SmartFRQ",
+    description:
+      "Built a focused prototype for APCompTutor.AI, an AI-powered AP Computer Science practice platform that processes PDF questions into structured JSON format, and uses the Feynman Technique for enhanced learning. Used Next.js, TypeScript, and multi-model AI integration to create a user-friendly platform to provide custom prompts and intelligent feedback for students.",
+    image:
+      "https://cdn.loom.com/sessions/thumbnails/95adb06b15ea45f8983508b04d50a41c-4f5ada8a03dacb81-full-play.gif",
+    size: "medium",
+    link: "",
+    video: "https://www.loom.com/share/95adb06b15ea45f8983508b04d50a41c",
+  },
+  {
+    title: "Java Lambda Runner",
+    description:
+      "Microservice built with TypeScript-based AWS Lambda function that provides Java execution capabilities within a serverless environment. Combines Node.js and Java to create a flexible serverless solution with Docker containerization, API Gateway integration for compiling and running Java code via HTTP requests.",
+    image: "https://cdn.loom.com/sessions/thumbnails/aabf192a1d8444239d0dc3b9fc6c20d4-f6fc632e57ccf82a-full-play.gif",
+    size: "medium",
+    link: "https://github.com/makendym/java-lambda-runner",
+    video: "https://www.loom.com/share/aabf192a1d8444239d0dc3b9fc6c20d4",
+  },
+  {
+    title: "AWS Frontend Todo App",
+    description: "Frontend implementation tutorial for cloud computing students - React-based todo application with S3 static hosting deployment. Part 1 of a comprehensive AWS serverless tutorial series.",
+    image: "https://raw.githubusercontent.com/makendym/AWS-Frontend-Todo-App/main/app-step1-img.png",
+    size: "medium",
+    link: "https://github.com/makendym/AWS-Frontend-Todo-App",
+  },
+  {
+    title: "AWS Lambda Backend Tutorial",
+    description: "Backend implementation tutorial for cloud computing students - AWS Lambda functions with API Gateway and DynamoDB integration. Part 2 of a comprehensive AWS serverless tutorial series.",
+    image: "https://raw.githubusercontent.com/makendym/AWS-Lambda-Todo-App/main/lambda-step1-img.png",
+    size: "medium",
+    link: "https://github.com/makendym/AWS-Lambda-Todo-App",
+  },
+  {
     title: "AP CompTutor",
     description:
       "AI-powered study buddy that creates custom practice questions to help sharpen coding skills and ace the AP CSA exam.",

@@ -36,7 +36,7 @@ const TestimonialsSection = () => {
           scale,
           opacity,
           borderRadius,
-          willChange: "transform, opacity", // Performance hint for browsers
+          willChange: "transform, opacity",
         }}
       >
         <Box
@@ -62,7 +62,6 @@ const TestimonialsSection = () => {
               backgroundSize: "cover",
               backgroundPosition: "center",
               opacity: 0.2,
-              // Apply transform for better performance (uses GPU)
               transform: "translateZ(0)",
             }}
           />
@@ -72,9 +71,9 @@ const TestimonialsSection = () => {
             animate={isInView ? {opacity: 1} : {opacity: 0}}
             transition={{duration: 0.9, ease: "easeOut"}}
             style={{
-              width: "95%", // Increased from 90% to 95% for wider content
-              willChange: "opacity", // Performance hint
-              position: "relative", // Added for positioning the arrows outside
+              width: "95%",
+              willChange: "opacity",
+              position: "relative",
             }}
           >
             <TestimonialsCard testimonials={testimonialData} />
@@ -89,221 +88,63 @@ export default TestimonialsSection;
 
 const TestimonialsCard = ({testimonials}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [dragStart, setDragStart] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const swipeThreshold = 50;
-
-  // Cache testimonial dimensions to prevent layout shifts
-  const [contentHeight, setContentHeight] = useState({
-    testimonial: 0,
-    collaboration: 0,
-    author: 0,
-  });
-
-  // Ref to measure content
-  const testimonialRef = useRef(null);
-  const collaborationRef = useRef(null);
-  const authorRef = useRef(null);
   const containerRef = useRef(null);
 
   // Auto-rotate testimonials
   useEffect(() => {
-    if (!isDragging && !isAnimating && !isPaused) {
+    if (!isPaused) {
       const interval = setInterval(() => {
-        setPage([currentIndex, 1]);
         setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-      }, 5000);
+      }, 6000); // Increased to 6 seconds for smoother experience
 
       return () => clearInterval(interval);
     }
-  }, [testimonials.length, isDragging, isAnimating, isPaused, currentIndex]);
+  }, [testimonials.length, isPaused]);
 
-  // Pre-calculate maximum heights for each section to prevent CLS
-  useEffect(() => {
-    // Function to calculate heights of all testimonials to find maximum
-    const calculateMaxHeights = () => {
-      // Create temporary elements to measure text heights
-      const tempDiv = document.createElement("div");
-      tempDiv.style.position = "absolute";
-      tempDiv.style.visibility = "hidden";
-      tempDiv.style.width = testimonialRef.current?.offsetWidth + "px";
-
-      // Set the same styling as the real elements
-      tempDiv.style.fontSize = window.innerWidth < 900 ? "18px" : "24px";
-      tempDiv.style.fontWeight = "500";
-      tempDiv.style.padding = window.innerWidth < 900 ? "0 20px" : "0 40px";
-      tempDiv.style.textAlign = "center";
-
-      document.body.appendChild(tempDiv);
-
-      let maxTestimonialHeight = 0;
-      let maxCollabHeight = 0;
-      let maxAuthorHeight = 0;
-
-      testimonials.forEach((item) => {
-        // Measure testimonial text height
-        tempDiv.textContent = item.testimonial;
-        const testimonialHeight = tempDiv.offsetHeight;
-        maxTestimonialHeight = Math.max(
-          maxTestimonialHeight,
-          testimonialHeight
-        );
-
-        // Measure collaboration text height
-        tempDiv.textContent = item.collaboration;
-        tempDiv.style.fontSize = "16px";
-        const collabHeight = tempDiv.offsetHeight;
-        maxCollabHeight = Math.max(maxCollabHeight, collabHeight);
-
-        // Measure author text height
-        tempDiv.textContent = item.author;
-        tempDiv.style.fontSize = "14px";
-        tempDiv.style.fontStyle = "italic";
-        const authorHeight = tempDiv.offsetHeight;
-        maxAuthorHeight = Math.max(maxAuthorHeight, authorHeight);
-
-        // Reset for next measurement
-        tempDiv.style.fontSize = window.innerWidth < 900 ? "18px" : "24px";
-        tempDiv.style.fontStyle = "normal";
-      });
-
-      document.body.removeChild(tempDiv);
-
-      // Add some buffer space
-      setContentHeight({
-        testimonial: maxTestimonialHeight + 40, // Extra space for margin
-        collaboration: maxCollabHeight + 10,
-        author: maxAuthorHeight + 10,
-      });
-    };
-
-    // Calculate on initial load and window resize
-    calculateMaxHeights();
-
-    const handleResize = () => {
-      calculateMaxHeights();
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [testimonials]);
-
-  // Update the handleDotClick function to include direction
-  const handleDotClick = (index) => {
-    if (isAnimating || index === currentIndex) return;
-
-    // Set direction based on which dot was clicked
-    const direction = index > currentIndex ? 1 : -1;
-    setPage([currentIndex, direction]);
-    setCurrentIndex(index);
-  };
-
-  // Update nextTestimonial to explicitly set direction
   const nextTestimonial = () => {
-    if (isAnimating) return;
-    setPage([currentIndex, 1]); // 1 = right to left
     setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
   };
 
-  // Update prevTestimonial to explicitly set direction
   const prevTestimonial = () => {
-    if (isAnimating) return;
-    setPage([currentIndex, -1]); // -1 = left to right
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length
-    );
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length);
   };
 
-  // Handlers for pause on hover or touch
-  const handlePause = () => {
-    setIsPaused(true);
-  };
-
-  const handleResume = () => {
-    setIsPaused(false);
-  };
-
-  // Handle touch/mouse events for swiping
-  const handleDragStart = (e) => {
-    if (isAnimating) return;
-    const clientX = e.type.includes("mouse") ? e.clientX : e.touches[0].clientX;
-    setDragStart(clientX);
-    setIsDragging(true);
-    setIsPaused(true); // Pause rotation when user starts dragging
-  };
-
-  // Update handleDragEnd to use the correct direction
-  const handleDragEnd = (e) => {
-    if (!isDragging || isAnimating) return;
-    const clientX = e.type.includes("mouse")
-      ? e.clientX
-      : e.changedTouches
-      ? e.changedTouches[0].clientX
-      : dragStart;
-    const delta = dragStart - clientX;
-
-    if (Math.abs(delta) > swipeThreshold) {
-      if (delta > 0) {
-        setPage([currentIndex, 1]); // Swipe left means content comes from right
-        nextTestimonial();
-      } else {
-        setPage([currentIndex, -1]); // Swipe right means content comes from left
-        prevTestimonial();
-      }
-    }
-
-    setIsDragging(false);
-    // Don't resume automatically - wait until user moves mouse out
-  };
-
-  const handleDragMove = (e) => {
-    if (!isDragging || isAnimating) return;
-    e.preventDefault();
+  const handleDotClick = (index) => {
+    if (index === currentIndex) return;
+    setCurrentIndex(index);
   };
 
   const currentTestimonial = testimonials[currentIndex];
-  const [[page, direction], setPage] = useState([0, 0]);
 
-  const handleAnimationStart = () => {
-    setIsAnimating(true);
-  };
-
-  const handleAnimationComplete = () => {
-    setIsAnimating(false);
-  };
-
-  // Define animation variants for slide transitions - SLOWED DOWN
+  // Simplified animation variants
   const slideVariants = {
-    enter: (direction) => ({
-      x: direction > 0 ? 100 : -100,
+    enter: {
+      x: 300,
       opacity: 0,
-    }),
+    },
     center: {
       x: 0,
       opacity: 1,
     },
-    exit: (direction) => ({
-      x: direction < 0 ? 100 : -100,
+    exit: {
+      x: -300,
       opacity: 0,
-    }),
+    },
   };
 
-
-  // Container for the entire testimonial card
   return (
     <Box
       ref={containerRef}
       sx={{
-        maxWidth: {xs: "100%", md: "900px"}, // Increased from 700px to 900px
+        maxWidth: {xs: "100%", md: "900px"},
         width: "100%",
         margin: "0 auto",
         position: "relative",
-        overflow: "visible", // Changed to allow arrows to be shown outside
+        overflow: "visible",
       }}
     >
-      {/* Arrow navigation buttons - MOVED OUTSIDE THE CARD */}
+      {/* Arrow navigation buttons */}
       <Box
         sx={{
           display: "flex",
@@ -314,7 +155,6 @@ const TestimonialsCard = ({testimonials}) => {
           right: {xs: "0px", md: "-70px"},
           transform: "translateY(-50%)",
           zIndex: 2,
-          pointerEvents: isAnimating ? "none" : "auto",
           height: "40px",
         }}
       >
@@ -328,11 +168,11 @@ const TestimonialsCard = ({testimonials}) => {
             justifyContent: "center",
             backgroundColor: "rgba(0,0,0,0.5)",
             borderRadius: "50%",
-            cursor: isAnimating ? "default" : "pointer",
+            cursor: "pointer",
             color: "white",
             fontSize: "20px",
-            opacity: isAnimating ? 0.3 : 0.7,
-            "&:hover": {opacity: isAnimating ? 0.3 : 1},
+            opacity: 0.7,
+            "&:hover": {opacity: 1},
             transition: "opacity 0.2s ease",
           }}
         >
@@ -348,11 +188,11 @@ const TestimonialsCard = ({testimonials}) => {
             justifyContent: "center",
             backgroundColor: "rgba(0,0,0,0.5)",
             borderRadius: "50%",
-            cursor: isAnimating ? "default" : "pointer",
+            cursor: "pointer",
             color: "white",
             fontSize: "20px",
-            opacity: isAnimating ? 0.3 : 0.7,
-            "&:hover": {opacity: isAnimating ? 0.3 : 1},
+            opacity: 0.7,
+            "&:hover": {opacity: 1},
             transition: "opacity 0.2s ease",
           }}
         >
@@ -363,52 +203,38 @@ const TestimonialsCard = ({testimonials}) => {
       {/* Main Card Container */}
       <Box
         sx={{
-          // backgroundColor: "rgba(30, 30, 30, 0.7)",
           overflow: "hidden",
           position: "relative",
           padding: {xs: "40px 20px", md: "50px 40px"},
-          cursor: isDragging ? "grabbing" : "grab",
           userSelect: "none",
         }}
-        onTouchStart={handleDragStart}
-        onTouchMove={handleDragMove}
-        onTouchEnd={handleDragEnd}
-        onMouseDown={handleDragStart}
-        onMouseMove={handleDragMove}
-        onMouseUp={handleDragEnd}
-        onMouseLeave={handleResume} // Resume rotation when mouse leaves
-        onMouseEnter={handlePause} // Pause rotation when mouse enters
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
       >
-        <AnimatePresence
-          initial={false}
-          custom={direction}
-          mode="wait"
-        >
-          {/* Quote icon */}
+        {/* Single AnimatePresence for all content */}
+        <AnimatePresence mode="wait">
           <motion.div
-            key={`testimonial-${currentIndex}`}
-            custom={direction}
+            key={currentIndex}
             variants={slideVariants}
             initial="enter"
             animate="center"
             exit="exit"
             transition={{
-              x: {type: "spring", stiffness: 200, damping: 40}, // Slower animation
-              opacity: {duration: 0.3}, // Slightly longer fade
+              type: "tween",
+              duration: 0.5,
+              ease: "easeInOut"
             }}
-            onAnimationStart={handleAnimationStart}
-            onAnimationComplete={handleAnimationComplete}
             style={{
               width: "100%",
-              textAlign: "center",
             }}
           >
+            {/* Quote icon */}
             <Box
               sx={{
                 width: "100%",
                 display: "flex",
                 justifyContent: "center",
-                height: "auto", // Fixed height for icon
+                marginBottom: "30px",
               }}
             >
               <Box
@@ -421,166 +247,54 @@ const TestimonialsCard = ({testimonials}) => {
                 }}
               />
             </Box>
+
+            {/* Testimonial text */}
+            <Box
+              sx={{
+                fontSize: {xs: "18px", md: "24px"},
+                fontWeight: "500",
+                color: "#FFFFFF",
+                textAlign: "center",
+                padding: {xs: "0 20px", md: "0 40px"},
+                marginBottom: "30px",
+                lineHeight: 1.6,
+                minHeight: "120px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {currentTestimonial.testimonial}
+            </Box>
+
+            {/* Collaboration */}
+            <Box
+              sx={{
+                fontSize: "16px",
+                color: "#CCCCCC",
+                fontWeight: "500",
+                textAlign: "center",
+                marginBottom: "20px",
+                minHeight: "24px",
+              }}
+            >
+              {currentTestimonial.collaboration}
+            </Box>
+
+            {/* Author */}
+            <Box
+              sx={{
+                fontSize: "14px",
+                color: "#AAAAAA",
+                fontStyle: "italic",
+                textAlign: "center",
+                minHeight: "20px",
+              }}
+            >
+              — {currentTestimonial.author}
+            </Box>
           </motion.div>
         </AnimatePresence>
-        {/* Testimonial text with sliding animation */}
-        <Box
-          sx={{
-            height: contentHeight.testimonial,
-            position: "relative",
-            overflow: "hidden",
-            display: "flex",
-            height: "auto",
-            justifyContent: "center",
-            padding: "50px 0",
-          }}
-          ref={testimonialRef}
-        >
-          <AnimatePresence
-            initial={false}
-            custom={direction}
-            mode="wait"
-          >
-            <motion.div
-              key={`testimonial-${currentIndex}`}
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{
-                x: {type: "spring", stiffness: 200, damping: 40}, // Slower animation
-                opacity: {duration: 0.3}, // Slightly longer fade
-              }}
-              onAnimationStart={handleAnimationStart}
-              onAnimationComplete={handleAnimationComplete}
-              style={{
-                width: "100%",
-                textAlign: "center",
-              }}
-            >
-              <Box
-                sx={{
-                  fontSize: {xs: "18px", md: "24px"},
-                  fontWeight: "500",
-                  color: "#FFFFFF",
-                  textAlign: "center",
-                  padding: {xs: "0 20px", md: "0 40px"},
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  display: "-webkit-box",
-                  WebkitLineClamp: {
-                    xs: Math.floor(contentHeight.testimonial / 24),
-                    md: Math.floor(contentHeight.testimonial / 30),
-                  },
-                  WebkitBoxOrient: "vertical",
-                }}
-              >
-                {currentTestimonial.testimonial}
-              </Box>
-            </motion.div>
-          </AnimatePresence>
-        </Box>
-
-        {/* Collaboration with sliding animation */}
-        <Box
-          sx={{
-            height: contentHeight.collaboration,
-            position: "relative",
-            marginTop: "10px",
-            overflow: "hidden",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          ref={collaborationRef}
-        >
-          <AnimatePresence
-            initial={false}
-            custom={direction}
-            mode="wait"
-          >
-            <motion.div
-              key={`collab-${currentIndex}`}
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{
-                x: {type: "spring", stiffness: 200, damping: 40}, // Slower animation
-                opacity: {duration: 0.3}, // Slightly longer fade
-              }}
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-                textAlign: "center",
-              }}
-            >
-              <Box
-                sx={{
-                  fontSize: "16px",
-                  color: "#CCCCCC",
-                  fontWeight: "500",
-                  textAlign: "center",
-                }}
-              >
-                {currentTestimonial.collaboration}
-              </Box>
-            </motion.div>
-          </AnimatePresence>
-        </Box>
-
-        {/* Author with sliding animation */}
-        <Box
-          sx={{
-            height: contentHeight.author,
-            position: "relative",
-            marginTop: "30px",
-            marginBottom: "30px",
-            overflow: "hidden",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            textAlign: "center",
-          }}
-          ref={authorRef}
-        >
-          <AnimatePresence
-            initial={false}
-            custom={direction}
-            mode="wait"
-          >
-            <motion.div
-              key={`author-${currentIndex}`}
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{
-                x: {type: "spring", stiffness: 200, damping: 40}, // Slower animation
-                opacity: {duration: 0.3}, // Slightly longer fade
-              }}
-              style={{
-                width: "100%",
-                textAlign: "center",
-              }}
-            >
-              <Box
-                sx={{
-                  fontSize: "14px",
-                  color: "#AAAAAA",
-                  fontStyle: "italic",
-                  textAlign: "center",
-                }}
-              >
-                — {currentTestimonial.author}
-              </Box>
-            </motion.div>
-          </AnimatePresence>
-        </Box>
 
         {/* Pause indicator */}
         {isPaused && (
@@ -606,8 +320,7 @@ const TestimonialsCard = ({testimonials}) => {
             display: "flex",
             justifyContent: "center",
             gap: "8px",
-            marginTop: "20px",
-            height: "8px", // Fixed height for indicators
+            marginTop: "30px",
           }}
         >
           {testimonials.map((_, index) => (

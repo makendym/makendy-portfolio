@@ -49,24 +49,52 @@ const ProjectCard = ({title, description, image, size, link, video}) => {
             cursor: "pointer",
           }}
         >
-          <CardMedia
-            component={title === "The Virtual Mirror" ? "video" : "img"}
-            src={
-              title === "The Virtual Mirror"
-                ? video // Replace with the actual path
-                : image
-            }
-            alt={title}
-            autoPlay={title === "The Virtual Mirror"}
-            loop={title === "The Virtual Mirror"}
-            muted={title === "The Virtual Mirror" ? true : undefined}
-            playsInline={title === "The Virtual Mirror"}
-            sx={{
-              height: "100%",
-              filter: "brightness(0.7)",
-              objectFit: "cover",
-            }}
-          />
+          {(title === "SmartFRQ" || title === "Java Lambda Runner") && video ? (
+            <Box
+              sx={{
+                position: "relative",
+                height: "100%",
+                width: "100%",
+                cursor: "pointer",
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.open(video, "_blank");
+              }}
+            >
+              <img
+                src={image}
+                alt={title}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  filter: "brightness(0.7)",
+                }}
+              />
+
+            </Box>
+          ) : (
+            <CardMedia
+              component={title === "The Virtual Mirror" ? "video" : "img"}
+              src={
+                title === "The Virtual Mirror"
+                  ? video // Replace with the actual path
+                  : image
+              }
+              alt={title}
+              autoPlay={title === "The Virtual Mirror"}
+              loop={title === "The Virtual Mirror"}
+              muted={title === "The Virtual Mirror" ? true : undefined}
+              playsInline={title === "The Virtual Mirror"}
+              sx={{
+                height: "100%",
+                filter: "brightness(0.7)",
+                objectFit: "cover",
+              }}
+            />
+          )}
           <CardContent
             sx={{
               position: "absolute",
@@ -206,8 +234,8 @@ const ProjectsSection = () => {
                   padding: "20px",
                 }}
               >
-                {/* First 5 projects */}
-                {projects.slice(0, 7).map((project, index) => (
+                {/* All projects */}
+                {projects.map((project, index) => (
                   <Box
                     key={project.title}
                     sx={{
