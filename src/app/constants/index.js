@@ -262,8 +262,7 @@ const projects = [
     image:
       "https://cdn.loom.com/sessions/thumbnails/95adb06b15ea45f8983508b04d50a41c-4f5ada8a03dacb81-full-play.gif",
     size: "medium",
-    link: "https://www.loom.com/share/95adb06b15ea45f8983508b04d50a41c",
-    video: "https://www.loom.com/share/95adb06b15ea45f8983508b04d50a41c",
+    link: "https://smartfrq.vercel.app/",
   },
   {
     title: "Java Lambda Runner",
