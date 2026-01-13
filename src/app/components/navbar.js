@@ -83,10 +83,10 @@ const Navbar = () => {
 
   // Inside your Navbar component, add this function to handle resume download
   const handleDownloadResume = () => {
-    const resumeUrl = "makendy_midouin_2025.pdf"; // Directly accessible from the public folder
+    const resumeUrl = "makendy_midouin_resume.pdf"; // Directly accessible from the public folder
     const link = document.createElement("a");
     link.href = resumeUrl;
-    link.download = "makendy_midouin_2025.pdf";
+    link.download = "makendy_midouin_resume.pdf";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
