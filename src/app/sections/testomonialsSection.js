@@ -239,7 +239,7 @@ const TestimonialsCard = ({testimonials}) => {
             >
               <Box
                 component="img"
-                src={quoteImage.src}
+                src={quoteImage?.src || quoteImage}
                 alt="Quote"
                 sx={{
                   height: "60px",
