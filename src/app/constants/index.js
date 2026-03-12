@@ -7,8 +7,6 @@ import {
   apComptutor,
   stackOverflow,
   nyuInterview,
-  purpleGlow,
-  fatEar,
   portfolioProject,
   bam,
   roadcall,
@@ -48,22 +46,21 @@ const skillsDataAbout = {
     "Bootstrap",
   ],
   "Cloud & DevOps": [
-    "AWS",
+    "AWS (Lambda, S3, EC2)",
+    "CI/CD (GitHub Actions)",
+    "Docker",
+    "Sentry",
     "Git",
     "GitHub",
     "CI/CD Pipelines",
-    "MongoDB",
-    "PostgreSQL",
-    "MySQL",
   ],
   "Tools & Technologies": [
-    "Hadoop",
-    "Spark",
-    "Unity",
-    "Figma",
-    "OpenAI API",
-    "Virtual Reality",
-    "Agile Scrum",
+    "JUnit / Mockito",
+    "DynamoDB / NoSQL",
+    "Prompt Engineering",
+    "Responsive UI/UX",
+    "Hadoop / Spark",
+    "Unity / VR",
   ],
 };
 
@@ -76,7 +73,7 @@ const educationData = [
     title: "Community-Driven Growth",
     description:
       "At NYU, Makendy deepened his technical expertise and entrepreneurial vision through the Master’s in Computer Science program. His studies were enriched by participation in the NYU Entrepreneurial Institute’s Startup Accelerator Program, where he refined his approach to innovation and business development. He applied his skills in an internship at a trucking logistics startup, co-designing platform features to solve real-world challenges. This period of academic and professional growth solidified his commitment to creating technology that enhances education.",
-    graduationDate: "Dec 2024",
+    graduationDate: "May 2025",
   },
   {
     imagePath: stacTrackEducation.src,
@@ -100,7 +97,7 @@ const workExperience = [
   {
     role: "Computer Science Adjunct Faculty",
     company: "St. Thomas Aquinas College",
-    date: "Sept 2024 - Present",
+    date: "Aug 2024 - Dec 2025",
     icon: stac,
   },
   {
@@ -119,7 +116,7 @@ const workExperience = [
   {
     role: "Software Engineer Intern",
     company: "Roadcall.co",
-    date: "Jun 2023 - Sep 2023",
+    date: "Jun 2023 - Dec 2023",
     icon: roadcall,
   },
   {
@@ -160,11 +157,12 @@ const skillsDataWork = {
     "Agile Scrum",
     "JavaScript",
     "Python",
-    "Java",
+    "Java (JUnit/Mockito)",
     "SQL",
-    "MySQL",
-    "SFML",
-    "Presentation",
+    "Sentry",
+    "DynamoDB",
+    "GitHub Actions",
+    "Responsive UI/UX",
     "Excel",
   ],
 };
@@ -183,7 +181,7 @@ const skillToCompanyMap = {
   "C#": ["XLAB Research", "The Virtual Mirror"],
   "C++": ["Treehouse Strategy"],
   "HTML/CSS": ["Treehouse Strategy", "NYU Interview Prep", "Cleaning Service"],
-  SQL: ["FatEar", "NYU Interview Prep"],
+  SQL: ["NYU Interview Prep"],
 
   // Frameworks & Libraries
   React: [
@@ -193,7 +191,6 @@ const skillToCompanyMap = {
     "Cleaning Service",
   ],
   "Next.js": ["Personal Projects", "Portfolio"],
-  Flask: ["FatEar"],
   Django: ["NYU Interview Prep"],
   "Node.js": ["NYU Interview Prep", "Cleaning Service"],
   "Express.js": ["Cleaning Service"],
@@ -203,7 +200,6 @@ const skillToCompanyMap = {
   // Databases
   MongoDB: ["NYU Interview Prep", "Stack Overflow"],
   PostgreSQL: ["NYU Interview Prep"],
-  MySQL: ["FatEar"],
 
   // Big Data Tools
   Hadoop: ["Stack Overflow Project"],
@@ -216,7 +212,7 @@ const skillToCompanyMap = {
 
   // Version Control & Collaboration
   Git: ["Roadcall.co", "Treehouse Strategy", "XLAB Research", "All Projects"],
-  GitHub: ["NYU Interview Prep", "Stack Overflow", "FatEar"],
+  GitHub: ["NYU Interview Prep", "Stack Overflow"],
   Bitbucket: ["Roadcall.co"],
 
   // Project Management & Methodologies
@@ -230,7 +226,6 @@ const skillToCompanyMap = {
   Figma: ["UI/UX Design Projects"],
   Unity: ["XLAB Research", "The Virtual Mirror"],
   "Virtual Reality": ["XLAB Research"],
-  "OpenAI API": ["AP CompTutor"],
 
   // Specialized Skills
   TypeScript: ["Roadcall.co"],
@@ -248,8 +243,9 @@ const skillToCompanyMap = {
 const projects = [
   {
     title: "The Virtual Mirror",
+    projectType: "Academic Research",
     description:
-      "Bias-revealing VR journey that places students in immersive scenarios to expose hidden prejudices about weight, race, and gender. Designed to spark self-reflection and personal transformation.",
+      "Bias-revealing VR scenarios exposing hidden prejudices. Designed to spark self-reflection through immersive research scenarios.",
     image: xlabProject.src,
     size: "large",
     link: "https://github.com/makendym/-Finding-Discrimination-using-Virtual-Reality",
@@ -257,8 +253,9 @@ const projects = [
   },
   {
     title: "SmartFRQ",
+    projectType: "Private (Active Users)",
     description:
-      "Built a focused prototype for APCompTutor.AI, an AI-powered AP Computer Science practice platform that processes PDF questions into structured JSON format, and uses the Feynman Technique for enhanced learning. Used Next.js, TypeScript, and multi-model AI integration to create a user-friendly platform to provide custom prompts and intelligent feedback for students.",
+      "GenAI platform serving active users. Uses AWS Lambda & the Feynman Technique to transform PDF questions into structured learning feedback.",
     image:
       "https://cdn.loom.com/sessions/thumbnails/95adb06b15ea45f8983508b04d50a41c-4f5ada8a03dacb81-full-play.gif",
     size: "medium",
@@ -266,8 +263,9 @@ const projects = [
   },
   {
     title: "Java Lambda Runner",
+    projectType: "Public (GitHub)",
     description:
-      "Microservice built with TypeScript-based AWS Lambda function that provides Java execution capabilities within a serverless environment. Combines Node.js and Java to create a flexible serverless solution with Docker containerization, API Gateway integration for compiling and running Java code via HTTP requests.",
+      "Production-ready AWS Lambda microservice. Automates isolated Java execution environments via Docker and Node.js.",
     image: "https://cdn.loom.com/sessions/thumbnails/aabf192a1d8444239d0dc3b9fc6c20d4-f6fc632e57ccf82a-full-play.gif",
     size: "medium",
     link: "https://github.com/makendym/java-lambda-runner",
@@ -275,70 +273,51 @@ const projects = [
   },
   {
     title: "AWS Frontend Todo App",
-    description: "Frontend implementation tutorial for cloud computing students - React-based todo application with S3 static hosting deployment. Part 1 of a comprehensive AWS serverless tutorial series.",
+    projectType: "Educational Project",
+    description: "React-based tutorial for cloud students. Part 1 of a comprehensive series on S3 static hosting and serverless architecture.",
     image: "https://raw.githubusercontent.com/makendym/AWS-Frontend-Todo-App/main/app-step1-img.png",
     size: "medium",
     link: "https://github.com/makendym/AWS-Frontend-Todo-App",
   },
   {
     title: "AWS Lambda Backend Tutorial",
-    description: "Backend implementation tutorial for cloud computing students - AWS Lambda functions with API Gateway and DynamoDB integration. Part 2 of a comprehensive AWS serverless tutorial series.",
+    projectType: "Educational Project",
+    description: "Serverless backend tutorial featuring Lambda, API Gateway, and DynamoDB. Part 2 of the cloud computing series.",
     image: "https://raw.githubusercontent.com/makendym/AWS-Lambda-Todo-App/main/lambda-step1-img.png",
     size: "medium",
     link: "https://github.com/makendym/AWS-Lambda-Todo-App",
   },
   {
-    title: "AP CompTutor",
-    description:
-      "AI-powered study buddy that creates custom practice questions to help sharpen coding skills and ace the AP CSA exam.",
-    image: apComptutor.src,
-    size: "medium",
-    link: "https://github.com/makendym/APCompTutor",
-  },
-  {
     title: "Stack Overflow",
+    projectType: "Big Data (Public)",
     description:
-      "StackOverflow ecosystem explorer that transforms vast forum data into interactive visual narratives, answering key questions about the developer community's digital conversations.",
+      "Dashboard processing 100GB of StackOverflow data. Utilizes MongoDB & DynamoDB caching for high-performance visual narratives.",
     image: stackOverflow.src,
     size: "small",
     link: "https://github.com/makendym/StackOverflow-BigData",
   },
-
   {
     title: "NYU Interview Prep",
+    projectType: "Academic Project",
     description:
-      "Career matchmaker for NYU students, connecting those with shared professional interests and career paths.",
+      "Career matchmaker connecting NYU students with shared professional interests and career paths.",
     image: nyuInterview.src,
     size: "medium",
     link: "https://github.com/makendym/NYU-Interview-Prep",
   },
   {
-    title: "Purple Glow",
-    description:
-      "One-tap booking system that simplifies scheduling and payment for cleaning services, turning booking chaos into seamless user experience.",
-    image: purpleGlow.src,
-    size: "medium",
-    link: "https://github.com/makendym/Cleaning-Service-app",
-  },
-  {
     title: "Olympic Stadium VR",
-    description: "Immersive VR simulation of Olympic track events featuring motion-captured athletic animations. Users experience races from a viewing room with multiple camera angles for 100m, 200m, and 400m events, showcasing advanced VR development and MOCAP integration.",
-    image: olympicStadiumVr.src, // You could use a screenshot or Unity preview
-    size: "medium", // This deserves large size due to complexity
+    projectType: "Virtual Reality (Public)",
+    description: "Immersive VR simulation featuring motion-captured athletic animations and multi-angle viewing for Olympic track events.",
+    image: olympicStadiumVr.src,
+    size: "medium",
     link: "https://github.com/makendym/Olympic-Stadium-VR-Project",
   },
   {
-    title: "Fat Ear",
-    description:
-      "Dynamic music streaming platform that uses advanced SQL queries, offering seamless login, personalized playlists, and fast song search.",
-    image: fatEar.src,
-    size: "small",
-    link: "https://github.com/makendym/FatEar",
-  },
-  {
     title: "Portfolio Design",
+    projectType: "Public (Figma)",
     description:
-      "A clean, intuitive Figma design showcasing Makendy’s journey with easy navigation and key achievements.",
+      "The blueprint behind this portfolio. A clean, intuitive Figma design showcasing navigation and achievement systems.",
     image: portfolioProject.src,
     size: "small",
     link: "https://www.figma.com/design/FeKGi60NgShEUTddoupNSt/Portfolio-Page?node-id=0-1&t=iTMwYYVWYHnklRYx-1",

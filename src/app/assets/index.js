@@ -7,9 +7,6 @@ import nyuBannerEducation from "./nyu-banners-education.jpg";
 import nyuLogo from "./nyu-logo.png";
 import stacTrackEducation from "./stac-track-education.jpeg";
 import stacLogo from "./spartan-head.png";
-import fatEar from "./fatEar-project.png";
-import purpleGlow from "./purple-glow-project.png";
-import apComptutor from "./ap-comptutor-project.png";
 import stackOverflow from "./stackoverflow-project.png";
 import xlabProject from "./xlab-project.png";
 import nyuInterview from "./nyu-interview-prep-project.png";
@@ -23,6 +20,9 @@ import portfolioProject from "./portfolio-project.png";
 import quoteImage from "./quote-image.svg";
 import testimonialXlab from "./testimonial-xlab.jpeg";
 import olympicStadiumVr from "./olympic-stadium-vr.jpeg";
+import leetntfy from "./leetntfy-project.png";
+import taskcli from "./task-cli-project.png";
+import haitiCity from "./haiti-city-portal-project.png";
 export {
   aboutMeImage,
   landingPageImage,
@@ -31,9 +31,6 @@ export {
   nyuLogo,
   stacTrackEducation,
   stacLogo,
-  fatEar,
-  purpleGlow,
-  apComptutor,
   stackOverflow,
   xlabProject,
   nyuInterview,
@@ -47,4 +44,7 @@ export {
   quoteImage,
   testimonialXlab,
   olympicStadiumVr,
+  leetntfy,
+  taskcli,
+  haitiCity,
 };

@@ -1,5 +1,5 @@
 "use client";
-import React, {useRef} from "react";
+import React, {useRef, useState, useEffect} from "react";
 import {
   Box,
   Typography,
@@ -12,9 +12,19 @@ import {
 } from "@mui/material";
 import {motion, useInView, useScroll, useTransform} from "framer-motion";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import {pageGradientBackground} from "../assets";
-import {projects} from "../constants";
+import {
+  pageGradientBackground,
+  leetntfy,
+  taskcli,
+  haitiCity,
+} from "../assets";
+import {projects as initialProjects} from "../constants";
+import {getLatestRepos} from "../lib/githubService";
 import theme from "../theme";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LaunchIcon from "@mui/icons-material/Launch";
+import CodeIcon from "@mui/icons-material/Code";
+import {IconButton} from "@mui/material";
 
 const ProjectCard = ({title, description, image, size, link, video}) => {
   const cardRef = useRef(null);
@@ -90,7 +100,7 @@ const ProjectCard = ({title, description, image, size, link, video}) => {
               playsInline={title === "The Virtual Mirror"}
               sx={{
                 height: "100%",
-                filter: "brightness(0.7)",
+                filter: "brightness(0.65)",
                 objectFit: "cover",
               }}
             />
@@ -102,21 +112,35 @@ const ProjectCard = ({title, description, image, size, link, video}) => {
               left: 0,
               right: 0,
               background:
-                "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)",
+                "linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0) 100%)",
               color: "white",
               p: 3,
-              overflow: "hidden",
-              // textOverflow: "ellipsis",
-              // whiteSpace: "nowrap",
             }}
           >
+            <Typography
+              variant="caption"
+              sx={{
+                color: "rgba(124, 158, 158, 0.9)",
+                fontWeight: "bold",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                fontSize: "0.65rem",
+                mb: 0.5,
+                display: "block"
+              }}
+            >
+              {initialProjects.find(p => p.title === title)?.projectType || "Featured Project"}
+            </Typography>
             <Typography
               variant="h5"
               sx={{
                 fontWeight: "bold",
+                // Remove whiteSpace: "nowrap" to prevent horizontal scrollbars/truncation issues
+                display: "-webkit-box",
+                WebkitLineClamp: 1,
+                WebkitBoxOrient: "vertical",
                 overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
+                mb: 0.5
               }}
             >
               {title}
@@ -124,10 +148,13 @@ const ProjectCard = ({title, description, image, size, link, video}) => {
             <Typography
               variant="body2"
               sx={{
-                opacity: 0.8,
+                opacity: 0.9,
+                // Use line clamp to prevent vertical overflow/scrollbars
+                display: "-webkit-box",
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: "vertical",
                 overflow: "hidden",
-                // textOverflow: "ellipsis",
-                // whiteSpace: "nowrap",
+                lineHeight: 1.4
               }}
             >
               {description}
@@ -139,9 +166,150 @@ const ProjectCard = ({title, description, image, size, link, video}) => {
   );
 };
 
+const GitHubRepoCard = ({repo, index}) => {
+  const cardRef = useRef(null);
+  const isInView = useInView(cardRef, {once: true, margin: "-10% 0px"});
+
+  const getRepoImage = (name) => {
+    const lowerName = name.toLowerCase();
+    if (lowerName.includes("leet-ntfy")) return leetntfy.src;
+    if (lowerName.includes("task-tracker-cli")) return taskcli.src;
+    if (lowerName.includes("haiticityportal")) return haitiCity.src;
+    return pageGradientBackground.src;
+  };
+
+  const repoImage = getRepoImage(repo.name);
+
+  return (
+    <motion.div
+      ref={cardRef}
+      initial={{y: 20, opacity: 0}}
+      animate={isInView ? {y: 0, opacity: 1} : {y: 20, opacity: 0}}
+      transition={{duration: 0.5, delay: index * 0.1}}
+      style={{height: "100%"}}
+    >
+      <Link
+        href={repo.url}
+        target="_blank"
+        sx={{
+          textDecoration: "none",
+          display: "block",
+          height: "100%",
+          "&:hover": {
+            textDecoration: "none",
+          },
+        }}
+      >
+        <Card
+          sx={{
+            height: "100%",
+            position: "relative",
+            borderRadius: "24px",
+            overflow: "hidden",
+            bgcolor: "rgba(36, 36, 36, 1)",
+            cursor: "pointer",
+            border: "1px solid rgba(255, 255, 255, 0.05)",
+          }}
+        >
+          {/* Background - using the specific project image if available */}
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundImage: `url(${repoImage})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              opacity: repoImage === pageGradientBackground.src ? 0.3 : 0.7,
+              filter: repoImage === pageGradientBackground.src ? "brightness(0.4) blur(2px)" : "brightness(0.55)",
+              transition: "transform 0.5s ease",
+              "&::after": {
+                content: '""',
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                background: "linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0) 100%)",
+              }
+            }}
+          />
+
+          <CardContent
+            sx={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              color: "white",
+              p: 3,
+              zIndex: 2,
+            }}
+          >
+            <Box sx={{ mb: 0.5 }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: "rgba(124, 158, 158, 0.8)",
+                  fontWeight: "bold",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  fontSize: "0.65rem",
+                }}
+              >
+                {repo.isFork ? "Open Source Contribution" : "Public Repository"}
+              </Typography>
+              <Typography
+                variant="h5"
+                sx={{
+                  fontWeight: "bold",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 1,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                  fontFamily: "Changa One, sans-serif",
+                  mt: 0.5
+                }}
+              >
+                {repo.name.replace(/-/g, " ")}
+              </Typography>
+            </Box>
+            <Typography
+              variant="body2"
+              sx={{
+                opacity: 0.8,
+                display: "-webkit-box",
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                lineHeight: 1.4
+              }}
+            >
+              {repo.name.toLowerCase().includes("leet-ntfy") 
+                ? "Active open-source tool serving users with real-time LeetCode status updates. GitHub-based notification system built with TypeScript and Node.js."
+                : (repo.description || "Active development repository on GitHub.")}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Link>
+    </motion.div>
+  );
+};
+
 const ProjectsSection = () => {
+  const [repos, setRepos] = useState([]);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, {once: false, margin: "-20% 0px"});
+
+  useEffect(() => {
+    const fetchRepos = async () => {
+      const data = await getLatestRepos();
+      setRepos(data.slice(0, 3));
+    };
+    fetchRepos();
+  }, []);
 
   const {scrollYProgress} = useScroll({
     target: sectionRef,
@@ -228,14 +396,13 @@ const ProjectsSection = () => {
                     sm: "repeat(2, 1fr)",
                     md: "repeat(3, 1fr)",
                   },
-                  gap: 2,
-                  gridAutoRows: "280px",
-                  overflow: "hidden",
+                  gap: 3,
+                  gridAutoRows: "minmax(280px, auto)",
                   padding: "20px",
                 }}
               >
-                {/* All projects */}
-                {projects.map((project, index) => (
+                {/* Featured projects */}
+                {initialProjects.map((project, index) => (
                   <Box
                     key={project.title}
                     sx={{
@@ -258,6 +425,22 @@ const ProjectsSection = () => {
                     }}
                   >
                     <ProjectCard {...project} />
+                  </Box>
+                ))}
+                {/* Dynamic GitHub Repos */}
+                {repos.map((repo, index) => (
+                  <Box
+                    key={repo.id}
+                    sx={{
+                      gridColumn: "span 1",
+                      gridRow: "span 1",
+                      transition: "transform 0.3s ease-in-out",
+                      "&:hover": {
+                        transform: "scale(1.04)",
+                      },
+                    }}
+                  >
+                    <GitHubRepoCard repo={repo} index={index} />
                   </Box>
                 ))}
 
@@ -291,20 +474,16 @@ const ProjectsSection = () => {
                     }}
                   />
 
-                  {/* Content */}
                   <Box sx={{position: "relative", zIndex: 1}}>
                     <Typography
                       variant="body1"
                       sx={{
                         color: "rgba(255,255,255,0.7)",
                         mb: 3,
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
+                        lineHeight: 1.6
                       }}
                     >
-                      After working on a diverse range of projects, from VR
-                      experiences to websites and complex applications, these
-                      are some of Makendy’s favorites.
+                      In addition to the featured work above, explore my latest technical repositories and experiments directly from GitHub.
                     </Typography>
                     <Button
                       variant="outlined"
