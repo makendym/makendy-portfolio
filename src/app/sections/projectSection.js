@@ -427,8 +427,89 @@ const ProjectsSection = () => {
                     <ProjectCard {...project} />
                   </Box>
                 ))}
-                {/* Dynamic GitHub Repos */}
-                {repos.map((repo, index) => (
+                {/* Dynamic GitHub Repositories Section Header */}
+        {repos.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            style={{ width: "100%", marginTop: "4rem", marginBottom: "2rem" }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                textAlign: "center",
+                position: "relative",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1.5,
+                  mb: 1
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    bgcolor: "#ff3e3e",
+                    boxShadow: "0 0 10px #ff3e3e",
+                    animation: "pulse 2s infinite"
+                  }}
+                />
+                <Typography
+                  variant="h4"
+                  sx={{
+                    fontFamily: "Changa One, sans-serif",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.1em",
+                    fontSize: { xs: "1.5rem", md: "2rem" },
+                    color: "white"
+                  }}
+                >
+                  Live GitHub Activity
+                </Typography>
+              </Box>
+              <Typography
+                variant="body2"
+                sx={{
+                  color: "rgba(255, 255, 255, 0.6)",
+                  letterSpacing: "0.05em",
+                  fontSize: "0.85rem",
+                  fontStyle: "italic"
+                }}
+              >
+                Tracking the latest 3 repositories I've pushed to
+              </Typography>
+              <Box
+                sx={{
+                  width: "60px",
+                  height: "2px",
+                  background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)",
+                  mt: 2
+                }}
+              />
+            </Box>
+            <style>
+              {`
+                @keyframes pulse {
+                  0% { transform: scale(0.95); opacity: 0.8; }
+                  70% { transform: scale(1.1); opacity: 1; }
+                  100% { transform: scale(0.95); opacity: 0.8; }
+                }
+              `}
+            </style>
+          </motion.div>
+        )}
+
+        {/* Existing Grid for Dynamic Repos (Top 3) */}
+        {repos.slice(0, 3).map((repo, index) => (
                   <Box
                     key={repo.id}
                     sx={{

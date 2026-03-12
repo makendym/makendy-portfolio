@@ -18,7 +18,7 @@ export async function getLatestRepos() {
 
     // Filter and map to a clean structure
     return repos
-      .filter((repo) => !repo.private) // Extra safety check for public repos only
+      .filter((repo) => !repo.private && repo.name !== "makendy-portfolio") // Exclude private and the portfolio itself
       .map((repo) => ({
         id: repo.id,
         name: repo.name,
