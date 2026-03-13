@@ -348,9 +348,7 @@ const ProjectsSection = () => {
               minHeight: "100vh",
               zIndex: 1,
               overflowX: "clip",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              // Removed flex centering to prevent clipping top content
             }}
           >
             <Box
@@ -372,7 +370,6 @@ const ProjectsSection = () => {
               sx={{
                 py: 8,
                 px: {xs: 2, md: 4},
-                minHeight: "100vh",
                 overflow: "hidden",
               }}
             >
@@ -388,6 +385,8 @@ const ProjectsSection = () => {
               >
                 PROJECTS
               </Typography>
+
+
               <Box
                 sx={{
                   display: "grid",
@@ -427,89 +426,93 @@ const ProjectsSection = () => {
                     <ProjectCard {...project} />
                   </Box>
                 ))}
-                {/* Dynamic GitHub Repositories Section Header */}
-        {repos.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            style={{ width: "100%", marginTop: "4rem", marginBottom: "2rem" }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                textAlign: "center",
-                position: "relative",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1.5,
-                  mb: 1
-                }}
-              >
-                <Box
-                  sx={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: "50%",
-                    bgcolor: "#ff3e3e",
-                    boxShadow: "0 0 10px #ff3e3e",
-                    animation: "pulse 2s infinite"
-                  }}
-                />
-                <Typography
-                  variant="h4"
-                  sx={{
-                    fontFamily: "Changa One, sans-serif",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    fontSize: { xs: "1.5rem", md: "2rem" },
-                    color: "white"
-                  }}
-                >
-                  Live GitHub Activity
-                </Typography>
               </Box>
-              <Typography
-                variant="body2"
-                sx={{
-                  color: "rgba(255, 255, 255, 0.6)",
-                  letterSpacing: "0.05em",
-                  fontSize: "0.85rem",
-                  fontStyle: "italic"
-                }}
-              >
-                Tracking the latest 3 repositories I've pushed to
-              </Typography>
+
+              {/* Dynamic GitHub Repositories Section Header */}
+              {repos.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  style={{ width: "100%", marginTop: "4rem", marginBottom: "2rem" }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      textAlign: "center",
+                      position: "relative",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1.5,
+                        mb: 1
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: 8,
+                          height: 8,
+                          borderRadius: "50%",
+                          bgcolor: "#ff3e3e",
+                          boxShadow: "0 0 10px #ff3e3e",
+                          animation: "pulse 2s infinite"
+                        }}
+                      />
+                      <Typography
+                        variant="h4"
+                        sx={{
+                          fontFamily: "Changa One, sans-serif",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.1em",
+                          fontSize: { xs: "1.5rem", md: "2rem" },
+                          color: "white"
+                        }}
+                      >
+                        Live GitHub Activity
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        width: "60px",
+                        height: "2px",
+                        background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)",
+                        mt: 2
+                      }}
+                    />
+                  </Box>
+                  <style>
+                    {`
+                      @keyframes pulse {
+                        0% { transform: scale(0.95); opacity: 0.8; }
+                        70% { transform: scale(1.1); opacity: 1; }
+                        100% { transform: scale(0.95); opacity: 0.8; }
+                      }
+                    `}
+                  </style>
+                </motion.div>
+              )}
+
               <Box
                 sx={{
-                  width: "60px",
-                  height: "2px",
-                  background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)",
-                  mt: 2
+                  display: "grid",
+                  gridTemplateColumns: {
+                    xs: "1fr",
+                    sm: "repeat(2, 1fr)",
+                    md: "repeat(3, 1fr)",
+                  },
+                  gap: 3,
+                  gridAutoRows: "minmax(280px, auto)",
+                  padding: "20px",
                 }}
-              />
-            </Box>
-            <style>
-              {`
-                @keyframes pulse {
-                  0% { transform: scale(0.95); opacity: 0.8; }
-                  70% { transform: scale(1.1); opacity: 1; }
-                  100% { transform: scale(0.95); opacity: 0.8; }
-                }
-              `}
-            </style>
-          </motion.div>
-        )}
-
-        {/* Existing Grid for Dynamic Repos (Top 3) */}
-        {repos.slice(0, 3).map((repo, index) => (
+              >
+                {/* Dynamic GitHub Repos (Top 3) */}
+                {repos.slice(0, 3).map((repo, index) => (
                   <Box
                     key={repo.id}
                     sx={{
@@ -524,67 +527,30 @@ const ProjectsSection = () => {
                     <GitHubRepoCard repo={repo} index={index} />
                   </Box>
                 ))}
+              </Box>
 
-                {/* Text and Button Container replacing the last project card */}
-                <Box
+              {/* View More Button below the live grid */}
+              <Box sx={{ display: "flex", justifyContent: "center", mt: 6 }}>
+                <Button
+                  variant="outlined"
+                  endIcon={<ArrowForwardIcon />}
+                  href="https://github.com/makendym"
+                  target="_blank"
                   sx={{
-                    gridColumn: "span 1",
-                    gridRow: "span 1",
-                    overflow: "hidden",
-                    borderRadius: "24px",
-                    bgcolor: "rgba(36, 36, 36, 1)",
-                    p: 3,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    height: "100%",
-                    width: "100%",
-                    position: "relative",
+                    color: "white",
+                    borderColor: "rgba(255,255,255,0.3)",
+                    borderRadius: "34px",
+                    padding: "12px 30px",
+                    textTransform: "none",
+                    fontSize: "0.9rem",
+                    "&:hover": {
+                      borderColor: "white",
+                      bgcolor: "rgba(255,255,255,0.1)",
+                    },
                   }}
                 >
-                  {/* Background gradient similar to project cards */}
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      background:
-                        "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%)",
-                    }}
-                  />
-
-                  <Box sx={{position: "relative", zIndex: 1}}>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        color: "rgba(255,255,255,0.7)",
-                        mb: 3,
-                        lineHeight: 1.6
-                      }}
-                    >
-                      In addition to the featured work above, explore my latest technical repositories and experiments directly from GitHub.
-                    </Typography>
-                    <Button
-                      variant="outlined"
-                      endIcon={<ArrowForwardIcon />}
-                      href="https://github.com/makendym"
-                      sx={{
-                        color: "white",
-                        borderColor: "white",
-                        borderRadius: "34px",
-                        padding: "15px",
-                        "&:hover": {
-                          borderColor: "white",
-                          bgcolor: "rgba(255,255,255,0.1)",
-                        },
-                      }}
-                    >
-                      Explore All
-                    </Button>
-                  </Box>
-                </Box>
+                  Explore all repositories on GitHub
+                </Button>
               </Box>
             </Box>
           </Box>
