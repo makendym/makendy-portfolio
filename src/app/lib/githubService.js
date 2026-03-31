@@ -30,7 +30,8 @@ export async function getLatestRepos() {
         language: repo.language,
         topics: repo.topics || [],
         updatedAt: repo.pushed_at,
-        isFork: repo.fork
+        isFork: repo.fork,
+        defaultBranch: repo.default_branch
       }));
   } catch (error) {
     console.error("Error fetching GitHub repos:", error);

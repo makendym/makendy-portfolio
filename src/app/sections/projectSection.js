@@ -170,15 +170,24 @@ const GitHubRepoCard = ({repo, index}) => {
   const cardRef = useRef(null);
   const isInView = useInView(cardRef, {once: true, margin: "-10% 0px"});
 
-  const getRepoImage = (name) => {
+  const getRepoImage = (name, defaultBranch) => {
     const lowerName = name.toLowerCase();
     if (lowerName.includes("leet-ntfy")) return leetntfy.src;
     if (lowerName.includes("task-tracker-cli")) return taskcli.src;
     if (lowerName.includes("haiticityportal")) return haitiCity.src;
-    return pageGradientBackground.src;
+    
+    // For new projects, use the standardized preview image name
+    return `https://raw.githubusercontent.com/makendym/${name}/${defaultBranch || 'main'}/github-preview.png`;
   };
 
-  const repoImage = getRepoImage(repo.name);
+  const [repoImage, setRepoImage] = useState(getRepoImage(repo.name, repo.defaultBranch));
+
+  const handleImageError = () => {
+    // If the standardized image fails, fall back to the default gradient
+    if (repoImage !== pageGradientBackground.src) {
+      setRepoImage(pageGradientBackground.src);
+    }
+  };
 
   return (
     <motion.div
@@ -212,6 +221,12 @@ const GitHubRepoCard = ({repo, index}) => {
           }}
         >
           {/* Background - using the specific project image if available */}
+          <img 
+            src={repoImage} 
+            onError={handleImageError} 
+            alt=""
+            style={{ display: "none" }}
+          />
           <Box
             sx={{
               position: "absolute",
@@ -259,7 +274,9 @@ const GitHubRepoCard = ({repo, index}) => {
                   fontSize: "0.65rem",
                 }}
               >
-                {repo.isFork ? "Open Source Contribution" : "Public Repository"}
+                {repo.topics?.includes("hackathon") 
+                  ? "Hackathon Project" 
+                  : (repo.isFork ? "Open Source Contribution" : "Public Repository")}
               </Typography>
               <Typography
                 variant="h5"
