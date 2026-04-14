@@ -22,6 +22,8 @@ export async function getLatestRepos() {
       .map((repo) => ({
         id: repo.id,
         name: repo.name,
+        fullName: repo.full_name,
+        owner: repo.owner?.login,
         description: repo.description,
         url: repo.html_url,
         homepage: repo.homepage,

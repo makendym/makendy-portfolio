@@ -391,6 +391,23 @@ const testimonialData = [
   },
 ];
 
+/**
+ * Custom image overrides for GitHub repos in the "Live GitHub Activity" section.
+ *
+ * Usage — just add a line here:
+ *   "repo-name": "path/to/image.png"
+ *
+ * The key is the repo name (as it appears on GitHub).
+ * The value can be:
+ *   - A path relative to the repo root  →  "docs/screenshots/editor-blocks.png"
+ *     (auto-resolved to raw.githubusercontent.com using the repo's owner & branch)
+ *   - A full URL                         →  "https://example.com/image.png"
+ */
+const repoImageOverrides = {
+  // Example: hackathon project with a non-standard image path
+  "Scratch-for-AI-Dev": "docs/screenshots/editor-blocks.png",
+};
+
 export {
   videoUrl,
   headings,
@@ -402,4 +419,5 @@ export {
   projects,
   testimonialData,
   skillToCompanyMap,
+  repoImageOverrides,
 };

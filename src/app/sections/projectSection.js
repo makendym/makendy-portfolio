@@ -18,7 +18,7 @@ import {
   taskcli,
   haitiCity,
 } from "../assets";
-import {projects as initialProjects} from "../constants";
+import {projects as initialProjects, repoImageOverrides} from "../constants";
 import {getLatestRepos} from "../lib/githubService";
 import theme from "../theme";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -175,9 +175,18 @@ const GitHubRepoCard = ({repo, index}) => {
     if (lowerName.includes("leet-ntfy")) return leetntfy.src;
     if (lowerName.includes("task-tracker-cli")) return taskcli.src;
     if (lowerName.includes("haiticityportal")) return haitiCity.src;
-    
-    // For new projects, use the standardized preview image name
-    return `https://raw.githubusercontent.com/makendym/${name}/${defaultBranch || 'main'}/github-preview.png`;
+
+    // Check the override map (constants/index.js → repoImageOverrides)
+    const override = repoImageOverrides[name];
+    if (override) {
+      // Full URL → use as-is; relative path → resolve via raw.githubusercontent.com
+      if (override.startsWith("http")) return override;
+      const owner = repo.owner || "makendym";
+      return `https://raw.githubusercontent.com/${owner}/${name}/${defaultBranch || 'main'}/${override}`;
+    }
+
+    // Default: standardized preview image at repo root
+    return `https://raw.githubusercontent.com/${repo.owner || 'makendym'}/${name}/${defaultBranch || 'main'}/github-preview.png`;
   };
 
   const [repoImage, setRepoImage] = useState(getRepoImage(repo.name, repo.defaultBranch));
